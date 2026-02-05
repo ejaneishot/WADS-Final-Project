@@ -1,4 +1,4 @@
-# SmartCareer AI — Career Advisor Template (COMP6703001)
+# SmartCareer AI RAW
 
 A production-ready **starter template** for a *Career Counseling & Guidance* web app:
 - **Next.js (App Router) + TypeScript**
