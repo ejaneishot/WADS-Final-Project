@@ -91,12 +91,4 @@ tests/                 backend test placeholders
 docker/                docker files
 ```
 
----
 
-## 7) What to Build Next
-- Career assessment questionnaire + scoring
-- Better career dataset (skills, weights)
-- CV upload (PDF) + keyword extraction
-- AI integration (OpenAI / Gemini) with timeout + fallback
-- Admin audit logs + dataset versioning
-- Full testing suite + security test cases
