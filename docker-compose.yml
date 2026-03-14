@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: smartcareer
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    environment:
+      NODE_ENV: production
+      APP_URL: http://localhost:3000
+      JWT_SECRET: replace_me_with_long_random_secret
+      COOKIE_NAME: smartcareer_token
+      COOKIE_SECURE: "false"
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/smartcareer?schema=public
+      AI_PROVIDER: stub
+      AI_API_KEY: ""
+      AI_MODEL: ""
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
