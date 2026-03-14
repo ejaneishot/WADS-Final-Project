@@ -44,6 +44,7 @@ export async function PUT(req: Request) {
   const prof = await prisma.profile.upsert({
     where: { userId: user!.sub },
     update: {
+      name: data.name ?? null,
       major: data.major ?? null,
       semester: data.semester ?? null,
       gpaRange: data.gpaRange ?? null,
@@ -51,6 +52,7 @@ export async function PUT(req: Request) {
     },
     create: {
       userId: user!.sub,
+      name: data.name ?? null,
       major: data.major ?? null,
       semester: data.semester ?? null,
       gpaRange: data.gpaRange ?? null,
