@@ -9,7 +9,7 @@ import { rateLimit } from "@/lib/rateLimit";
  * - Later: add LLM explanations (OpenAI/Gemini) with timeout + fallback.
  */
 export async function POST() {
-  const { user, error } = requireAuth();
+  const { user, error } = await requireAuth();
   if (error) return error;
 
   // Simple rate limiting: 10 requests / minute per user

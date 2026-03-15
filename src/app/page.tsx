@@ -31,8 +31,8 @@ export default function HomePage() {
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28">
         {/* Ambient glows */}
-        <div className="absolute top-[-100px] left-[10%] w-[500px] h-[500px] rounded-full bg-blue-600/8 blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-[-50px] right-[15%] w-[400px] h-[400px] rounded-full bg-emerald-500/6 blur-[120px] pointer-events-none" />
+        <div className="absolute top-[-100px] left-[10%] w-[500px] h-[500px] rounded-full bg-blue-600/8 blur-[140px] pointer-events-none will-change-transform" />
+        <div className="absolute bottom-[-50px] right-[15%] w-[400px] h-[400px] rounded-full bg-emerald-500/6 blur-[120px] pointer-events-none will-change-transform" />
 
         <div className="container-page relative">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
@@ -111,7 +111,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <p className="section-label mb-1">Assessment Overview</p>
-                    <h2 className="text-xl font-bold">Student journey monitor</h2>
+                    <h2 className="text-xl font-bold">STUDENT JOURNEY MONITOR</h2>
                   </div>
                   <span
                     className="rounded-full px-3 py-1 text-xs font-semibold"

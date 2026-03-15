@@ -102,7 +102,7 @@ export default function DashboardPage() {
 
   return (
     <div className="container-page relative z-10 py-12">
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none will-change-transform" />
 
       {/* Header */}
       <div className="flex flex-wrap items-end justify-between gap-4 mb-8">

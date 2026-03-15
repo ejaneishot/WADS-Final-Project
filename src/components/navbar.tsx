@@ -17,7 +17,16 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
+    let ticking = false;
+    const handler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);

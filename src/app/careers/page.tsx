@@ -62,7 +62,7 @@ export default function CareersPage() {
         {filtered.map((c) => (
           <div key={c.id} className="card-dark glow-ring group">
             <div className="flex items-start justify-between gap-3 mb-2">
-              <h2 className="text-lg font-semibold group-hover:text-gradient transition-all">
+              <h2 className="text-lg font-semibold group-hover:text-gradient">
                 {c.title}
               </h2>
               <span className="badge flex-shrink-0">{c.industry}</span>
