@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const steps = [
   {
@@ -25,7 +27,48 @@ const steps = [
   },
 ];
 
+const tutors = [
+  { name: "Dr. Sarah Chen", role: "AI & Machine Learning", initials: "SC", color: "from-emerald-400 to-teal-500", rating: 4.9, sessions: 128, tag: "Top Rated" },
+  { name: "Marcus Rivera", role: "Cloud & DevOps", initials: "MR", color: "from-sky-400 to-blue-600", rating: 4.8, sessions: 95, tag: "Popular" },
+  { name: "Priya Nair", role: "Cybersecurity", initials: "PN", color: "from-red-400 to-orange-500", rating: 5.0, sessions: 74, tag: "Expert" },
+  { name: "James Park", role: "Software Engineering", initials: "JP", color: "from-blue-400 to-cyan-500", rating: 4.7, sessions: 212, tag: "Recommended" },
+  { name: "Aisha Okonkwo", role: "Data Science", initials: "AO", color: "from-violet-400 to-purple-600", rating: 4.9, sessions: 156, tag: "Rising Star" },
+];
+
+const testimonials = [
+  { quote: "SmartCareer matched me to SWE and 6 months later I had a Google internship offer.", name: "Kevin L.", role: "SWE Intern", company: "Google", color: "from-blue-500/20 to-cyan-500/20" },
+  { quote: "The AI assessment nailed my strengths. I went from undecided to landing a Meta offer.", name: "Jessica T.", role: "Data Engineer Intern", company: "Meta", color: "from-blue-600/20 to-indigo-500/20" },
+  { quote: "Booked sessions with a tutor here and cracked my Amazon OA on the first try.", name: "Rami A.", role: "Backend Intern", company: "Amazon", color: "from-orange-500/20 to-yellow-500/20" },
+  { quote: "The roadmap feature literally told me what to study week by week. Got a Microsoft offer!", name: "Claudia S.", role: "Cloud Engineer Intern", company: "Microsoft", color: "from-sky-500/20 to-blue-400/20" },
+  { quote: "From no internship experience to Apple — the career tracks section was a game changer.", name: "Dani K.", role: "iOS Intern", company: "Apple", color: "from-zinc-400/20 to-slate-500/20" },
+  { quote: "The tutor sessions gave me real-world advice that no course ever did. Got into Stripe.", name: "Theo M.", role: "Payments Intern", company: "Stripe", color: "from-violet-500/20 to-purple-400/20" },
+];
+
+const tracks = [
+  { name: "Data Science", slug: "data-science", icon: "📊", color: "from-violet-500/10 to-purple-500/10" },
+  { name: "Software Engineering", slug: "software-engineering", icon: "⚙️", color: "from-blue-500/10 to-cyan-500/10" },
+  { name: "Cybersecurity", slug: "cybersecurity", icon: "🛡️", color: "from-red-500/10 to-orange-500/10" },
+  { name: "Artificial Intelligence", slug: "artificial-intelligence", icon: "🧠", color: "from-emerald-500/10 to-teal-500/10" },
+  { name: "Cloud & DevOps", slug: "cloud-devops", icon: "☁️", color: "from-sky-500/10 to-blue-500/10" },
+  { name: "UX & Product", slug: "ux-product", icon: "🎨", color: "from-pink-500/10 to-rose-500/10" },
+];
+
 export default function HomePage() {
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/me").then((r) => setIsLoggedIn(r.ok));
+  }, []);
+
+  const handleStartAssessment = () => {
+    router.push(isLoggedIn ? "/dashboard" : "/login");
+  };
+
+  const handleTrackClick = (slug: string) => {
+    router.push(isLoggedIn ? `/careers?track=${slug}` : "/login");
+  };
+
   return (
     <div className="relative z-10">
       {/* ── HERO ── */}
@@ -65,12 +108,15 @@ export default function HomePage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
-                <Link href="/register" className="btn-accent">
+                <button onClick={handleStartAssessment} className="btn-accent">
                   Start Assessment
-                </Link>
-                <Link href="/careers" className="btn-ghost">
+                </button>
+                <button
+                  onClick={() => document.getElementById("specializations")?.scrollIntoView({ behavior: "smooth" })}
+                  className="btn-ghost"
+                >
                   Explore Careers
-                </Link>
+                </button>
               </div>
 
               {/* Stat boxes */}
@@ -258,7 +304,7 @@ export default function HomePage() {
       <div className="container-page"><div className="divider" /></div>
 
       {/* ── SPECIALIZATIONS ── */}
-      <section className="py-20">
+      <section id="specializations" className="py-20">
         <div className="container-page">
           <p className="section-label">Specialization Tracks</p>
           <h2 className="mt-3 text-3xl font-bold md:text-4xl">
@@ -267,21 +313,131 @@ export default function HomePage() {
           </h2>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { name: "Data Science", icon: "📊", color: "from-violet-500/10 to-purple-500/10" },
-              { name: "Software Engineering", icon: "⚙️", color: "from-blue-500/10 to-cyan-500/10" },
-              { name: "Cybersecurity", icon: "🛡️", color: "from-red-500/10 to-orange-500/10" },
-              { name: "Artificial Intelligence", icon: "🧠", color: "from-emerald-500/10 to-teal-500/10" },
-              { name: "Cloud & DevOps", icon: "☁️", color: "from-sky-500/10 to-blue-500/10" },
-              { name: "UX & Product", icon: "🎨", color: "from-pink-500/10 to-rose-500/10" },
-            ].map((track) => (
-              <div key={track.name} className="card-dark glow-ring group flex items-center gap-4">
+            {tracks.map((track) => (
+              <button
+                key={track.name}
+                onClick={() => handleTrackClick(track.slug)}
+                className="card-dark glow-ring group flex items-center gap-4 text-left w-full"
+              >
                 <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${track.color} text-xl transition-transform group-hover:scale-110`}>
                   {track.icon}
                 </div>
                 <div>
                   <h3 className="font-semibold">{track.name}</h3>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>Explore track →</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DIVIDER ── */}
+      <div className="container-page"><div className="divider" /></div>
+
+      {/* ── TUTORS ── */}
+      <section className="py-20">
+        <div className="container-page">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="section-label">Expert Mentors</p>
+              <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+                Learn with the masters.{" "}
+                <span style={{ color: "var(--text-secondary)" }}>Book a session.</span>
+              </h2>
+            </div>
+            <Link
+              href="/tutors"
+              className="text-sm font-medium flex items-center gap-1 transition-colors hover:text-white"
+              style={{ color: "var(--accent)" }}
+            >
+              See all tutors <span>→</span>
+            </Link>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {tutors.map((tutor) => (
+              <div key={tutor.name} className="card-dark glow-ring flex flex-col items-center text-center gap-3 p-5">
+                {/* avatar + tag side by side: spacer keeps avatar centered */}
+                <div className="w-full flex items-center justify-between">
+                  <div className="w-10" />
+                  <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${tutor.color} text-lg font-bold`}
+                    style={{ color: "var(--surface)" }}>
+                    {tutor.initials}
+                  </div>
+                  <span
+                    className="w-10 rounded-full px-1.5 py-0.5 text-[0.5rem] font-semibold leading-tight text-center"
+                    style={{ background: "var(--accent-glow)", color: "var(--accent)", border: "1px solid var(--border-accent)" }}
+                  >
+                    {tutor.tag}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-semibold text-sm leading-snug">{tutor.name}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{tutor.role}</p>
+                </div>
+                <div className="flex items-center gap-3 text-xs" style={{ color: "var(--text-secondary)" }}>
+                  <span>⭐ {tutor.rating}</span>
+                  <span style={{ color: "var(--border)" }}>|</span>
+                  <span>{tutor.sessions} sessions</span>
+                </div>
+                <div className="flex justify-center w-full mt-1">
+                  <button className="btn-accent" style={{ padding: "0.4rem 1.25rem", fontSize: "0.75rem" }}>
+                    Book Session
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DIVIDER ── */}
+      <div className="container-page"><div className="divider" /></div>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="py-20 overflow-hidden">
+        <div className="container-page mb-10">
+          <p className="section-label">Success Stories</p>
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+            Real students.{" "}
+            <span style={{ color: "var(--text-secondary)" }}>Real offers.</span>
+          </h2>
+        </div>
+
+        <div className="relative overflow-hidden">
+          {/* fade edges */}
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 z-10"
+            style={{ background: "linear-gradient(to right, var(--surface), transparent)" }} />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10"
+            style={{ background: "linear-gradient(to left, var(--surface), transparent)" }} />
+
+          <div className="flex animate-marquee gap-5" style={{ width: "max-content" }}>
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-80 rounded-2xl p-6 flex flex-col gap-4"
+                style={{
+                  background: "var(--surface-raised)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-3 mt-auto">
+                  <div
+                    className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${t.color} text-xs font-bold`}
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    {t.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{t.name}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+                      {t.role} · <span style={{ color: "var(--accent)" }}>{t.company}</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -301,7 +457,7 @@ export default function HomePage() {
             <span className="text-gradient">let&apos;s discover your potential.</span>
           </h2>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/register" className="btn-accent">Start Assessment</Link>
+            <button onClick={handleStartAssessment} className="btn-accent">Start Assessment</button>
             <Link href="/login" className="btn-ghost">Sign In</Link>
           </div>
         </div>
