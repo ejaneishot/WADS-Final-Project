@@ -31,8 +31,8 @@ const tutors = [
   { name: "Dr. Sarah Chen", role: "AI & Machine Learning", initials: "SC", color: "from-emerald-400 to-teal-500", rating: 4.9, sessions: 128, tag: "Top Rated" },
   { name: "Marcus Rivera", role: "Cloud & DevOps", initials: "MR", color: "from-sky-400 to-blue-600", rating: 4.8, sessions: 95, tag: "Popular" },
   { name: "Priya Nair", role: "Cybersecurity", initials: "PN", color: "from-red-400 to-orange-500", rating: 5.0, sessions: 74, tag: "Expert" },
-  { name: "James Park", role: "Software Engineering", initials: "JP", color: "from-blue-400 to-cyan-500", rating: 4.7, sessions: 212, tag: "Recommended" },
-  { name: "Aisha Okonkwo", role: "Data Science", initials: "AO", color: "from-violet-400 to-purple-600", rating: 4.9, sessions: 156, tag: "Rising Star" },
+  { name: "James Park", role: "Software Engineering", initials: "JP", color: "from-blue-400 to-cyan-500", rating: 4.7, sessions: 212, tag: "High Skill" },
+  { name: "Aisha Okonkwo", role: "Data Science", initials: "AO", color: "from-violet-400 to-purple-600", rating: 4.9, sessions: 156, tag: "Expert" },
 ];
 
 const testimonials = [
@@ -56,13 +56,50 @@ const tracks = [
 export default function HomePage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profile, setProfile] = useState<{ interests?: string[]; skills?: { name: string }[] } | null>(null);
+  const [assessmentResult, setAssessmentResult] = useState<{ hasResult: boolean; result?: { primary: string } } | null>(null);
+  const [streak, setStreak] = useState(1);
 
   useEffect(() => {
-    fetch("/api/me").then((r) => setIsLoggedIn(r.ok));
+    fetch("/api/me").then((r) => {
+      if (r.ok) {
+        setIsLoggedIn(true);
+        // Fetch profile and assessment in parallel
+        Promise.all([
+          fetch("/api/profile").then((r) => r.ok ? r.json() : null),
+          fetch("/api/assessment/result").then((r) => r.ok ? r.json() : null),
+        ]).then(([prof, result]) => {
+          setProfile(prof);
+          // also treat localStorage completion as done
+          const localDone = localStorage.getItem("sc_assessment_done") === "true";
+          const localResult = localStorage.getItem("sc_assessment_result");
+          if (result?.hasResult) {
+            setAssessmentResult(result);
+          } else if (localDone) {
+            setAssessmentResult({ hasResult: true, result: { primary: localResult ?? "" } });
+          } else {
+            setAssessmentResult(result);
+          }
+        });
+        // Streak tracking via localStorage
+        const today = new Date().toDateString();
+        const stored = JSON.parse(localStorage.getItem("sc_streak") ?? "{}");
+        if (stored.lastDate === today) {
+          setStreak(stored.streak ?? 1);
+        } else if (stored.lastDate === new Date(Date.now() - 86400000).toDateString()) {
+          const next = (stored.streak ?? 1) + 1;
+          setStreak(next);
+          localStorage.setItem("sc_streak", JSON.stringify({ streak: next, lastDate: today }));
+        } else {
+          setStreak(1);
+          localStorage.setItem("sc_streak", JSON.stringify({ streak: 1, lastDate: today }));
+        }
+      }
+    });
   }, []);
 
   const handleStartAssessment = () => {
-    router.push(isLoggedIn ? "/dashboard" : "/login");
+    router.push(isLoggedIn ? "/assessment" : "/login");
   };
 
   const handleTrackClick = (slug: string) => {
@@ -172,34 +209,79 @@ export default function HomePage() {
                 </div>
 
                 {/* Steps */}
-                <div className="space-y-3">
-                  {steps.map((step) => (
-                    <div
-                      key={step.num}
-                      className="flex items-start gap-4 rounded-xl p-4 transition-all hover:border-[var(--border-accent)]"
-                      style={{
-                        background: "var(--surface-overlay)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      <span
-                        className="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold"
-                        style={{
-                          background: "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
-                          color: "var(--surface)",
-                        }}
-                      >
-                        {step.num}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold leading-snug">{step.title}</p>
-                        <p className="mt-1 text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                          {step.desc}
-                        </p>
+                {(() => {
+                  const hasProfile = (profile?.interests?.length ?? 0) > 0 || (profile?.skills?.length ?? 0) > 0;
+                  const hasAssessment = assessmentResult?.hasResult ?? false;
+                  const stepDone = [isLoggedIn, isLoggedIn && hasProfile, isLoggedIn && hasAssessment, isLoggedIn && hasAssessment];
+                  const allDone = stepDone.every(Boolean);
+                  const lastLearned = assessmentResult?.result?.primary ?? null;
+
+                  if (allDone) {
+                    return (
+                      <div className="flex flex-col gap-4">
+                        <div className="rounded-xl p-5 flex flex-col items-center text-center gap-2"
+                          style={{ background: "var(--surface-overlay)", border: "1px solid var(--border-accent)" }}>
+                          <span className="text-4xl font-extrabold text-gradient mono">{streak}</span>
+                          <p className="text-xs font-semibold" style={{ color: "var(--text-secondary)" }}>
+                            day streak 🔥
+                          </p>
+                          {lastLearned && (
+                            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
+                              Last learned: <span className="font-medium" style={{ color: "var(--accent)" }}>{lastLearned}</span>
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex justify-end">
+                          <button
+                            onClick={() => router.push("/dashboard")}
+                            className="btn-accent flex items-center gap-2"
+                            style={{ padding: "0.5rem 1.25rem", fontSize: "0.8rem" }}
+                          >
+                            Continue <span>→</span>
+                          </button>
+                        </div>
                       </div>
+                    );
+                  }
+
+                  return (
+                    <div className="space-y-3">
+                      {steps.map((step, i) => {
+                        const done = stepDone[i];
+                        return (
+                          <div
+                            key={step.num}
+                            className="flex items-start gap-4 rounded-xl p-4 transition-all"
+                            style={{
+                              background: "var(--surface-overlay)",
+                              border: `1px solid ${done ? "var(--border-accent)" : "var(--border)"}`,
+                              opacity: done ? 0.45 : 1,
+                            }}
+                          >
+                            <span
+                              className="flex-shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold"
+                              style={{
+                                background: done
+                                  ? "rgba(110,231,183,0.15)"
+                                  : "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
+                                color: done ? "var(--accent)" : "var(--surface)",
+                                border: done ? "1px solid var(--border-accent)" : "none",
+                              }}
+                            >
+                              {done ? "✓" : step.num}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold leading-snug" style={{ textDecoration: done ? "line-through" : "none", color: done ? "var(--text-muted)" : undefined }}>{step.title}</p>
+                              <p className="mt-1 text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                                {step.desc}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
               </div>
 
               {/* Recommendation Engine Banner */}
@@ -357,20 +439,16 @@ export default function HomePage() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {tutors.map((tutor) => (
-              <div key={tutor.name} className="card-dark glow-ring flex flex-col items-center text-center gap-3 p-5">
-                {/* avatar + tag side by side: spacer keeps avatar centered */}
-                <div className="w-full flex items-center justify-between">
-                  <div className="w-10" />
-                  <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${tutor.color} text-lg font-bold`}
-                    style={{ color: "var(--surface)" }}>
-                    {tutor.initials}
-                  </div>
-                  <span
-                    className="w-10 rounded-full px-1.5 py-0.5 text-[0.5rem] font-semibold leading-tight text-center"
-                    style={{ background: "var(--accent-glow)", color: "var(--accent)", border: "1px solid var(--border-accent)" }}
-                  >
-                    {tutor.tag}
-                  </span>
+              <div key={tutor.name} className="relative card-dark glow-ring flex flex-col items-center text-center gap-3 px-5 pb-5 pt-10">
+                <span
+                  className="absolute top-3 right-3 rounded-full px-2 py-0.5 text-[0.55rem] font-semibold whitespace-nowrap"
+                  style={{ background: "var(--accent-glow)", color: "var(--accent)", border: "1px solid var(--border-accent)" }}
+                >
+                  {tutor.tag}
+                </span>
+                <div className={`flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${tutor.color} text-lg font-bold`}
+                  style={{ color: "var(--surface)" }}>
+                  {tutor.initials}
                 </div>
                 <div>
                   <p className="font-semibold text-sm leading-snug">{tutor.name}</p>
@@ -458,7 +536,6 @@ export default function HomePage() {
           </h2>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button onClick={handleStartAssessment} className="btn-accent">Start Assessment</button>
-            <Link href="/login" className="btn-ghost">Sign In</Link>
           </div>
         </div>
       </section>

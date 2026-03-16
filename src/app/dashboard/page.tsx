@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [matchLoading, setMatchLoading] = useState(false);
+  const [recommendedTrack, setRecommendedTrack] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
@@ -30,6 +31,7 @@ export default function DashboardPage() {
   const [skills, setSkills] = useState<Array<{ name: string; level: number }>>([]);
 
   useEffect(() => {
+    setRecommendedTrack(localStorage.getItem("sc_assessment_result"));
     fetch("/api/profile")
       .then(async (r) => {
         if (!r.ok) throw new Error((await r.json()).message ?? "Failed to load profile");
@@ -99,6 +101,7 @@ export default function DashboardPage() {
   const removeSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
+
 
   return (
     <div className="container-page relative z-10 py-12">
@@ -183,6 +186,16 @@ export default function DashboardPage() {
                   <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>No skills added</p>
                 )}
               </div>
+
+              {/* Recommended Track */}
+              {recommendedTrack && (
+                <div className="rounded-lg p-3 flex items-center justify-between" style={{ background: "var(--surface)", border: "1px solid var(--border-accent)" }}>
+                  <span className="text-xs mono" style={{ color: "var(--text-muted)" }}>Recommended Track</span>
+                  <span className="text-sm font-semibold" style={{ color: "var(--accent)" }}>
+                    {recommendedTrack}
+                  </span>
+                </div>
+              )}
             </div>
           ) : (
             /* Edit mode */
@@ -248,6 +261,7 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
+
 
         {/* Next steps card */}
         <div className="card-dark glow-ring">

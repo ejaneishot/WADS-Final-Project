@@ -42,11 +42,8 @@ export function Navbar() {
     >
       <div className="container-page flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-blue-500 text-xs font-bold text-[#0A0A0F] transition-transform group-hover:scale-110">
-            SC
-          </span>
-          <span className="text-sm font-semibold tracking-tight">
+        <Link href="/" className="flex items-center group">
+          <span className="text-2xl font-bold tracking-tight">
             SmartCareer<span className="text-gradient">.AI</span>
           </span>
         </Link>
