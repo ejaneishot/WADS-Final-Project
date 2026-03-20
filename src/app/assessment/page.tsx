@@ -1,3 +1,4 @@
+//src/app/assessment/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -92,26 +93,37 @@ export default function AssessmentPage() {
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
-    // Check auth and fetch questions simultaneously
-    Promise.all([fetch("/api/me"), fetch("/api/assessment/questions")]).then(
-      async ([authRes, quizRes]) => {
-        setIsLoggedIn(authRes.ok);
+    // Check auth, fetch questions, AND check for existing results simultaneously
+    Promise.all([
+      fetch("/api/me"),
+      fetch("/api/assessment/questions"),
+      fetch("/api/assessment/result"), // <-- ADDED THIS
+    ]).then(async ([authRes, quizRes, resultRes]) => {
+      setIsLoggedIn(authRes.ok);
 
-        if (quizRes.ok) {
-          const data = await quizRes.json();
-          setQuizSlug(data.quiz.slug);
+      // 1. Load the questions
+      if (quizRes.ok) {
+        const data = await quizRes.json();
+        setQuizSlug(data.quiz.slug);
+        const flatQuestions = data.sections.flatMap(
+          (section: any) => section.questions,
+        );
+        setQuestions(flatQuestions);
+      }
 
-          // Flatten the sections so we have one continuous array of questions
-          const flatQuestions = data.sections.flatMap(
-            (section: any) => section.questions,
-          );
-          setQuestions(flatQuestions);
-        } else {
-          console.error("Failed to load quiz data");
+      // 2. Check if they already have a result!
+      if (resultRes.ok) {
+        const pastResult = await resultRes.json();
+        if (pastResult.hasResult) {
+          // If they already took it, load their scores and jump to the result phase!
+          setScores(pastResult.result.scores);
+          setPrimaryResult(pastResult.result.primary as RoleTag);
+          setPhase("result");
         }
-        setIsLoadingQuiz(false);
-      },
-    );
+      }
+
+      setIsLoadingQuiz(false);
+    });
   }, []);
 
   if (isLoggedIn === false) {

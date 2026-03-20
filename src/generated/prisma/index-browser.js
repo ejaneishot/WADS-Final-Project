@@ -155,10 +155,25 @@ exports.Prisma.UserSkillScalarFieldEnum = {
 
 exports.Prisma.CareerScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   title: 'title',
   industry: 'industry',
   description: 'description',
-  createdAt: 'createdAt'
+  icon: 'icon',
+  color: 'color',
+  gradient: 'gradient',
+  border: 'border',
+  milestones: 'milestones',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserCareerProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  careerId: 'careerId',
+  completedMilestones: 'completedMilestones',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.QuizScalarFieldEnum = {
@@ -267,6 +282,7 @@ exports.Prisma.ModelName = {
   Skill: 'Skill',
   UserSkill: 'UserSkill',
   Career: 'Career',
+  UserCareerProgress: 'UserCareerProgress',
   Quiz: 'Quiz',
   QuizSection: 'QuizSection',
   QuizQuestion: 'QuizQuestion',

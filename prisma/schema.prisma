@@ -23,6 +23,7 @@ model User {
   profile Profile?
 
   assessmentAttempts AssessmentAttempt[]
+  careerProgress     UserCareerProgress[]
 }
 
 model Profile {
@@ -62,10 +63,39 @@ model UserSkill {
 
 model Career {
   id          String   @id @default(cuid())
+  slug        String   @unique // Added: consistent with careersData
   title       String
   industry    String
   description String
+  
+  // Added fields from seed.ts
+  icon        String?  // e.g., "💻"
+  color       String?  // e.g., "from-blue-500 to-cyan-500"
+  gradient    String?  // e.g., "from-blue-500/20 to-cyan-500/20"
+  border      String?  // e.g., "rgba(59,130,246,0.2)"
+  milestones  String[] @default([]) // Array of roadmap steps
+
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userProgress UserCareerProgress[]
+}
+
+// New model for the checklist
+model UserCareerProgress {
+  id                  String   @id @default(cuid())
+  userId              String
+  careerId            String
+  completedMilestones Int[]    // Stores indices, e.g., [0, 2, 3]
+
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  career Career @relation(fields: [careerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, careerId])
+  @@index([userId])
+  @@index([careerId])
 }
 
 // Core quiz content only: quizzes -> sections -> questions -> options

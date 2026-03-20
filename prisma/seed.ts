@@ -1,7 +1,23 @@
 // prisma/seed.ts
-import { PrismaClient, Prisma } from "@prisma/client";
+// Prisma 7
+// prisma/seed.ts
+import "dotenv/config";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient, Prisma } from "../src/generated/prisma";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set");
+}
+
+const pool = new Pool({
+  connectionString,
+});
+
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 type RoleTag = "SWE" | "FE" | "BE" | "AI" | "SEC" | "GAME" | "QA" | "PM";
 type ScoringItem = { tag: RoleTag; weight: number };
@@ -19,34 +35,123 @@ async function seedCareers() {
   const count = await prisma.career.count();
   if (count > 0) return;
 
-  await prisma.career.createMany({
-    data: [
-      {
-        title: "Business Analyst",
-        industry: "Business / Tech",
-        description:
-          "Analyzes requirements, maps processes, and translates business needs into system improvements.",
-      },
-      {
-        title: "Data Analyst",
-        industry: "Analytics",
-        description:
-          "Uses SQL/Excel/Python to clean data, build dashboards, and generate insights for decisions.",
-      },
-      {
-        title: "UX Designer",
-        industry: "Product",
-        description:
-          "Designs user experiences through research, wireframes, prototypes, and usability testing.",
-      },
-      {
-        title: "Product Manager",
-        industry: "Product",
-        description:
-          "Owns product direction, prioritizes roadmap, and aligns teams to deliver user value.",
-      },
-    ],
-  });
+  const careersData = [
+    {
+      slug: "software-engineering",
+      title: "Software Engineering",
+      industry: "Technology",
+      description: "Build scalable systems, APIs, and full-stack applications.",
+      icon: "💻",
+      color: "from-blue-500 to-cyan-500",
+      gradient: "from-blue-500/20 to-cyan-500/20",
+      border: "rgba(59,130,246,0.2)",
+      milestones: [
+        "Learn a programming language",
+        "Build your first project",
+        "Study data structures & algorithms",
+        "Learn system design basics",
+        "Build a portfolio with 3+ projects",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "data-science",
+      title: "Data Science",
+      industry: "Technology",
+      description:
+        "Master data analysis, machine learning, and statistical modeling.",
+      icon: "📊",
+      color: "from-violet-500 to-purple-600",
+      gradient: "from-violet-500/20 to-purple-600/20",
+      border: "rgba(167,139,250,0.2)",
+      milestones: [
+        "Learn Python & statistics",
+        "Data wrangling with Pandas",
+        "Data visualization with Matplotlib/Seaborn",
+        "Machine learning basics with Scikit-learn",
+        "Build an end-to-end data project",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "cybersecurity",
+      title: "Cybersecurity",
+      industry: "Technology",
+      description: "Protect systems, networks, and data from digital threats.",
+      icon: "🔐",
+      color: "from-red-500 to-orange-500",
+      gradient: "from-red-500/20 to-orange-500/20",
+      border: "rgba(239,68,68,0.2)",
+      milestones: [
+        "Networking & Linux fundamentals",
+        "Learn ethical hacking basics",
+        "Practice on TryHackMe / HackTheBox",
+        "Complete a CTF competition",
+        "Get CompTIA Security+ certified",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "artificial-intelligence",
+      title: "Artificial Intelligence",
+      industry: "Technology",
+      description: "Design intelligent systems, LLMs, and autonomous agents.",
+      icon: "🤖",
+      color: "from-emerald-400 to-teal-500",
+      gradient: "from-emerald-500/20 to-teal-500/20",
+      border: "rgba(110,231,183,0.2)",
+      milestones: [
+        "Python, math & linear algebra",
+        "Machine learning fundamentals",
+        "Deep learning with PyTorch/TensorFlow",
+        "NLP & transformer basics",
+        "Build and deploy an AI project",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "cloud-devops",
+      title: "Cloud & DevOps",
+      industry: "Technology",
+      description: "Deploy, scale, and automate infrastructure in the cloud.",
+      icon: "☁️",
+      color: "from-sky-400 to-blue-500",
+      gradient: "from-sky-500/20 to-blue-400/20",
+      border: "rgba(14,165,233,0.2)",
+      milestones: [
+        "Linux & networking basics",
+        "Learn Docker & containerization",
+        "Kubernetes fundamentals",
+        "Cloud provider basics (AWS/GCP/Azure)",
+        "Build a CI/CD pipeline",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "ux-product",
+      title: "UX & Product",
+      industry: "Product",
+      description: "Shape user experiences and drive product strategy.",
+      icon: "🎨",
+      color: "from-pink-500 to-rose-500",
+      gradient: "from-pink-500/20 to-rose-500/20",
+      border: "rgba(236,72,153,0.2)",
+      milestones: [
+        "Design thinking & UX fundamentals",
+        "Learn Figma",
+        "Conduct user research & usability tests",
+        "Build a UX case study portfolio",
+        "Product management basics",
+        "Apply for internships",
+      ],
+    },
+  ];
+
+  for (const career of careersData) {
+    await prisma.career.create({
+      data: career,
+    });
+  }
 }
 
 async function seedQuizTechCareerMatcher() {

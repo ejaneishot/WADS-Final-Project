@@ -1,6 +1,19 @@
+//src/app/dashboard/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
+const TRACK_LABELS: Record<string, string> = {
+  SWE: "Software Engineering",
+  FE: "Frontend Engineering",
+  BE: "Backend Engineering",
+  AI: "Artificial Intelligence",
+  SEC: "Cybersecurity",
+  GAME: "Game Development",
+  QA: "Quality Assurance",
+  PM: "Product Management",
+};
 
 type Profile = {
   name: string | null;
@@ -11,11 +24,19 @@ type Profile = {
   skills: Array<{ name: string; level: number }>;
 };
 
+type AssessmentResult = {
+  primary: string;
+  secondary: string | null;
+  scores: Record<string, number>;
+};
+
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [assessmentResult, setAssessmentResult] =
+    useState<AssessmentResult | null>(null);
+
   const [err, setErr] = useState<string | null>(null);
   const [matchLoading, setMatchLoading] = useState(false);
-  const [recommendedTrack, setRecommendedTrack] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
@@ -28,13 +49,15 @@ export default function DashboardPage() {
   const [interests, setInterests] = useState("");
   const [skillName, setSkillName] = useState("");
   const [skillLevel, setSkillLevel] = useState("3");
-  const [skills, setSkills] = useState<Array<{ name: string; level: number }>>([]);
+  const [skills, setSkills] = useState<Array<{ name: string; level: number }>>(
+    [],
+  );
 
   useEffect(() => {
-    setRecommendedTrack(localStorage.getItem("sc_assessment_result"));
     fetch("/api/profile")
       .then(async (r) => {
-        if (!r.ok) throw new Error((await r.json()).message ?? "Failed to load profile");
+        if (!r.ok)
+          throw new Error((await r.json()).message ?? "Failed to load profile");
         return r.json();
       })
       .then((data) => {
@@ -47,6 +70,15 @@ export default function DashboardPage() {
         setSkills(data.skills ?? []);
       })
       .catch((e) => setErr(e.message));
+
+    fetch("/api/assessment/result")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.ok && data.hasResult) {
+          setAssessmentResult(data.result);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const handleSave = async () => {
@@ -72,7 +104,6 @@ export default function DashboardPage() {
         const j = await res.json().catch(() => ({ message: "Save failed" }));
         setSaveMsg(j.message ?? "Save failed");
       } else {
-        // Re-fetch profile since PUT only returns { ok: true }
         const fresh = await fetch("/api/profile").then((r) => r.json());
         setProfile(fresh);
         setName(fresh.name ?? "");
@@ -93,7 +124,10 @@ export default function DashboardPage() {
 
   const addSkill = () => {
     if (!skillName.trim()) return;
-    setSkills([...skills, { name: skillName.trim(), level: parseInt(skillLevel) }]);
+    setSkills([
+      ...skills,
+      { name: skillName.trim(), level: parseInt(skillLevel) },
+    ]);
     setSkillName("");
     setSkillLevel("3");
   };
@@ -101,7 +135,6 @@ export default function DashboardPage() {
   const removeSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
-
 
   return (
     <div className="container-page relative z-10 py-12">
@@ -112,7 +145,10 @@ export default function DashboardPage() {
         <div>
           <p className="section-label">Overview</p>
           <h1 className="mt-2 text-3xl font-bold">Dashboard</h1>
-          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p
+            className="mt-1 text-sm"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Update your profile and generate AI career matches.
           </p>
         </div>
@@ -122,7 +158,9 @@ export default function DashboardPage() {
             const res = await fetch("/api/ai/career-match", { method: "POST" });
             setMatchLoading(false);
             if (!res.ok) {
-              const j = await res.json().catch(() => ({ message: "AI request failed" }));
+              const j = await res
+                .json()
+                .catch(() => ({ message: "AI request failed" }));
               alert(j.message ?? "AI request failed");
               return;
             }
@@ -132,7 +170,15 @@ export default function DashboardPage() {
           disabled={matchLoading}
           className="btn-accent flex items-center gap-2"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <circle cx="12" cy="12" r="3" />
             <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.36-7.36l-1.41 1.41M7.05 16.95l-1.41 1.41m12.72 0l-1.41-1.41M7.05 7.05L5.64 5.64" />
           </svg>
@@ -148,8 +194,15 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Your Profile</h2>
             <button
-              onClick={() => { setEditing(!editing); setSaveMsg(null); }}
-              className={editing ? "btn-ghost !py-1.5 !px-3 !text-xs" : "badge cursor-pointer hover:opacity-80"}
+              onClick={() => {
+                setEditing(!editing);
+                setSaveMsg(null);
+              }}
+              className={
+                editing
+                  ? "btn-ghost !py-1.5 !px-3 !text-xs"
+                  : "badge cursor-pointer hover:opacity-80"
+              }
             >
               {editing ? "Cancel" : "Edit Profile"}
             </button>
@@ -157,23 +210,59 @@ export default function DashboardPage() {
 
           {!editing ? (
             /* View mode */
-            <div className="space-y-3">
-              {[
-                { label: "Name", value: profile?.name },
-                { label: "Major", value: profile?.major },
-                { label: "Semester", value: profile?.semester },
-                { label: "GPA Range", value: profile?.gpaRange },
-                { label: "Interests", value: profile?.interests?.length ? profile.interests.join(", ") : null },
-              ].map((field) => (
-                <div key={field.label} className="flex items-center justify-between rounded-lg p-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-                  <span className="text-xs mono" style={{ color: "var(--text-muted)" }}>{field.label}</span>
-                  <span className="text-sm">{field.value ?? <span style={{ color: "var(--text-muted)" }}>Not set</span>}</span>
-                </div>
-              ))}
+            <div className="space-y-4">
+              <div className="space-y-3">
+                {[
+                  { label: "Name", value: profile?.name },
+                  { label: "Major", value: profile?.major },
+                  { label: "Semester", value: profile?.semester },
+                  { label: "GPA Range", value: profile?.gpaRange },
+                  {
+                    label: "Interests",
+                    value: profile?.interests?.length
+                      ? profile.interests.join(", ")
+                      : null,
+                  },
+                ].map((field) => (
+                  <div
+                    key={field.label}
+                    className="flex items-center justify-between rounded-lg p-3"
+                    style={{
+                      background: "var(--surface)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
+                    <span
+                      className="text-xs mono"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {field.label}
+                    </span>
+                    <span className="text-sm">
+                      {field.value ?? (
+                        <span style={{ color: "var(--text-muted)" }}>
+                          Not set
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
 
               {/* Skills */}
-              <div className="rounded-lg p-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-                <span className="text-xs mono" style={{ color: "var(--text-muted)" }}>Skills</span>
+              <div
+                className="rounded-lg p-3"
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <span
+                  className="text-xs mono"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Skills
+                </span>
                 {profile?.skills?.length ? (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {profile.skills.map((s, i) => (
@@ -183,17 +272,93 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>No skills added</p>
+                  <p
+                    className="mt-1 text-sm"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    No skills added
+                  </p>
                 )}
               </div>
 
-              {/* Recommended Track */}
-              {recommendedTrack && (
-                <div className="rounded-lg p-3 flex items-center justify-between" style={{ background: "var(--surface)", border: "1px solid var(--border-accent)" }}>
-                  <span className="text-xs mono" style={{ color: "var(--text-muted)" }}>Recommended Track</span>
-                  <span className="text-sm font-semibold" style={{ color: "var(--accent)" }}>
-                    {recommendedTrack}
-                  </span>
+              {/* Dynamic Assessment Result / CTA */}
+              {assessmentResult ? (
+                <div
+                  className="rounded-xl p-4 flex flex-col gap-2"
+                  style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--border-accent)",
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="text-xs mono"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Career Match
+                    </span>
+                    <span
+                      className="text-sm font-semibold"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {TRACK_LABELS[assessmentResult.primary] ||
+                        assessmentResult.primary}
+                    </span>
+                  </div>
+
+                  {assessmentResult.secondary && (
+                    <div
+                      className="flex items-center justify-between mt-1 pt-3 border-t"
+                      style={{ borderColor: "var(--border)" }}
+                    >
+                      <span
+                        className="text-xs"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        Secondary Match
+                      </span>
+                      <span
+                        className="text-xs font-medium"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
+                        {TRACK_LABELS[assessmentResult.secondary] ||
+                          assessmentResult.secondary}
+                      </span>
+                    </div>
+                  )}
+                  <Link
+                    href="/assessment"
+                    className="text-xs text-center mt-2 opacity-60 hover:opacity-100 transition-opacity"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    Retake Assessment
+                  </Link>
+                </div>
+              ) : (
+                <div
+                  className="rounded-xl p-6 mt-2 text-center"
+                  style={{
+                    background: "var(--surface-overlay)",
+                    border: "1px dashed var(--border)",
+                  }}
+                >
+                  <div className="mb-2 text-2xl">🎯</div>
+                  <h3 className="text-sm font-semibold mb-1 text-white">
+                    No Assessment Result
+                  </h3>
+                  <p
+                    className="text-xs mb-4 leading-relaxed"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    Discover which tech career track aligns perfectly with your
+                    natural problem-solving style.
+                  </p>
+                  <Link
+                    href="/assessment"
+                    className="btn-accent inline-block w-full !py-2.5 !text-sm"
+                  >
+                    Take Assessment Now
+                  </Link>
                 </div>
               )}
             </div>
@@ -201,19 +366,63 @@ export default function DashboardPage() {
             /* Edit mode */
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>Major</label>
-                <input className="input-dark" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. John Doe" />
-                <input className="input-dark" value={major} onChange={(e) => setMajor(e.target.value)} placeholder="e.g. Computer Science" />
+                <label
+                  className="block text-xs font-medium mb-1.5"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Name
+                </label>
+                <input
+                  className="input-dark mb-3"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. John Doe"
+                />
+
+                <label
+                  className="block text-xs font-medium mb-1.5"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Major
+                </label>
+                <input
+                  className="input-dark"
+                  value={major}
+                  onChange={(e) => setMajor(e.target.value)}
+                  placeholder="e.g. Computer Science"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>Semester</label>
-                  <input className="input-dark" type="number" min="1" max="14" value={semester} onChange={(e) => setSemester(e.target.value)} placeholder="e.g. 4" />
+                  <label
+                    className="block text-xs font-medium mb-1.5"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    Semester
+                  </label>
+                  <input
+                    className="input-dark"
+                    type="number"
+                    min="1"
+                    max="14"
+                    value={semester}
+                    onChange={(e) => setSemester(e.target.value)}
+                    placeholder="e.g. 4"
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>GPA Range</label>
-                  <select className="input-dark" value={gpaRange} onChange={(e) => setGpaRange(e.target.value)}>
+                  <label
+                    className="block text-xs font-medium mb-1.5"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    GPA Range
+                  </label>
+                  <select
+                    className="input-dark"
+                    value={gpaRange}
+                    onChange={(e) => setGpaRange(e.target.value)}
+                  >
                     <option value="">Select...</option>
                     <option value="< 2.5">{"< 2.5"}</option>
                     <option value="2.5 - 3.0">2.5 - 3.0</option>
@@ -224,25 +433,68 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>Interests (comma-separated)</label>
-                <input className="input-dark" value={interests} onChange={(e) => setInterests(e.target.value)} placeholder="e.g. AI, Web Dev, Data Science" />
+                <label
+                  className="block text-xs font-medium mb-1.5"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Interests (comma-separated)
+                </label>
+                <input
+                  className="input-dark"
+                  value={interests}
+                  onChange={(e) => setInterests(e.target.value)}
+                  placeholder="e.g. AI, Web Dev, Data Science"
+                />
               </div>
 
               {/* Skills editor */}
               <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>Skills</label>
+                <label
+                  className="block text-xs font-medium mb-1.5"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Skills
+                </label>
                 <div className="flex gap-2 mb-2">
-                  <input className="input-dark flex-1" value={skillName} onChange={(e) => setSkillName(e.target.value)} placeholder="Skill name" onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addSkill())} />
-                  <select className="input-dark !w-20" value={skillLevel} onChange={(e) => setSkillLevel(e.target.value)}>
-                    {[1,2,3,4,5].map((n) => <option key={n} value={n}>{n}/5</option>)}
+                  <input
+                    className="input-dark flex-1"
+                    value={skillName}
+                    onChange={(e) => setSkillName(e.target.value)}
+                    placeholder="Skill name"
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && (e.preventDefault(), addSkill())
+                    }
+                  />
+                  <select
+                    className="input-dark !w-20"
+                    value={skillLevel}
+                    onChange={(e) => setSkillLevel(e.target.value)}
+                  >
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <option key={n} value={n}>
+                        {n}/5
+                      </option>
+                    ))}
                   </select>
-                  <button onClick={addSkill} className="btn-ghost !py-1.5 !px-3 !text-xs">Add</button>
+                  <button
+                    onClick={addSkill}
+                    className="btn-ghost !py-1.5 !px-3 !text-xs"
+                  >
+                    Add
+                  </button>
                 </div>
                 {skills.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {skills.map((s, i) => (
-                      <span key={i} className="badge group cursor-pointer" onClick={() => removeSkill(i)}>
-                        {s.name} · {s.level}/5 <span className="ml-1 opacity-50 group-hover:opacity-100">✕</span>
+                      <span
+                        key={i}
+                        className="badge group cursor-pointer"
+                        onClick={() => removeSkill(i)}
+                      >
+                        {s.name} · {s.level}/5{" "}
+                        <span className="ml-1 opacity-50 group-hover:opacity-100">
+                          ✕
+                        </span>
                       </span>
                     ))}
                   </div>
@@ -250,18 +502,25 @@ export default function DashboardPage() {
               </div>
 
               {saveMsg && (
-                <div className={saveMsg === "Profile saved!" ? "success-box" : "error-box"}>
+                <div
+                  className={
+                    saveMsg === "Profile saved!" ? "success-box" : "error-box"
+                  }
+                >
                   {saveMsg}
                 </div>
               )}
 
-              <button onClick={handleSave} disabled={saving} className="btn-accent w-full !rounded-xl !py-2.5">
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="btn-accent w-full !rounded-xl !py-2.5"
+              >
                 {saving ? "Saving..." : "Save Profile"}
               </button>
             </div>
           )}
         </div>
-
 
         {/* Next steps card */}
         <div className="card-dark glow-ring">
@@ -271,14 +530,37 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-3">
             {[
-              { num: "01", text: "Add a Profile edit form (major, semester, GPA range, interests, skills)." },
-              { num: "02", text: "Build an assessment quiz (store answers, compute interest clusters)." },
-              { num: "03", text: "Replace AI stub with real provider + fallback + test cases." },
-              { num: "04", text: "Add skill-gap chart + learning plan generator." },
+              {
+                num: "01",
+                text: "Add a Profile edit form (major, semester, GPA range, interests, skills).",
+              },
+              {
+                num: "02",
+                text: "Build an assessment quiz (store answers, compute interest clusters).",
+              },
+              {
+                num: "03",
+                text: "Replace AI stub with real provider + fallback + test cases.",
+              },
+              {
+                num: "04",
+                text: "Add skill-gap chart + learning plan generator.",
+              },
             ].map((step) => (
-              <div key={step.num} className="flex gap-3 rounded-xl p-3 transition-colors hover:bg-white/[0.02]" style={{ border: "1px solid var(--border)" }}>
-                <span className="mono text-xs font-bold text-gradient mt-0.5">{step.num}</span>
-                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{step.text}</p>
+              <div
+                key={step.num}
+                className="flex gap-3 rounded-xl p-3 transition-colors hover:bg-white/[0.02]"
+                style={{ border: "1px solid var(--border)" }}
+              >
+                <span className="mono text-xs font-bold text-gradient mt-0.5">
+                  {step.num}
+                </span>
+                <p
+                  className="text-sm"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {step.text}
+                </p>
               </div>
             ))}
           </div>
