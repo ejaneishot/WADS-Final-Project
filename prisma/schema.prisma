@@ -24,6 +24,8 @@ model User {
 
   assessmentAttempts AssessmentAttempt[]
   careerProgress     UserCareerProgress[]
+
+  roadmaps CareerRoadmap[]
 }
 
 model Profile {
@@ -79,6 +81,27 @@ model Career {
   updatedAt   DateTime @updatedAt
 
   userProgress UserCareerProgress[]
+}
+
+model CareerRoadmap {
+  id                String   @id @default(cuid())
+  userId            String
+  roadmapTitle      String
+  summary           String   @db.Text
+  estimatedTimeline String
+  
+  // Store the skills array as a JSON blob
+  skillsToLearn     Json     
+  
+  // Store the user's custom notes that generated this
+  userNotes         String?  @db.Text
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // New model for the checklist
