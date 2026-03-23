@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     // 3. Setup Gemini
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     const model = genAI.getGenerativeModel({
-      model: "gemini-3-flash-preview", // Flash is highly optimized for document processing
+      model: "gemini-3.1-pro-preview", // Flash is highly optimized for document processing
       generationConfig: { responseMimeType: "application/json" },
     });
 
