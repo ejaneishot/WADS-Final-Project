@@ -23,9 +23,8 @@ model User {
   profile Profile?
 
   assessmentAttempts AssessmentAttempt[]
-  careerProgress     UserCareerProgress[]
 
-  roadmaps CareerRoadmap[]
+  roadmaps Roadmap[]
 }
 
 model Profile {
@@ -79,46 +78,36 @@ model Career {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  userProgress UserCareerProgress[]
 }
 
-model CareerRoadmap {
-  id                String   @id @default(cuid())
-  userId            String
-  roadmapTitle      String
-  summary           String   @db.Text
-  estimatedTimeline String
-  
-  // Store the skills array as a JSON blob
-  skillsToLearn     Json     
-  
-  // Store the user's custom notes that generated this
-  userNotes         String?  @db.Text
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
+model Roadmap {
+  id        String        @id @default(cuid())
+  title     String
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  nodes     RoadmapNode[] 
+  createdAt DateTime      @default(now())
 }
 
-// New model for the checklist
-model UserCareerProgress {
-  id                  String   @id @default(cuid())
-  userId              String
-  careerId            String
-  completedMilestones Int[]    // Stores indices, e.g., [0, 2, 3]
+model RoadmapNode {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  roadmapId   String
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id])
 
-  updatedAt DateTime @updatedAt
+  parents     RoadmapEdge[] @relation("ChildToParent")
+  children    RoadmapEdge[] @relation("ParentToChild")
+}
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  career Career @relation(fields: [careerId], references: [id], onDelete: Cascade)
+model RoadmapEdge {
+  parentId String
+  childId  String
 
-  @@unique([userId, careerId])
-  @@index([userId])
-  @@index([careerId])
+  parent   RoadmapNode @relation("ParentToChild", fields: [parentId], references: [id])
+  child    RoadmapNode @relation("ChildToParent", fields: [childId], references: [id])
+
+  @@id([parentId, childId])
 }
 
 // Core quiz content only: quizzes -> sections -> questions -> options

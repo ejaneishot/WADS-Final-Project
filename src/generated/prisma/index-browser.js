@@ -168,24 +168,23 @@ exports.Prisma.CareerScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.CareerRoadmapScalarFieldEnum = {
+exports.Prisma.RoadmapScalarFieldEnum = {
   id: 'id',
+  title: 'title',
   userId: 'userId',
-  roadmapTitle: 'roadmapTitle',
-  summary: 'summary',
-  estimatedTimeline: 'estimatedTimeline',
-  skillsToLearn: 'skillsToLearn',
-  userNotes: 'userNotes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  createdAt: 'createdAt'
 };
 
-exports.Prisma.UserCareerProgressScalarFieldEnum = {
+exports.Prisma.RoadmapNodeScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  careerId: 'careerId',
-  completedMilestones: 'completedMilestones',
-  updatedAt: 'updatedAt'
+  title: 'title',
+  description: 'description',
+  roadmapId: 'roadmapId'
+};
+
+exports.Prisma.RoadmapEdgeScalarFieldEnum = {
+  parentId: 'parentId',
+  childId: 'childId'
 };
 
 exports.Prisma.QuizScalarFieldEnum = {
@@ -255,12 +254,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -294,8 +293,9 @@ exports.Prisma.ModelName = {
   Skill: 'Skill',
   UserSkill: 'UserSkill',
   Career: 'Career',
-  CareerRoadmap: 'CareerRoadmap',
-  UserCareerProgress: 'UserCareerProgress',
+  Roadmap: 'Roadmap',
+  RoadmapNode: 'RoadmapNode',
+  RoadmapEdge: 'RoadmapEdge',
   Quiz: 'Quiz',
   QuizSection: 'QuizSection',
   QuizQuestion: 'QuizQuestion',

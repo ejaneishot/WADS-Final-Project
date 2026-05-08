@@ -39,15 +39,20 @@ export type UserSkill = $Result.DefaultSelection<Prisma.$UserSkillPayload>
  */
 export type Career = $Result.DefaultSelection<Prisma.$CareerPayload>
 /**
- * Model CareerRoadmap
+ * Model Roadmap
  * 
  */
-export type CareerRoadmap = $Result.DefaultSelection<Prisma.$CareerRoadmapPayload>
+export type Roadmap = $Result.DefaultSelection<Prisma.$RoadmapPayload>
 /**
- * Model UserCareerProgress
+ * Model RoadmapNode
  * 
  */
-export type UserCareerProgress = $Result.DefaultSelection<Prisma.$UserCareerProgressPayload>
+export type RoadmapNode = $Result.DefaultSelection<Prisma.$RoadmapNodePayload>
+/**
+ * Model RoadmapEdge
+ * 
+ */
+export type RoadmapEdge = $Result.DefaultSelection<Prisma.$RoadmapEdgePayload>
 /**
  * Model Quiz
  * 
@@ -279,24 +284,34 @@ export class PrismaClient<
   get career(): Prisma.CareerDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.careerRoadmap`: Exposes CRUD operations for the **CareerRoadmap** model.
+   * `prisma.roadmap`: Exposes CRUD operations for the **Roadmap** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more CareerRoadmaps
-    * const careerRoadmaps = await prisma.careerRoadmap.findMany()
+    * // Fetch zero or more Roadmaps
+    * const roadmaps = await prisma.roadmap.findMany()
     * ```
     */
-  get careerRoadmap(): Prisma.CareerRoadmapDelegate<ExtArgs, ClientOptions>;
+  get roadmap(): Prisma.RoadmapDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.userCareerProgress`: Exposes CRUD operations for the **UserCareerProgress** model.
+   * `prisma.roadmapNode`: Exposes CRUD operations for the **RoadmapNode** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more UserCareerProgresses
-    * const userCareerProgresses = await prisma.userCareerProgress.findMany()
+    * // Fetch zero or more RoadmapNodes
+    * const roadmapNodes = await prisma.roadmapNode.findMany()
     * ```
     */
-  get userCareerProgress(): Prisma.UserCareerProgressDelegate<ExtArgs, ClientOptions>;
+  get roadmapNode(): Prisma.RoadmapNodeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roadmapEdge`: Exposes CRUD operations for the **RoadmapEdge** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoadmapEdges
+    * const roadmapEdges = await prisma.roadmapEdge.findMany()
+    * ```
+    */
+  get roadmapEdge(): Prisma.RoadmapEdgeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.quiz`: Exposes CRUD operations for the **Quiz** model.
@@ -796,8 +811,9 @@ export namespace Prisma {
     Skill: 'Skill',
     UserSkill: 'UserSkill',
     Career: 'Career',
-    CareerRoadmap: 'CareerRoadmap',
-    UserCareerProgress: 'UserCareerProgress',
+    Roadmap: 'Roadmap',
+    RoadmapNode: 'RoadmapNode',
+    RoadmapEdge: 'RoadmapEdge',
     Quiz: 'Quiz',
     QuizSection: 'QuizSection',
     QuizQuestion: 'QuizQuestion',
@@ -819,7 +835,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "profile" | "skill" | "userSkill" | "career" | "careerRoadmap" | "userCareerProgress" | "quiz" | "quizSection" | "quizQuestion" | "quizOption" | "assessmentAttempt" | "assessmentAnswer"
+      modelProps: "user" | "profile" | "skill" | "userSkill" | "career" | "roadmap" | "roadmapNode" | "roadmapEdge" | "quiz" | "quizSection" | "quizQuestion" | "quizOption" | "assessmentAttempt" | "assessmentAnswer"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1193,151 +1209,225 @@ export namespace Prisma {
           }
         }
       }
-      CareerRoadmap: {
-        payload: Prisma.$CareerRoadmapPayload<ExtArgs>
-        fields: Prisma.CareerRoadmapFieldRefs
+      Roadmap: {
+        payload: Prisma.$RoadmapPayload<ExtArgs>
+        fields: Prisma.RoadmapFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.CareerRoadmapFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload> | null
+            args: Prisma.RoadmapFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.CareerRoadmapFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           findFirst: {
-            args: Prisma.CareerRoadmapFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload> | null
+            args: Prisma.RoadmapFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.CareerRoadmapFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           findMany: {
-            args: Prisma.CareerRoadmapFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>[]
+            args: Prisma.RoadmapFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>[]
           }
           create: {
-            args: Prisma.CareerRoadmapCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           createMany: {
-            args: Prisma.CareerRoadmapCreateManyArgs<ExtArgs>
+            args: Prisma.RoadmapCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.CareerRoadmapCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>[]
+            args: Prisma.RoadmapCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>[]
           }
           delete: {
-            args: Prisma.CareerRoadmapDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           update: {
-            args: Prisma.CareerRoadmapUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           deleteMany: {
-            args: Prisma.CareerRoadmapDeleteManyArgs<ExtArgs>
+            args: Prisma.RoadmapDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.CareerRoadmapUpdateManyArgs<ExtArgs>
+            args: Prisma.RoadmapUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.CareerRoadmapUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>[]
+            args: Prisma.RoadmapUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>[]
           }
           upsert: {
-            args: Prisma.CareerRoadmapUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CareerRoadmapPayload>
+            args: Prisma.RoadmapUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapPayload>
           }
           aggregate: {
-            args: Prisma.CareerRoadmapAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCareerRoadmap>
+            args: Prisma.RoadmapAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoadmap>
           }
           groupBy: {
-            args: Prisma.CareerRoadmapGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CareerRoadmapGroupByOutputType>[]
+            args: Prisma.RoadmapGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapGroupByOutputType>[]
           }
           count: {
-            args: Prisma.CareerRoadmapCountArgs<ExtArgs>
-            result: $Utils.Optional<CareerRoadmapCountAggregateOutputType> | number
+            args: Prisma.RoadmapCountArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapCountAggregateOutputType> | number
           }
         }
       }
-      UserCareerProgress: {
-        payload: Prisma.$UserCareerProgressPayload<ExtArgs>
-        fields: Prisma.UserCareerProgressFieldRefs
+      RoadmapNode: {
+        payload: Prisma.$RoadmapNodePayload<ExtArgs>
+        fields: Prisma.RoadmapNodeFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.UserCareerProgressFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload> | null
+            args: Prisma.RoadmapNodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.UserCareerProgressFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           findFirst: {
-            args: Prisma.UserCareerProgressFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload> | null
+            args: Prisma.RoadmapNodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.UserCareerProgressFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           findMany: {
-            args: Prisma.UserCareerProgressFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+            args: Prisma.RoadmapNodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>[]
           }
           create: {
-            args: Prisma.UserCareerProgressCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           createMany: {
-            args: Prisma.UserCareerProgressCreateManyArgs<ExtArgs>
+            args: Prisma.RoadmapNodeCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.UserCareerProgressCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+            args: Prisma.RoadmapNodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>[]
           }
           delete: {
-            args: Prisma.UserCareerProgressDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           update: {
-            args: Prisma.UserCareerProgressUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           deleteMany: {
-            args: Prisma.UserCareerProgressDeleteManyArgs<ExtArgs>
+            args: Prisma.RoadmapNodeDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.UserCareerProgressUpdateManyArgs<ExtArgs>
+            args: Prisma.RoadmapNodeUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.UserCareerProgressUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+            args: Prisma.RoadmapNodeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>[]
           }
           upsert: {
-            args: Prisma.UserCareerProgressUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+            args: Prisma.RoadmapNodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapNodePayload>
           }
           aggregate: {
-            args: Prisma.UserCareerProgressAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUserCareerProgress>
+            args: Prisma.RoadmapNodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoadmapNode>
           }
           groupBy: {
-            args: Prisma.UserCareerProgressGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserCareerProgressGroupByOutputType>[]
+            args: Prisma.RoadmapNodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapNodeGroupByOutputType>[]
           }
           count: {
-            args: Prisma.UserCareerProgressCountArgs<ExtArgs>
-            result: $Utils.Optional<UserCareerProgressCountAggregateOutputType> | number
+            args: Prisma.RoadmapNodeCountArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapNodeCountAggregateOutputType> | number
+          }
+        }
+      }
+      RoadmapEdge: {
+        payload: Prisma.$RoadmapEdgePayload<ExtArgs>
+        fields: Prisma.RoadmapEdgeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoadmapEdgeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoadmapEdgeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          findFirst: {
+            args: Prisma.RoadmapEdgeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoadmapEdgeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          findMany: {
+            args: Prisma.RoadmapEdgeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>[]
+          }
+          create: {
+            args: Prisma.RoadmapEdgeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          createMany: {
+            args: Prisma.RoadmapEdgeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoadmapEdgeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>[]
+          }
+          delete: {
+            args: Prisma.RoadmapEdgeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          update: {
+            args: Prisma.RoadmapEdgeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          deleteMany: {
+            args: Prisma.RoadmapEdgeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoadmapEdgeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoadmapEdgeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>[]
+          }
+          upsert: {
+            args: Prisma.RoadmapEdgeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoadmapEdgePayload>
+          }
+          aggregate: {
+            args: Prisma.RoadmapEdgeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoadmapEdge>
+          }
+          groupBy: {
+            args: Prisma.RoadmapEdgeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapEdgeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoadmapEdgeCountArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapEdgeCountAggregateOutputType> | number
           }
         }
       }
@@ -1898,8 +1988,9 @@ export namespace Prisma {
     skill?: SkillOmit
     userSkill?: UserSkillOmit
     career?: CareerOmit
-    careerRoadmap?: CareerRoadmapOmit
-    userCareerProgress?: UserCareerProgressOmit
+    roadmap?: RoadmapOmit
+    roadmapNode?: RoadmapNodeOmit
+    roadmapEdge?: RoadmapEdgeOmit
     quiz?: QuizOmit
     quizSection?: QuizSectionOmit
     quizQuestion?: QuizQuestionOmit
@@ -1987,13 +2078,11 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     assessmentAttempts: number
-    careerProgress: number
     roadmaps: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assessmentAttempts?: boolean | UserCountOutputTypeCountAssessmentAttemptsArgs
-    careerProgress?: boolean | UserCountOutputTypeCountCareerProgressArgs
     roadmaps?: boolean | UserCountOutputTypeCountRoadmapsArgs
   }
 
@@ -2018,15 +2107,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCareerProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserCareerProgressWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountRoadmapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
   }
 
 
@@ -2093,33 +2175,73 @@ export namespace Prisma {
 
 
   /**
-   * Count Type CareerCountOutputType
+   * Count Type RoadmapCountOutputType
    */
 
-  export type CareerCountOutputType = {
-    userProgress: number
+  export type RoadmapCountOutputType = {
+    nodes: number
   }
 
-  export type CareerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userProgress?: boolean | CareerCountOutputTypeCountUserProgressArgs
+  export type RoadmapCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    nodes?: boolean | RoadmapCountOutputTypeCountNodesArgs
   }
 
   // Custom InputTypes
   /**
-   * CareerCountOutputType without action
+   * RoadmapCountOutputType without action
    */
-  export type CareerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerCountOutputType
+     * Select specific fields to fetch from the RoadmapCountOutputType
      */
-    select?: CareerCountOutputTypeSelect<ExtArgs> | null
+    select?: RoadmapCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * CareerCountOutputType without action
+   * RoadmapCountOutputType without action
    */
-  export type CareerCountOutputTypeCountUserProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserCareerProgressWhereInput
+  export type RoadmapCountOutputTypeCountNodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapNodeWhereInput
+  }
+
+
+  /**
+   * Count Type RoadmapNodeCountOutputType
+   */
+
+  export type RoadmapNodeCountOutputType = {
+    parents: number
+    children: number
+  }
+
+  export type RoadmapNodeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parents?: boolean | RoadmapNodeCountOutputTypeCountParentsArgs
+    children?: boolean | RoadmapNodeCountOutputTypeCountChildrenArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoadmapNodeCountOutputType without action
+   */
+  export type RoadmapNodeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapNodeCountOutputType
+     */
+    select?: RoadmapNodeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoadmapNodeCountOutputType without action
+   */
+  export type RoadmapNodeCountOutputTypeCountParentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapEdgeWhereInput
+  }
+
+  /**
+   * RoadmapNodeCountOutputType without action
+   */
+  export type RoadmapNodeCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapEdgeWhereInput
   }
 
 
@@ -2475,7 +2597,6 @@ export namespace Prisma {
     createdAt?: boolean
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
-    careerProgress?: boolean | User$careerProgressArgs<ExtArgs>
     roadmaps?: boolean | User$roadmapsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2508,7 +2629,6 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
-    careerProgress?: boolean | User$careerProgressArgs<ExtArgs>
     roadmaps?: boolean | User$roadmapsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2520,8 +2640,7 @@ export namespace Prisma {
     objects: {
       profile: Prisma.$ProfilePayload<ExtArgs> | null
       assessmentAttempts: Prisma.$AssessmentAttemptPayload<ExtArgs>[]
-      careerProgress: Prisma.$UserCareerProgressPayload<ExtArgs>[]
-      roadmaps: Prisma.$CareerRoadmapPayload<ExtArgs>[]
+      roadmaps: Prisma.$RoadmapPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2925,8 +3044,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     assessmentAttempts<T extends User$assessmentAttemptsArgs<ExtArgs> = {}>(args?: Subset<T, User$assessmentAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    careerProgress<T extends User$careerProgressArgs<ExtArgs> = {}>(args?: Subset<T, User$careerProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    roadmaps<T extends User$roadmapsArgs<ExtArgs> = {}>(args?: Subset<T, User$roadmapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    roadmaps<T extends User$roadmapsArgs<ExtArgs> = {}>(args?: Subset<T, User$roadmapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3397,51 +3515,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.careerProgress
-   */
-  export type User$careerProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserCareerProgress
-     */
-    select?: UserCareerProgressSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserCareerProgress
-     */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserCareerProgressInclude<ExtArgs> | null
-    where?: UserCareerProgressWhereInput
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
-    cursor?: UserCareerProgressWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
-  }
-
-  /**
    * User.roadmaps
    */
   export type User$roadmapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
-    where?: CareerRoadmapWhereInput
-    orderBy?: CareerRoadmapOrderByWithRelationInput | CareerRoadmapOrderByWithRelationInput[]
-    cursor?: CareerRoadmapWhereUniqueInput
+    include?: RoadmapInclude<ExtArgs> | null
+    where?: RoadmapWhereInput
+    orderBy?: RoadmapOrderByWithRelationInput | RoadmapOrderByWithRelationInput[]
+    cursor?: RoadmapWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CareerRoadmapScalarFieldEnum | CareerRoadmapScalarFieldEnum[]
+    distinct?: RoadmapScalarFieldEnum | RoadmapScalarFieldEnum[]
   }
 
   /**
@@ -6995,8 +7089,6 @@ export namespace Prisma {
     milestones?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userProgress?: boolean | Career$userProgressArgs<ExtArgs>
-    _count?: boolean | CareerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["career"]>
 
   export type CareerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7045,18 +7137,10 @@ export namespace Prisma {
   }
 
   export type CareerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "industry" | "description" | "icon" | "color" | "gradient" | "border" | "milestones" | "createdAt" | "updatedAt", ExtArgs["result"]["career"]>
-  export type CareerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userProgress?: boolean | Career$userProgressArgs<ExtArgs>
-    _count?: boolean | CareerCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type CareerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CareerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $CareerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Career"
-    objects: {
-      userProgress: Prisma.$UserCareerProgressPayload<ExtArgs>[]
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       slug: string
@@ -7464,7 +7548,6 @@ export namespace Prisma {
    */
   export interface Prisma__CareerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    userProgress<T extends Career$userProgressArgs<ExtArgs> = {}>(args?: Subset<T, Career$userProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7523,10 +7606,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * Filter, which Career to fetch.
      */
     where: CareerWhereUniqueInput
@@ -7545,10 +7624,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * Filter, which Career to fetch.
      */
     where: CareerWhereUniqueInput
@@ -7566,10 +7641,6 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
     /**
      * Filter, which Career to fetch.
      */
@@ -7619,10 +7690,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * Filter, which Career to fetch.
      */
     where?: CareerWhereInput
@@ -7670,10 +7737,6 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
     /**
      * Filter, which Careers to fetch.
      */
@@ -7723,10 +7786,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * The data needed to create a Career.
      */
     data: XOR<CareerCreateInput, CareerUncheckedCreateInput>
@@ -7774,10 +7833,6 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
     /**
      * The data needed to update a Career.
      */
@@ -7845,10 +7900,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * The filter to search for the Career to update in case it exists.
      */
     where: CareerWhereUniqueInput
@@ -7875,10 +7926,6 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
-    /**
      * Filter which Career to delete.
      */
     where: CareerWhereUniqueInput
@@ -7899,30 +7946,6 @@ export namespace Prisma {
   }
 
   /**
-   * Career.userProgress
-   */
-  export type Career$userProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserCareerProgress
-     */
-    select?: UserCareerProgressSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserCareerProgress
-     */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserCareerProgressInclude<ExtArgs> | null
-    where?: UserCareerProgressWhereInput
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
-    cursor?: UserCareerProgressWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
-  }
-
-  /**
    * Career without action
    */
   export type CareerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7934,402 +7957,347 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CareerInclude<ExtArgs> | null
   }
 
 
   /**
-   * Model CareerRoadmap
+   * Model Roadmap
    */
 
-  export type AggregateCareerRoadmap = {
-    _count: CareerRoadmapCountAggregateOutputType | null
-    _min: CareerRoadmapMinAggregateOutputType | null
-    _max: CareerRoadmapMaxAggregateOutputType | null
+  export type AggregateRoadmap = {
+    _count: RoadmapCountAggregateOutputType | null
+    _min: RoadmapMinAggregateOutputType | null
+    _max: RoadmapMaxAggregateOutputType | null
   }
 
-  export type CareerRoadmapMinAggregateOutputType = {
+  export type RoadmapMinAggregateOutputType = {
     id: string | null
+    title: string | null
     userId: string | null
-    roadmapTitle: string | null
-    summary: string | null
-    estimatedTimeline: string | null
-    userNotes: string | null
     createdAt: Date | null
-    updatedAt: Date | null
   }
 
-  export type CareerRoadmapMaxAggregateOutputType = {
+  export type RoadmapMaxAggregateOutputType = {
     id: string | null
+    title: string | null
     userId: string | null
-    roadmapTitle: string | null
-    summary: string | null
-    estimatedTimeline: string | null
-    userNotes: string | null
     createdAt: Date | null
-    updatedAt: Date | null
   }
 
-  export type CareerRoadmapCountAggregateOutputType = {
+  export type RoadmapCountAggregateOutputType = {
     id: number
+    title: number
     userId: number
-    roadmapTitle: number
-    summary: number
-    estimatedTimeline: number
-    skillsToLearn: number
-    userNotes: number
     createdAt: number
-    updatedAt: number
     _all: number
   }
 
 
-  export type CareerRoadmapMinAggregateInputType = {
+  export type RoadmapMinAggregateInputType = {
     id?: true
+    title?: true
     userId?: true
-    roadmapTitle?: true
-    summary?: true
-    estimatedTimeline?: true
-    userNotes?: true
     createdAt?: true
-    updatedAt?: true
   }
 
-  export type CareerRoadmapMaxAggregateInputType = {
+  export type RoadmapMaxAggregateInputType = {
     id?: true
+    title?: true
     userId?: true
-    roadmapTitle?: true
-    summary?: true
-    estimatedTimeline?: true
-    userNotes?: true
     createdAt?: true
-    updatedAt?: true
   }
 
-  export type CareerRoadmapCountAggregateInputType = {
+  export type RoadmapCountAggregateInputType = {
     id?: true
+    title?: true
     userId?: true
-    roadmapTitle?: true
-    summary?: true
-    estimatedTimeline?: true
-    skillsToLearn?: true
-    userNotes?: true
     createdAt?: true
-    updatedAt?: true
     _all?: true
   }
 
-  export type CareerRoadmapAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CareerRoadmap to aggregate.
+     * Filter which Roadmap to aggregate.
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CareerRoadmaps to fetch.
+     * Determine the order of Roadmaps to fetch.
      */
-    orderBy?: CareerRoadmapOrderByWithRelationInput | CareerRoadmapOrderByWithRelationInput[]
+    orderBy?: RoadmapOrderByWithRelationInput | RoadmapOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: CareerRoadmapWhereUniqueInput
+    cursor?: RoadmapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CareerRoadmaps from the position of the cursor.
+     * Take `±n` Roadmaps from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CareerRoadmaps.
+     * Skip the first `n` Roadmaps.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned CareerRoadmaps
+     * Count returned Roadmaps
     **/
-    _count?: true | CareerRoadmapCountAggregateInputType
+    _count?: true | RoadmapCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: CareerRoadmapMinAggregateInputType
+    _min?: RoadmapMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: CareerRoadmapMaxAggregateInputType
+    _max?: RoadmapMaxAggregateInputType
   }
 
-  export type GetCareerRoadmapAggregateType<T extends CareerRoadmapAggregateArgs> = {
-        [P in keyof T & keyof AggregateCareerRoadmap]: P extends '_count' | 'count'
+  export type GetRoadmapAggregateType<T extends RoadmapAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoadmap]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateCareerRoadmap[P]>
-      : GetScalarType<T[P], AggregateCareerRoadmap[P]>
+        : GetScalarType<T[P], AggregateRoadmap[P]>
+      : GetScalarType<T[P], AggregateRoadmap[P]>
   }
 
 
 
 
-  export type CareerRoadmapGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CareerRoadmapWhereInput
-    orderBy?: CareerRoadmapOrderByWithAggregationInput | CareerRoadmapOrderByWithAggregationInput[]
-    by: CareerRoadmapScalarFieldEnum[] | CareerRoadmapScalarFieldEnum
-    having?: CareerRoadmapScalarWhereWithAggregatesInput
+  export type RoadmapGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapWhereInput
+    orderBy?: RoadmapOrderByWithAggregationInput | RoadmapOrderByWithAggregationInput[]
+    by: RoadmapScalarFieldEnum[] | RoadmapScalarFieldEnum
+    having?: RoadmapScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: CareerRoadmapCountAggregateInputType | true
-    _min?: CareerRoadmapMinAggregateInputType
-    _max?: CareerRoadmapMaxAggregateInputType
+    _count?: RoadmapCountAggregateInputType | true
+    _min?: RoadmapMinAggregateInputType
+    _max?: RoadmapMaxAggregateInputType
   }
 
-  export type CareerRoadmapGroupByOutputType = {
+  export type RoadmapGroupByOutputType = {
     id: string
+    title: string
     userId: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonValue
-    userNotes: string | null
     createdAt: Date
-    updatedAt: Date
-    _count: CareerRoadmapCountAggregateOutputType | null
-    _min: CareerRoadmapMinAggregateOutputType | null
-    _max: CareerRoadmapMaxAggregateOutputType | null
+    _count: RoadmapCountAggregateOutputType | null
+    _min: RoadmapMinAggregateOutputType | null
+    _max: RoadmapMaxAggregateOutputType | null
   }
 
-  type GetCareerRoadmapGroupByPayload<T extends CareerRoadmapGroupByArgs> = Prisma.PrismaPromise<
+  type GetRoadmapGroupByPayload<T extends RoadmapGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<CareerRoadmapGroupByOutputType, T['by']> &
+      PickEnumerable<RoadmapGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof CareerRoadmapGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof RoadmapGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], CareerRoadmapGroupByOutputType[P]>
-            : GetScalarType<T[P], CareerRoadmapGroupByOutputType[P]>
+              : GetScalarType<T[P], RoadmapGroupByOutputType[P]>
+            : GetScalarType<T[P], RoadmapGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type CareerRoadmapSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
     userId?: boolean
-    roadmapTitle?: boolean
-    summary?: boolean
-    estimatedTimeline?: boolean
-    skillsToLearn?: boolean
-    userNotes?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["careerRoadmap"]>
+    nodes?: boolean | Roadmap$nodesArgs<ExtArgs>
+    _count?: boolean | RoadmapCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmap"]>
 
-  export type CareerRoadmapSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
     userId?: boolean
-    roadmapTitle?: boolean
-    summary?: boolean
-    estimatedTimeline?: boolean
-    skillsToLearn?: boolean
-    userNotes?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["careerRoadmap"]>
+  }, ExtArgs["result"]["roadmap"]>
 
-  export type CareerRoadmapSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    title?: boolean
     userId?: boolean
-    roadmapTitle?: boolean
-    summary?: boolean
-    estimatedTimeline?: boolean
-    skillsToLearn?: boolean
-    userNotes?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["careerRoadmap"]>
+  }, ExtArgs["result"]["roadmap"]>
 
-  export type CareerRoadmapSelectScalar = {
+  export type RoadmapSelectScalar = {
     id?: boolean
+    title?: boolean
     userId?: boolean
-    roadmapTitle?: boolean
-    summary?: boolean
-    estimatedTimeline?: boolean
-    skillsToLearn?: boolean
-    userNotes?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
   }
 
-  export type CareerRoadmapOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "roadmapTitle" | "summary" | "estimatedTimeline" | "skillsToLearn" | "userNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["careerRoadmap"]>
-  export type CareerRoadmapInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "userId" | "createdAt", ExtArgs["result"]["roadmap"]>
+  export type RoadmapInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    nodes?: boolean | Roadmap$nodesArgs<ExtArgs>
+    _count?: boolean | RoadmapCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoadmapIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type CareerRoadmapIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type CareerRoadmapIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $CareerRoadmapPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CareerRoadmap"
+  export type $RoadmapPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Roadmap"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      nodes: Prisma.$RoadmapNodePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      title: string
       userId: string
-      roadmapTitle: string
-      summary: string
-      estimatedTimeline: string
-      skillsToLearn: Prisma.JsonValue
-      userNotes: string | null
       createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["careerRoadmap"]>
+    }, ExtArgs["result"]["roadmap"]>
     composites: {}
   }
 
-  type CareerRoadmapGetPayload<S extends boolean | null | undefined | CareerRoadmapDefaultArgs> = $Result.GetResult<Prisma.$CareerRoadmapPayload, S>
+  type RoadmapGetPayload<S extends boolean | null | undefined | RoadmapDefaultArgs> = $Result.GetResult<Prisma.$RoadmapPayload, S>
 
-  type CareerRoadmapCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CareerRoadmapFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CareerRoadmapCountAggregateInputType | true
+  type RoadmapCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoadmapFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoadmapCountAggregateInputType | true
     }
 
-  export interface CareerRoadmapDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CareerRoadmap'], meta: { name: 'CareerRoadmap' } }
+  export interface RoadmapDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Roadmap'], meta: { name: 'Roadmap' } }
     /**
-     * Find zero or one CareerRoadmap that matches the filter.
-     * @param {CareerRoadmapFindUniqueArgs} args - Arguments to find a CareerRoadmap
+     * Find zero or one Roadmap that matches the filter.
+     * @param {RoadmapFindUniqueArgs} args - Arguments to find a Roadmap
      * @example
-     * // Get one CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.findUnique({
+     * // Get one Roadmap
+     * const roadmap = await prisma.roadmap.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends CareerRoadmapFindUniqueArgs>(args: SelectSubset<T, CareerRoadmapFindUniqueArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends RoadmapFindUniqueArgs>(args: SelectSubset<T, RoadmapFindUniqueArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one CareerRoadmap that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Roadmap that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {CareerRoadmapFindUniqueOrThrowArgs} args - Arguments to find a CareerRoadmap
+     * @param {RoadmapFindUniqueOrThrowArgs} args - Arguments to find a Roadmap
      * @example
-     * // Get one CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.findUniqueOrThrow({
+     * // Get one Roadmap
+     * const roadmap = await prisma.roadmap.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends CareerRoadmapFindUniqueOrThrowArgs>(args: SelectSubset<T, CareerRoadmapFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends RoadmapFindUniqueOrThrowArgs>(args: SelectSubset<T, RoadmapFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CareerRoadmap that matches the filter.
+     * Find the first Roadmap that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapFindFirstArgs} args - Arguments to find a CareerRoadmap
+     * @param {RoadmapFindFirstArgs} args - Arguments to find a Roadmap
      * @example
-     * // Get one CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.findFirst({
+     * // Get one Roadmap
+     * const roadmap = await prisma.roadmap.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends CareerRoadmapFindFirstArgs>(args?: SelectSubset<T, CareerRoadmapFindFirstArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends RoadmapFindFirstArgs>(args?: SelectSubset<T, RoadmapFindFirstArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first CareerRoadmap that matches the filter or
+     * Find the first Roadmap that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapFindFirstOrThrowArgs} args - Arguments to find a CareerRoadmap
+     * @param {RoadmapFindFirstOrThrowArgs} args - Arguments to find a Roadmap
      * @example
-     * // Get one CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.findFirstOrThrow({
+     * // Get one Roadmap
+     * const roadmap = await prisma.roadmap.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends CareerRoadmapFindFirstOrThrowArgs>(args?: SelectSubset<T, CareerRoadmapFindFirstOrThrowArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends RoadmapFindFirstOrThrowArgs>(args?: SelectSubset<T, RoadmapFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more CareerRoadmaps that matches the filter.
+     * Find zero or more Roadmaps that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {RoadmapFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all CareerRoadmaps
-     * const careerRoadmaps = await prisma.careerRoadmap.findMany()
+     * // Get all Roadmaps
+     * const roadmaps = await prisma.roadmap.findMany()
      * 
-     * // Get first 10 CareerRoadmaps
-     * const careerRoadmaps = await prisma.careerRoadmap.findMany({ take: 10 })
+     * // Get first 10 Roadmaps
+     * const roadmaps = await prisma.roadmap.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const careerRoadmapWithIdOnly = await prisma.careerRoadmap.findMany({ select: { id: true } })
+     * const roadmapWithIdOnly = await prisma.roadmap.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends CareerRoadmapFindManyArgs>(args?: SelectSubset<T, CareerRoadmapFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends RoadmapFindManyArgs>(args?: SelectSubset<T, RoadmapFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a CareerRoadmap.
-     * @param {CareerRoadmapCreateArgs} args - Arguments to create a CareerRoadmap.
+     * Create a Roadmap.
+     * @param {RoadmapCreateArgs} args - Arguments to create a Roadmap.
      * @example
-     * // Create one CareerRoadmap
-     * const CareerRoadmap = await prisma.careerRoadmap.create({
+     * // Create one Roadmap
+     * const Roadmap = await prisma.roadmap.create({
      *   data: {
-     *     // ... data to create a CareerRoadmap
+     *     // ... data to create a Roadmap
      *   }
      * })
      * 
      */
-    create<T extends CareerRoadmapCreateArgs>(args: SelectSubset<T, CareerRoadmapCreateArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends RoadmapCreateArgs>(args: SelectSubset<T, RoadmapCreateArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many CareerRoadmaps.
-     * @param {CareerRoadmapCreateManyArgs} args - Arguments to create many CareerRoadmaps.
+     * Create many Roadmaps.
+     * @param {RoadmapCreateManyArgs} args - Arguments to create many Roadmaps.
      * @example
-     * // Create many CareerRoadmaps
-     * const careerRoadmap = await prisma.careerRoadmap.createMany({
+     * // Create many Roadmaps
+     * const roadmap = await prisma.roadmap.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends CareerRoadmapCreateManyArgs>(args?: SelectSubset<T, CareerRoadmapCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends RoadmapCreateManyArgs>(args?: SelectSubset<T, RoadmapCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many CareerRoadmaps and returns the data saved in the database.
-     * @param {CareerRoadmapCreateManyAndReturnArgs} args - Arguments to create many CareerRoadmaps.
+     * Create many Roadmaps and returns the data saved in the database.
+     * @param {RoadmapCreateManyAndReturnArgs} args - Arguments to create many Roadmaps.
      * @example
-     * // Create many CareerRoadmaps
-     * const careerRoadmap = await prisma.careerRoadmap.createManyAndReturn({
+     * // Create many Roadmaps
+     * const roadmap = await prisma.roadmap.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many CareerRoadmaps and only return the `id`
-     * const careerRoadmapWithIdOnly = await prisma.careerRoadmap.createManyAndReturn({
+     * // Create many Roadmaps and only return the `id`
+     * const roadmapWithIdOnly = await prisma.roadmap.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -8339,28 +8307,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends CareerRoadmapCreateManyAndReturnArgs>(args?: SelectSubset<T, CareerRoadmapCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends RoadmapCreateManyAndReturnArgs>(args?: SelectSubset<T, RoadmapCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a CareerRoadmap.
-     * @param {CareerRoadmapDeleteArgs} args - Arguments to delete one CareerRoadmap.
+     * Delete a Roadmap.
+     * @param {RoadmapDeleteArgs} args - Arguments to delete one Roadmap.
      * @example
-     * // Delete one CareerRoadmap
-     * const CareerRoadmap = await prisma.careerRoadmap.delete({
+     * // Delete one Roadmap
+     * const Roadmap = await prisma.roadmap.delete({
      *   where: {
-     *     // ... filter to delete one CareerRoadmap
+     *     // ... filter to delete one Roadmap
      *   }
      * })
      * 
      */
-    delete<T extends CareerRoadmapDeleteArgs>(args: SelectSubset<T, CareerRoadmapDeleteArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends RoadmapDeleteArgs>(args: SelectSubset<T, RoadmapDeleteArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one CareerRoadmap.
-     * @param {CareerRoadmapUpdateArgs} args - Arguments to update one CareerRoadmap.
+     * Update one Roadmap.
+     * @param {RoadmapUpdateArgs} args - Arguments to update one Roadmap.
      * @example
-     * // Update one CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.update({
+     * // Update one Roadmap
+     * const roadmap = await prisma.roadmap.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8370,30 +8338,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends CareerRoadmapUpdateArgs>(args: SelectSubset<T, CareerRoadmapUpdateArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends RoadmapUpdateArgs>(args: SelectSubset<T, RoadmapUpdateArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more CareerRoadmaps.
-     * @param {CareerRoadmapDeleteManyArgs} args - Arguments to filter CareerRoadmaps to delete.
+     * Delete zero or more Roadmaps.
+     * @param {RoadmapDeleteManyArgs} args - Arguments to filter Roadmaps to delete.
      * @example
-     * // Delete a few CareerRoadmaps
-     * const { count } = await prisma.careerRoadmap.deleteMany({
+     * // Delete a few Roadmaps
+     * const { count } = await prisma.roadmap.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends CareerRoadmapDeleteManyArgs>(args?: SelectSubset<T, CareerRoadmapDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends RoadmapDeleteManyArgs>(args?: SelectSubset<T, RoadmapDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CareerRoadmaps.
+     * Update zero or more Roadmaps.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {RoadmapUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many CareerRoadmaps
-     * const careerRoadmap = await prisma.careerRoadmap.updateMany({
+     * // Update many Roadmaps
+     * const roadmap = await prisma.roadmap.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8403,14 +8371,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends CareerRoadmapUpdateManyArgs>(args: SelectSubset<T, CareerRoadmapUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends RoadmapUpdateManyArgs>(args: SelectSubset<T, RoadmapUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more CareerRoadmaps and returns the data updated in the database.
-     * @param {CareerRoadmapUpdateManyAndReturnArgs} args - Arguments to update many CareerRoadmaps.
+     * Update zero or more Roadmaps and returns the data updated in the database.
+     * @param {RoadmapUpdateManyAndReturnArgs} args - Arguments to update many Roadmaps.
      * @example
-     * // Update many CareerRoadmaps
-     * const careerRoadmap = await prisma.careerRoadmap.updateManyAndReturn({
+     * // Update many Roadmaps
+     * const roadmap = await prisma.roadmap.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8419,8 +8387,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more CareerRoadmaps and only return the `id`
-     * const careerRoadmapWithIdOnly = await prisma.careerRoadmap.updateManyAndReturn({
+     * // Update zero or more Roadmaps and only return the `id`
+     * const roadmapWithIdOnly = await prisma.roadmap.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -8433,56 +8401,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends CareerRoadmapUpdateManyAndReturnArgs>(args: SelectSubset<T, CareerRoadmapUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends RoadmapUpdateManyAndReturnArgs>(args: SelectSubset<T, RoadmapUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one CareerRoadmap.
-     * @param {CareerRoadmapUpsertArgs} args - Arguments to update or create a CareerRoadmap.
+     * Create or update one Roadmap.
+     * @param {RoadmapUpsertArgs} args - Arguments to update or create a Roadmap.
      * @example
-     * // Update or create a CareerRoadmap
-     * const careerRoadmap = await prisma.careerRoadmap.upsert({
+     * // Update or create a Roadmap
+     * const roadmap = await prisma.roadmap.upsert({
      *   create: {
-     *     // ... data to create a CareerRoadmap
+     *     // ... data to create a Roadmap
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the CareerRoadmap we want to update
+     *     // ... the filter for the Roadmap we want to update
      *   }
      * })
      */
-    upsert<T extends CareerRoadmapUpsertArgs>(args: SelectSubset<T, CareerRoadmapUpsertArgs<ExtArgs>>): Prisma__CareerRoadmapClient<$Result.GetResult<Prisma.$CareerRoadmapPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends RoadmapUpsertArgs>(args: SelectSubset<T, RoadmapUpsertArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of CareerRoadmaps.
+     * Count the number of Roadmaps.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapCountArgs} args - Arguments to filter CareerRoadmaps to count.
+     * @param {RoadmapCountArgs} args - Arguments to filter Roadmaps to count.
      * @example
-     * // Count the number of CareerRoadmaps
-     * const count = await prisma.careerRoadmap.count({
+     * // Count the number of Roadmaps
+     * const count = await prisma.roadmap.count({
      *   where: {
-     *     // ... the filter for the CareerRoadmaps we want to count
+     *     // ... the filter for the Roadmaps we want to count
      *   }
      * })
     **/
-    count<T extends CareerRoadmapCountArgs>(
-      args?: Subset<T, CareerRoadmapCountArgs>,
+    count<T extends RoadmapCountArgs>(
+      args?: Subset<T, RoadmapCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], CareerRoadmapCountAggregateOutputType>
+          : GetScalarType<T['select'], RoadmapCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a CareerRoadmap.
+     * Allows you to perform aggregations operations on a Roadmap.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {RoadmapAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -8502,13 +8470,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends CareerRoadmapAggregateArgs>(args: Subset<T, CareerRoadmapAggregateArgs>): Prisma.PrismaPromise<GetCareerRoadmapAggregateType<T>>
+    aggregate<T extends RoadmapAggregateArgs>(args: Subset<T, RoadmapAggregateArgs>): Prisma.PrismaPromise<GetRoadmapAggregateType<T>>
 
     /**
-     * Group by CareerRoadmap.
+     * Group by Roadmap.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {CareerRoadmapGroupByArgs} args - Group by arguments.
+     * @param {RoadmapGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -8523,14 +8491,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends CareerRoadmapGroupByArgs,
+      T extends RoadmapGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CareerRoadmapGroupByArgs['orderBy'] }
-        : { orderBy?: CareerRoadmapGroupByArgs['orderBy'] },
+        ? { orderBy: RoadmapGroupByArgs['orderBy'] }
+        : { orderBy?: RoadmapGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8579,22 +8547,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, CareerRoadmapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCareerRoadmapGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, RoadmapGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoadmapGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the CareerRoadmap model
+   * Fields of the Roadmap model
    */
-  readonly fields: CareerRoadmapFieldRefs;
+  readonly fields: RoadmapFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for CareerRoadmap.
+   * The delegate class that acts as a "Promise-like" for Roadmap.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__CareerRoadmapClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__RoadmapClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    nodes<T extends Roadmap$nodesArgs<ExtArgs> = {}>(args?: Subset<T, Roadmap$nodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8621,819 +8590,797 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the CareerRoadmap model
+   * Fields of the Roadmap model
    */
-  interface CareerRoadmapFieldRefs {
-    readonly id: FieldRef<"CareerRoadmap", 'String'>
-    readonly userId: FieldRef<"CareerRoadmap", 'String'>
-    readonly roadmapTitle: FieldRef<"CareerRoadmap", 'String'>
-    readonly summary: FieldRef<"CareerRoadmap", 'String'>
-    readonly estimatedTimeline: FieldRef<"CareerRoadmap", 'String'>
-    readonly skillsToLearn: FieldRef<"CareerRoadmap", 'Json'>
-    readonly userNotes: FieldRef<"CareerRoadmap", 'String'>
-    readonly createdAt: FieldRef<"CareerRoadmap", 'DateTime'>
-    readonly updatedAt: FieldRef<"CareerRoadmap", 'DateTime'>
+  interface RoadmapFieldRefs {
+    readonly id: FieldRef<"Roadmap", 'String'>
+    readonly title: FieldRef<"Roadmap", 'String'>
+    readonly userId: FieldRef<"Roadmap", 'String'>
+    readonly createdAt: FieldRef<"Roadmap", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * CareerRoadmap findUnique
+   * Roadmap findUnique
    */
-  export type CareerRoadmapFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter, which CareerRoadmap to fetch.
+     * Filter, which Roadmap to fetch.
      */
-    where: CareerRoadmapWhereUniqueInput
+    where: RoadmapWhereUniqueInput
   }
 
   /**
-   * CareerRoadmap findUniqueOrThrow
+   * Roadmap findUniqueOrThrow
    */
-  export type CareerRoadmapFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter, which CareerRoadmap to fetch.
+     * Filter, which Roadmap to fetch.
      */
-    where: CareerRoadmapWhereUniqueInput
+    where: RoadmapWhereUniqueInput
   }
 
   /**
-   * CareerRoadmap findFirst
+   * Roadmap findFirst
    */
-  export type CareerRoadmapFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter, which CareerRoadmap to fetch.
+     * Filter, which Roadmap to fetch.
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CareerRoadmaps to fetch.
+     * Determine the order of Roadmaps to fetch.
      */
-    orderBy?: CareerRoadmapOrderByWithRelationInput | CareerRoadmapOrderByWithRelationInput[]
+    orderBy?: RoadmapOrderByWithRelationInput | RoadmapOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CareerRoadmaps.
+     * Sets the position for searching for Roadmaps.
      */
-    cursor?: CareerRoadmapWhereUniqueInput
+    cursor?: RoadmapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CareerRoadmaps from the position of the cursor.
+     * Take `±n` Roadmaps from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CareerRoadmaps.
+     * Skip the first `n` Roadmaps.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CareerRoadmaps.
+     * Filter by unique combinations of Roadmaps.
      */
-    distinct?: CareerRoadmapScalarFieldEnum | CareerRoadmapScalarFieldEnum[]
+    distinct?: RoadmapScalarFieldEnum | RoadmapScalarFieldEnum[]
   }
 
   /**
-   * CareerRoadmap findFirstOrThrow
+   * Roadmap findFirstOrThrow
    */
-  export type CareerRoadmapFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter, which CareerRoadmap to fetch.
+     * Filter, which Roadmap to fetch.
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CareerRoadmaps to fetch.
+     * Determine the order of Roadmaps to fetch.
      */
-    orderBy?: CareerRoadmapOrderByWithRelationInput | CareerRoadmapOrderByWithRelationInput[]
+    orderBy?: RoadmapOrderByWithRelationInput | RoadmapOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for CareerRoadmaps.
+     * Sets the position for searching for Roadmaps.
      */
-    cursor?: CareerRoadmapWhereUniqueInput
+    cursor?: RoadmapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CareerRoadmaps from the position of the cursor.
+     * Take `±n` Roadmaps from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CareerRoadmaps.
+     * Skip the first `n` Roadmaps.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CareerRoadmaps.
+     * Filter by unique combinations of Roadmaps.
      */
-    distinct?: CareerRoadmapScalarFieldEnum | CareerRoadmapScalarFieldEnum[]
+    distinct?: RoadmapScalarFieldEnum | RoadmapScalarFieldEnum[]
   }
 
   /**
-   * CareerRoadmap findMany
+   * Roadmap findMany
    */
-  export type CareerRoadmapFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter, which CareerRoadmaps to fetch.
+     * Filter, which Roadmaps to fetch.
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of CareerRoadmaps to fetch.
+     * Determine the order of Roadmaps to fetch.
      */
-    orderBy?: CareerRoadmapOrderByWithRelationInput | CareerRoadmapOrderByWithRelationInput[]
+    orderBy?: RoadmapOrderByWithRelationInput | RoadmapOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing CareerRoadmaps.
+     * Sets the position for listing Roadmaps.
      */
-    cursor?: CareerRoadmapWhereUniqueInput
+    cursor?: RoadmapWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` CareerRoadmaps from the position of the cursor.
+     * Take `±n` Roadmaps from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` CareerRoadmaps.
+     * Skip the first `n` Roadmaps.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of CareerRoadmaps.
+     * Filter by unique combinations of Roadmaps.
      */
-    distinct?: CareerRoadmapScalarFieldEnum | CareerRoadmapScalarFieldEnum[]
+    distinct?: RoadmapScalarFieldEnum | RoadmapScalarFieldEnum[]
   }
 
   /**
-   * CareerRoadmap create
+   * Roadmap create
    */
-  export type CareerRoadmapCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * The data needed to create a CareerRoadmap.
+     * The data needed to create a Roadmap.
      */
-    data: XOR<CareerRoadmapCreateInput, CareerRoadmapUncheckedCreateInput>
+    data: XOR<RoadmapCreateInput, RoadmapUncheckedCreateInput>
   }
 
   /**
-   * CareerRoadmap createMany
+   * Roadmap createMany
    */
-  export type CareerRoadmapCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many CareerRoadmaps.
+     * The data used to create many Roadmaps.
      */
-    data: CareerRoadmapCreateManyInput | CareerRoadmapCreateManyInput[]
+    data: RoadmapCreateManyInput | RoadmapCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * CareerRoadmap createManyAndReturn
+   * Roadmap createManyAndReturn
    */
-  export type CareerRoadmapCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelectCreateManyAndReturn<ExtArgs> | null
+    select?: RoadmapSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
-     * The data used to create many CareerRoadmaps.
+     * The data used to create many Roadmaps.
      */
-    data: CareerRoadmapCreateManyInput | CareerRoadmapCreateManyInput[]
+    data: RoadmapCreateManyInput | RoadmapCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: RoadmapIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CareerRoadmap update
+   * Roadmap update
    */
-  export type CareerRoadmapUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * The data needed to update a CareerRoadmap.
+     * The data needed to update a Roadmap.
      */
-    data: XOR<CareerRoadmapUpdateInput, CareerRoadmapUncheckedUpdateInput>
+    data: XOR<RoadmapUpdateInput, RoadmapUncheckedUpdateInput>
     /**
-     * Choose, which CareerRoadmap to update.
+     * Choose, which Roadmap to update.
      */
-    where: CareerRoadmapWhereUniqueInput
+    where: RoadmapWhereUniqueInput
   }
 
   /**
-   * CareerRoadmap updateMany
+   * Roadmap updateMany
    */
-  export type CareerRoadmapUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update CareerRoadmaps.
+     * The data used to update Roadmaps.
      */
-    data: XOR<CareerRoadmapUpdateManyMutationInput, CareerRoadmapUncheckedUpdateManyInput>
+    data: XOR<RoadmapUpdateManyMutationInput, RoadmapUncheckedUpdateManyInput>
     /**
-     * Filter which CareerRoadmaps to update
+     * Filter which Roadmaps to update
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
-     * Limit how many CareerRoadmaps to update.
+     * Limit how many Roadmaps to update.
      */
     limit?: number
   }
 
   /**
-   * CareerRoadmap updateManyAndReturn
+   * Roadmap updateManyAndReturn
    */
-  export type CareerRoadmapUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: RoadmapSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
-     * The data used to update CareerRoadmaps.
+     * The data used to update Roadmaps.
      */
-    data: XOR<CareerRoadmapUpdateManyMutationInput, CareerRoadmapUncheckedUpdateManyInput>
+    data: XOR<RoadmapUpdateManyMutationInput, RoadmapUncheckedUpdateManyInput>
     /**
-     * Filter which CareerRoadmaps to update
+     * Filter which Roadmaps to update
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
-     * Limit how many CareerRoadmaps to update.
+     * Limit how many Roadmaps to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: RoadmapIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * CareerRoadmap upsert
+   * Roadmap upsert
    */
-  export type CareerRoadmapUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * The filter to search for the CareerRoadmap to update in case it exists.
+     * The filter to search for the Roadmap to update in case it exists.
      */
-    where: CareerRoadmapWhereUniqueInput
+    where: RoadmapWhereUniqueInput
     /**
-     * In case the CareerRoadmap found by the `where` argument doesn't exist, create a new CareerRoadmap with this data.
+     * In case the Roadmap found by the `where` argument doesn't exist, create a new Roadmap with this data.
      */
-    create: XOR<CareerRoadmapCreateInput, CareerRoadmapUncheckedCreateInput>
+    create: XOR<RoadmapCreateInput, RoadmapUncheckedCreateInput>
     /**
-     * In case the CareerRoadmap was found with the provided `where` argument, update it with this data.
+     * In case the Roadmap was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<CareerRoadmapUpdateInput, CareerRoadmapUncheckedUpdateInput>
+    update: XOR<RoadmapUpdateInput, RoadmapUncheckedUpdateInput>
   }
 
   /**
-   * CareerRoadmap delete
+   * Roadmap delete
    */
-  export type CareerRoadmapDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the Roadmap
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the Roadmap
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapInclude<ExtArgs> | null
     /**
-     * Filter which CareerRoadmap to delete.
+     * Filter which Roadmap to delete.
      */
-    where: CareerRoadmapWhereUniqueInput
+    where: RoadmapWhereUniqueInput
   }
 
   /**
-   * CareerRoadmap deleteMany
+   * Roadmap deleteMany
    */
-  export type CareerRoadmapDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which CareerRoadmaps to delete
+     * Filter which Roadmaps to delete
      */
-    where?: CareerRoadmapWhereInput
+    where?: RoadmapWhereInput
     /**
-     * Limit how many CareerRoadmaps to delete.
+     * Limit how many Roadmaps to delete.
      */
     limit?: number
   }
 
   /**
-   * CareerRoadmap without action
+   * Roadmap.nodes
    */
-  export type CareerRoadmapDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Roadmap$nodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CareerRoadmap
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: CareerRoadmapSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CareerRoadmap
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: CareerRoadmapOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CareerRoadmapInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
+    where?: RoadmapNodeWhereInput
+    orderBy?: RoadmapNodeOrderByWithRelationInput | RoadmapNodeOrderByWithRelationInput[]
+    cursor?: RoadmapNodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoadmapNodeScalarFieldEnum | RoadmapNodeScalarFieldEnum[]
+  }
+
+  /**
+   * Roadmap without action
+   */
+  export type RoadmapDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Roadmap
+     */
+    select?: RoadmapSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Roadmap
+     */
+    omit?: RoadmapOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapInclude<ExtArgs> | null
   }
 
 
   /**
-   * Model UserCareerProgress
+   * Model RoadmapNode
    */
 
-  export type AggregateUserCareerProgress = {
-    _count: UserCareerProgressCountAggregateOutputType | null
-    _avg: UserCareerProgressAvgAggregateOutputType | null
-    _sum: UserCareerProgressSumAggregateOutputType | null
-    _min: UserCareerProgressMinAggregateOutputType | null
-    _max: UserCareerProgressMaxAggregateOutputType | null
+  export type AggregateRoadmapNode = {
+    _count: RoadmapNodeCountAggregateOutputType | null
+    _min: RoadmapNodeMinAggregateOutputType | null
+    _max: RoadmapNodeMaxAggregateOutputType | null
   }
 
-  export type UserCareerProgressAvgAggregateOutputType = {
-    completedMilestones: number | null
-  }
-
-  export type UserCareerProgressSumAggregateOutputType = {
-    completedMilestones: number[]
-  }
-
-  export type UserCareerProgressMinAggregateOutputType = {
+  export type RoadmapNodeMinAggregateOutputType = {
     id: string | null
-    userId: string | null
-    careerId: string | null
-    updatedAt: Date | null
+    title: string | null
+    description: string | null
+    roadmapId: string | null
   }
 
-  export type UserCareerProgressMaxAggregateOutputType = {
+  export type RoadmapNodeMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
-    careerId: string | null
-    updatedAt: Date | null
+    title: string | null
+    description: string | null
+    roadmapId: string | null
   }
 
-  export type UserCareerProgressCountAggregateOutputType = {
+  export type RoadmapNodeCountAggregateOutputType = {
     id: number
-    userId: number
-    careerId: number
-    completedMilestones: number
-    updatedAt: number
+    title: number
+    description: number
+    roadmapId: number
     _all: number
   }
 
 
-  export type UserCareerProgressAvgAggregateInputType = {
-    completedMilestones?: true
-  }
-
-  export type UserCareerProgressSumAggregateInputType = {
-    completedMilestones?: true
-  }
-
-  export type UserCareerProgressMinAggregateInputType = {
+  export type RoadmapNodeMinAggregateInputType = {
     id?: true
-    userId?: true
-    careerId?: true
-    updatedAt?: true
+    title?: true
+    description?: true
+    roadmapId?: true
   }
 
-  export type UserCareerProgressMaxAggregateInputType = {
+  export type RoadmapNodeMaxAggregateInputType = {
     id?: true
-    userId?: true
-    careerId?: true
-    updatedAt?: true
+    title?: true
+    description?: true
+    roadmapId?: true
   }
 
-  export type UserCareerProgressCountAggregateInputType = {
+  export type RoadmapNodeCountAggregateInputType = {
     id?: true
-    userId?: true
-    careerId?: true
-    completedMilestones?: true
-    updatedAt?: true
+    title?: true
+    description?: true
+    roadmapId?: true
     _all?: true
   }
 
-  export type UserCareerProgressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UserCareerProgress to aggregate.
+     * Filter which RoadmapNode to aggregate.
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserCareerProgresses to fetch.
+     * Determine the order of RoadmapNodes to fetch.
      */
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    orderBy?: RoadmapNodeOrderByWithRelationInput | RoadmapNodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: UserCareerProgressWhereUniqueInput
+    cursor?: RoadmapNodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserCareerProgresses from the position of the cursor.
+     * Take `±n` RoadmapNodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserCareerProgresses.
+     * Skip the first `n` RoadmapNodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned UserCareerProgresses
+     * Count returned RoadmapNodes
     **/
-    _count?: true | UserCareerProgressCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: UserCareerProgressAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserCareerProgressSumAggregateInputType
+    _count?: true | RoadmapNodeCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: UserCareerProgressMinAggregateInputType
+    _min?: RoadmapNodeMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: UserCareerProgressMaxAggregateInputType
+    _max?: RoadmapNodeMaxAggregateInputType
   }
 
-  export type GetUserCareerProgressAggregateType<T extends UserCareerProgressAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserCareerProgress]: P extends '_count' | 'count'
+  export type GetRoadmapNodeAggregateType<T extends RoadmapNodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoadmapNode]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateUserCareerProgress[P]>
-      : GetScalarType<T[P], AggregateUserCareerProgress[P]>
+        : GetScalarType<T[P], AggregateRoadmapNode[P]>
+      : GetScalarType<T[P], AggregateRoadmapNode[P]>
   }
 
 
 
 
-  export type UserCareerProgressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserCareerProgressWhereInput
-    orderBy?: UserCareerProgressOrderByWithAggregationInput | UserCareerProgressOrderByWithAggregationInput[]
-    by: UserCareerProgressScalarFieldEnum[] | UserCareerProgressScalarFieldEnum
-    having?: UserCareerProgressScalarWhereWithAggregatesInput
+  export type RoadmapNodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapNodeWhereInput
+    orderBy?: RoadmapNodeOrderByWithAggregationInput | RoadmapNodeOrderByWithAggregationInput[]
+    by: RoadmapNodeScalarFieldEnum[] | RoadmapNodeScalarFieldEnum
+    having?: RoadmapNodeScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: UserCareerProgressCountAggregateInputType | true
-    _avg?: UserCareerProgressAvgAggregateInputType
-    _sum?: UserCareerProgressSumAggregateInputType
-    _min?: UserCareerProgressMinAggregateInputType
-    _max?: UserCareerProgressMaxAggregateInputType
+    _count?: RoadmapNodeCountAggregateInputType | true
+    _min?: RoadmapNodeMinAggregateInputType
+    _max?: RoadmapNodeMaxAggregateInputType
   }
 
-  export type UserCareerProgressGroupByOutputType = {
+  export type RoadmapNodeGroupByOutputType = {
     id: string
-    userId: string
-    careerId: string
-    completedMilestones: number[]
-    updatedAt: Date
-    _count: UserCareerProgressCountAggregateOutputType | null
-    _avg: UserCareerProgressAvgAggregateOutputType | null
-    _sum: UserCareerProgressSumAggregateOutputType | null
-    _min: UserCareerProgressMinAggregateOutputType | null
-    _max: UserCareerProgressMaxAggregateOutputType | null
+    title: string
+    description: string | null
+    roadmapId: string
+    _count: RoadmapNodeCountAggregateOutputType | null
+    _min: RoadmapNodeMinAggregateOutputType | null
+    _max: RoadmapNodeMaxAggregateOutputType | null
   }
 
-  type GetUserCareerProgressGroupByPayload<T extends UserCareerProgressGroupByArgs> = Prisma.PrismaPromise<
+  type GetRoadmapNodeGroupByPayload<T extends RoadmapNodeGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<UserCareerProgressGroupByOutputType, T['by']> &
+      PickEnumerable<RoadmapNodeGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UserCareerProgressGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof RoadmapNodeGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], UserCareerProgressGroupByOutputType[P]>
-            : GetScalarType<T[P], UserCareerProgressGroupByOutputType[P]>
+              : GetScalarType<T[P], RoadmapNodeGroupByOutputType[P]>
+            : GetScalarType<T[P], RoadmapNodeGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type UserCareerProgressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapNodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    careerId?: boolean
-    completedMilestones?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userCareerProgress"]>
+    title?: boolean
+    description?: boolean
+    roadmapId?: boolean
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
+    parents?: boolean | RoadmapNode$parentsArgs<ExtArgs>
+    children?: boolean | RoadmapNode$childrenArgs<ExtArgs>
+    _count?: boolean | RoadmapNodeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapNode"]>
 
-  export type UserCareerProgressSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapNodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    careerId?: boolean
-    completedMilestones?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userCareerProgress"]>
+    title?: boolean
+    description?: boolean
+    roadmapId?: boolean
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapNode"]>
 
-  export type UserCareerProgressSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type RoadmapNodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    careerId?: boolean
-    completedMilestones?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userCareerProgress"]>
+    title?: boolean
+    description?: boolean
+    roadmapId?: boolean
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapNode"]>
 
-  export type UserCareerProgressSelectScalar = {
+  export type RoadmapNodeSelectScalar = {
     id?: boolean
-    userId?: boolean
-    careerId?: boolean
-    completedMilestones?: boolean
-    updatedAt?: boolean
+    title?: boolean
+    description?: boolean
+    roadmapId?: boolean
   }
 
-  export type UserCareerProgressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "careerId" | "completedMilestones" | "updatedAt", ExtArgs["result"]["userCareerProgress"]>
-  export type UserCareerProgressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
+  export type RoadmapNodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "roadmapId", ExtArgs["result"]["roadmapNode"]>
+  export type RoadmapNodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
+    parents?: boolean | RoadmapNode$parentsArgs<ExtArgs>
+    children?: boolean | RoadmapNode$childrenArgs<ExtArgs>
+    _count?: boolean | RoadmapNodeCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserCareerProgressIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
+  export type RoadmapNodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
   }
-  export type UserCareerProgressIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    career?: boolean | CareerDefaultArgs<ExtArgs>
+  export type RoadmapNodeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
   }
 
-  export type $UserCareerProgressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserCareerProgress"
+  export type $RoadmapNodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoadmapNode"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      career: Prisma.$CareerPayload<ExtArgs>
+      roadmap: Prisma.$RoadmapPayload<ExtArgs>
+      parents: Prisma.$RoadmapEdgePayload<ExtArgs>[]
+      children: Prisma.$RoadmapEdgePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
-      careerId: string
-      completedMilestones: number[]
-      updatedAt: Date
-    }, ExtArgs["result"]["userCareerProgress"]>
+      title: string
+      description: string | null
+      roadmapId: string
+    }, ExtArgs["result"]["roadmapNode"]>
     composites: {}
   }
 
-  type UserCareerProgressGetPayload<S extends boolean | null | undefined | UserCareerProgressDefaultArgs> = $Result.GetResult<Prisma.$UserCareerProgressPayload, S>
+  type RoadmapNodeGetPayload<S extends boolean | null | undefined | RoadmapNodeDefaultArgs> = $Result.GetResult<Prisma.$RoadmapNodePayload, S>
 
-  type UserCareerProgressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<UserCareerProgressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: UserCareerProgressCountAggregateInputType | true
+  type RoadmapNodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoadmapNodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoadmapNodeCountAggregateInputType | true
     }
 
-  export interface UserCareerProgressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserCareerProgress'], meta: { name: 'UserCareerProgress' } }
+  export interface RoadmapNodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoadmapNode'], meta: { name: 'RoadmapNode' } }
     /**
-     * Find zero or one UserCareerProgress that matches the filter.
-     * @param {UserCareerProgressFindUniqueArgs} args - Arguments to find a UserCareerProgress
+     * Find zero or one RoadmapNode that matches the filter.
+     * @param {RoadmapNodeFindUniqueArgs} args - Arguments to find a RoadmapNode
      * @example
-     * // Get one UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.findUnique({
+     * // Get one RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends UserCareerProgressFindUniqueArgs>(args: SelectSubset<T, UserCareerProgressFindUniqueArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends RoadmapNodeFindUniqueArgs>(args: SelectSubset<T, RoadmapNodeFindUniqueArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one UserCareerProgress that matches the filter or throw an error with `error.code='P2025'`
+     * Find one RoadmapNode that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {UserCareerProgressFindUniqueOrThrowArgs} args - Arguments to find a UserCareerProgress
+     * @param {RoadmapNodeFindUniqueOrThrowArgs} args - Arguments to find a RoadmapNode
      * @example
-     * // Get one UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.findUniqueOrThrow({
+     * // Get one RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UserCareerProgressFindUniqueOrThrowArgs>(args: SelectSubset<T, UserCareerProgressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends RoadmapNodeFindUniqueOrThrowArgs>(args: SelectSubset<T, RoadmapNodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UserCareerProgress that matches the filter.
+     * Find the first RoadmapNode that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressFindFirstArgs} args - Arguments to find a UserCareerProgress
+     * @param {RoadmapNodeFindFirstArgs} args - Arguments to find a RoadmapNode
      * @example
-     * // Get one UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.findFirst({
+     * // Get one RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends UserCareerProgressFindFirstArgs>(args?: SelectSubset<T, UserCareerProgressFindFirstArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends RoadmapNodeFindFirstArgs>(args?: SelectSubset<T, RoadmapNodeFindFirstArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first UserCareerProgress that matches the filter or
+     * Find the first RoadmapNode that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressFindFirstOrThrowArgs} args - Arguments to find a UserCareerProgress
+     * @param {RoadmapNodeFindFirstOrThrowArgs} args - Arguments to find a RoadmapNode
      * @example
-     * // Get one UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.findFirstOrThrow({
+     * // Get one RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends UserCareerProgressFindFirstOrThrowArgs>(args?: SelectSubset<T, UserCareerProgressFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends RoadmapNodeFindFirstOrThrowArgs>(args?: SelectSubset<T, RoadmapNodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more UserCareerProgresses that matches the filter.
+     * Find zero or more RoadmapNodes that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {RoadmapNodeFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all UserCareerProgresses
-     * const userCareerProgresses = await prisma.userCareerProgress.findMany()
+     * // Get all RoadmapNodes
+     * const roadmapNodes = await prisma.roadmapNode.findMany()
      * 
-     * // Get first 10 UserCareerProgresses
-     * const userCareerProgresses = await prisma.userCareerProgress.findMany({ take: 10 })
+     * // Get first 10 RoadmapNodes
+     * const roadmapNodes = await prisma.roadmapNode.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.findMany({ select: { id: true } })
+     * const roadmapNodeWithIdOnly = await prisma.roadmapNode.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UserCareerProgressFindManyArgs>(args?: SelectSubset<T, UserCareerProgressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends RoadmapNodeFindManyArgs>(args?: SelectSubset<T, RoadmapNodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a UserCareerProgress.
-     * @param {UserCareerProgressCreateArgs} args - Arguments to create a UserCareerProgress.
+     * Create a RoadmapNode.
+     * @param {RoadmapNodeCreateArgs} args - Arguments to create a RoadmapNode.
      * @example
-     * // Create one UserCareerProgress
-     * const UserCareerProgress = await prisma.userCareerProgress.create({
+     * // Create one RoadmapNode
+     * const RoadmapNode = await prisma.roadmapNode.create({
      *   data: {
-     *     // ... data to create a UserCareerProgress
+     *     // ... data to create a RoadmapNode
      *   }
      * })
      * 
      */
-    create<T extends UserCareerProgressCreateArgs>(args: SelectSubset<T, UserCareerProgressCreateArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends RoadmapNodeCreateArgs>(args: SelectSubset<T, RoadmapNodeCreateArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many UserCareerProgresses.
-     * @param {UserCareerProgressCreateManyArgs} args - Arguments to create many UserCareerProgresses.
+     * Create many RoadmapNodes.
+     * @param {RoadmapNodeCreateManyArgs} args - Arguments to create many RoadmapNodes.
      * @example
-     * // Create many UserCareerProgresses
-     * const userCareerProgress = await prisma.userCareerProgress.createMany({
+     * // Create many RoadmapNodes
+     * const roadmapNode = await prisma.roadmapNode.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends UserCareerProgressCreateManyArgs>(args?: SelectSubset<T, UserCareerProgressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends RoadmapNodeCreateManyArgs>(args?: SelectSubset<T, RoadmapNodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many UserCareerProgresses and returns the data saved in the database.
-     * @param {UserCareerProgressCreateManyAndReturnArgs} args - Arguments to create many UserCareerProgresses.
+     * Create many RoadmapNodes and returns the data saved in the database.
+     * @param {RoadmapNodeCreateManyAndReturnArgs} args - Arguments to create many RoadmapNodes.
      * @example
-     * // Create many UserCareerProgresses
-     * const userCareerProgress = await prisma.userCareerProgress.createManyAndReturn({
+     * // Create many RoadmapNodes
+     * const roadmapNode = await prisma.roadmapNode.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many UserCareerProgresses and only return the `id`
-     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.createManyAndReturn({
+     * // Create many RoadmapNodes and only return the `id`
+     * const roadmapNodeWithIdOnly = await prisma.roadmapNode.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -9443,28 +9390,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UserCareerProgressCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCareerProgressCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends RoadmapNodeCreateManyAndReturnArgs>(args?: SelectSubset<T, RoadmapNodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a UserCareerProgress.
-     * @param {UserCareerProgressDeleteArgs} args - Arguments to delete one UserCareerProgress.
+     * Delete a RoadmapNode.
+     * @param {RoadmapNodeDeleteArgs} args - Arguments to delete one RoadmapNode.
      * @example
-     * // Delete one UserCareerProgress
-     * const UserCareerProgress = await prisma.userCareerProgress.delete({
+     * // Delete one RoadmapNode
+     * const RoadmapNode = await prisma.roadmapNode.delete({
      *   where: {
-     *     // ... filter to delete one UserCareerProgress
+     *     // ... filter to delete one RoadmapNode
      *   }
      * })
      * 
      */
-    delete<T extends UserCareerProgressDeleteArgs>(args: SelectSubset<T, UserCareerProgressDeleteArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends RoadmapNodeDeleteArgs>(args: SelectSubset<T, RoadmapNodeDeleteArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one UserCareerProgress.
-     * @param {UserCareerProgressUpdateArgs} args - Arguments to update one UserCareerProgress.
+     * Update one RoadmapNode.
+     * @param {RoadmapNodeUpdateArgs} args - Arguments to update one RoadmapNode.
      * @example
-     * // Update one UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.update({
+     * // Update one RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9474,30 +9421,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UserCareerProgressUpdateArgs>(args: SelectSubset<T, UserCareerProgressUpdateArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends RoadmapNodeUpdateArgs>(args: SelectSubset<T, RoadmapNodeUpdateArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more UserCareerProgresses.
-     * @param {UserCareerProgressDeleteManyArgs} args - Arguments to filter UserCareerProgresses to delete.
+     * Delete zero or more RoadmapNodes.
+     * @param {RoadmapNodeDeleteManyArgs} args - Arguments to filter RoadmapNodes to delete.
      * @example
-     * // Delete a few UserCareerProgresses
-     * const { count } = await prisma.userCareerProgress.deleteMany({
+     * // Delete a few RoadmapNodes
+     * const { count } = await prisma.roadmapNode.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends UserCareerProgressDeleteManyArgs>(args?: SelectSubset<T, UserCareerProgressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends RoadmapNodeDeleteManyArgs>(args?: SelectSubset<T, RoadmapNodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UserCareerProgresses.
+     * Update zero or more RoadmapNodes.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {RoadmapNodeUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many UserCareerProgresses
-     * const userCareerProgress = await prisma.userCareerProgress.updateMany({
+     * // Update many RoadmapNodes
+     * const roadmapNode = await prisma.roadmapNode.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9507,14 +9454,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends UserCareerProgressUpdateManyArgs>(args: SelectSubset<T, UserCareerProgressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends RoadmapNodeUpdateManyArgs>(args: SelectSubset<T, RoadmapNodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more UserCareerProgresses and returns the data updated in the database.
-     * @param {UserCareerProgressUpdateManyAndReturnArgs} args - Arguments to update many UserCareerProgresses.
+     * Update zero or more RoadmapNodes and returns the data updated in the database.
+     * @param {RoadmapNodeUpdateManyAndReturnArgs} args - Arguments to update many RoadmapNodes.
      * @example
-     * // Update many UserCareerProgresses
-     * const userCareerProgress = await prisma.userCareerProgress.updateManyAndReturn({
+     * // Update many RoadmapNodes
+     * const roadmapNode = await prisma.roadmapNode.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -9523,8 +9470,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more UserCareerProgresses and only return the `id`
-     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.updateManyAndReturn({
+     * // Update zero or more RoadmapNodes and only return the `id`
+     * const roadmapNodeWithIdOnly = await prisma.roadmapNode.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -9537,56 +9484,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends UserCareerProgressUpdateManyAndReturnArgs>(args: SelectSubset<T, UserCareerProgressUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends RoadmapNodeUpdateManyAndReturnArgs>(args: SelectSubset<T, RoadmapNodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one UserCareerProgress.
-     * @param {UserCareerProgressUpsertArgs} args - Arguments to update or create a UserCareerProgress.
+     * Create or update one RoadmapNode.
+     * @param {RoadmapNodeUpsertArgs} args - Arguments to update or create a RoadmapNode.
      * @example
-     * // Update or create a UserCareerProgress
-     * const userCareerProgress = await prisma.userCareerProgress.upsert({
+     * // Update or create a RoadmapNode
+     * const roadmapNode = await prisma.roadmapNode.upsert({
      *   create: {
-     *     // ... data to create a UserCareerProgress
+     *     // ... data to create a RoadmapNode
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the UserCareerProgress we want to update
+     *     // ... the filter for the RoadmapNode we want to update
      *   }
      * })
      */
-    upsert<T extends UserCareerProgressUpsertArgs>(args: SelectSubset<T, UserCareerProgressUpsertArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends RoadmapNodeUpsertArgs>(args: SelectSubset<T, RoadmapNodeUpsertArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of UserCareerProgresses.
+     * Count the number of RoadmapNodes.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressCountArgs} args - Arguments to filter UserCareerProgresses to count.
+     * @param {RoadmapNodeCountArgs} args - Arguments to filter RoadmapNodes to count.
      * @example
-     * // Count the number of UserCareerProgresses
-     * const count = await prisma.userCareerProgress.count({
+     * // Count the number of RoadmapNodes
+     * const count = await prisma.roadmapNode.count({
      *   where: {
-     *     // ... the filter for the UserCareerProgresses we want to count
+     *     // ... the filter for the RoadmapNodes we want to count
      *   }
      * })
     **/
-    count<T extends UserCareerProgressCountArgs>(
-      args?: Subset<T, UserCareerProgressCountArgs>,
+    count<T extends RoadmapNodeCountArgs>(
+      args?: Subset<T, RoadmapNodeCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], UserCareerProgressCountAggregateOutputType>
+          : GetScalarType<T['select'], RoadmapNodeCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a UserCareerProgress.
+     * Allows you to perform aggregations operations on a RoadmapNode.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {RoadmapNodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -9606,13 +9553,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends UserCareerProgressAggregateArgs>(args: Subset<T, UserCareerProgressAggregateArgs>): Prisma.PrismaPromise<GetUserCareerProgressAggregateType<T>>
+    aggregate<T extends RoadmapNodeAggregateArgs>(args: Subset<T, RoadmapNodeAggregateArgs>): Prisma.PrismaPromise<GetRoadmapNodeAggregateType<T>>
 
     /**
-     * Group by UserCareerProgress.
+     * Group by RoadmapNode.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserCareerProgressGroupByArgs} args - Group by arguments.
+     * @param {RoadmapNodeGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -9627,14 +9574,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends UserCareerProgressGroupByArgs,
+      T extends RoadmapNodeGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserCareerProgressGroupByArgs['orderBy'] }
-        : { orderBy?: UserCareerProgressGroupByArgs['orderBy'] },
+        ? { orderBy: RoadmapNodeGroupByArgs['orderBy'] }
+        : { orderBy?: RoadmapNodeGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -9683,23 +9630,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, UserCareerProgressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserCareerProgressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, RoadmapNodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoadmapNodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the UserCareerProgress model
+   * Fields of the RoadmapNode model
    */
-  readonly fields: UserCareerProgressFieldRefs;
+  readonly fields: RoadmapNodeFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for UserCareerProgress.
+   * The delegate class that acts as a "Promise-like" for RoadmapNode.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UserCareerProgressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__RoadmapNodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    career<T extends CareerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CareerDefaultArgs<ExtArgs>>): Prisma__CareerClient<$Result.GetResult<Prisma.$CareerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    roadmap<T extends RoadmapDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapDefaultArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    parents<T extends RoadmapNode$parentsArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapNode$parentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    children<T extends RoadmapNode$childrenArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapNode$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9726,430 +9674,1509 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the UserCareerProgress model
+   * Fields of the RoadmapNode model
    */
-  interface UserCareerProgressFieldRefs {
-    readonly id: FieldRef<"UserCareerProgress", 'String'>
-    readonly userId: FieldRef<"UserCareerProgress", 'String'>
-    readonly careerId: FieldRef<"UserCareerProgress", 'String'>
-    readonly completedMilestones: FieldRef<"UserCareerProgress", 'Int[]'>
-    readonly updatedAt: FieldRef<"UserCareerProgress", 'DateTime'>
+  interface RoadmapNodeFieldRefs {
+    readonly id: FieldRef<"RoadmapNode", 'String'>
+    readonly title: FieldRef<"RoadmapNode", 'String'>
+    readonly description: FieldRef<"RoadmapNode", 'String'>
+    readonly roadmapId: FieldRef<"RoadmapNode", 'String'>
   }
     
 
   // Custom InputTypes
   /**
-   * UserCareerProgress findUnique
+   * RoadmapNode findUnique
    */
-  export type UserCareerProgressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter, which UserCareerProgress to fetch.
+     * Filter, which RoadmapNode to fetch.
      */
-    where: UserCareerProgressWhereUniqueInput
+    where: RoadmapNodeWhereUniqueInput
   }
 
   /**
-   * UserCareerProgress findUniqueOrThrow
+   * RoadmapNode findUniqueOrThrow
    */
-  export type UserCareerProgressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter, which UserCareerProgress to fetch.
+     * Filter, which RoadmapNode to fetch.
      */
-    where: UserCareerProgressWhereUniqueInput
+    where: RoadmapNodeWhereUniqueInput
   }
 
   /**
-   * UserCareerProgress findFirst
+   * RoadmapNode findFirst
    */
-  export type UserCareerProgressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter, which UserCareerProgress to fetch.
+     * Filter, which RoadmapNode to fetch.
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserCareerProgresses to fetch.
+     * Determine the order of RoadmapNodes to fetch.
      */
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    orderBy?: RoadmapNodeOrderByWithRelationInput | RoadmapNodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UserCareerProgresses.
+     * Sets the position for searching for RoadmapNodes.
      */
-    cursor?: UserCareerProgressWhereUniqueInput
+    cursor?: RoadmapNodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserCareerProgresses from the position of the cursor.
+     * Take `±n` RoadmapNodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserCareerProgresses.
+     * Skip the first `n` RoadmapNodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UserCareerProgresses.
+     * Filter by unique combinations of RoadmapNodes.
      */
-    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+    distinct?: RoadmapNodeScalarFieldEnum | RoadmapNodeScalarFieldEnum[]
   }
 
   /**
-   * UserCareerProgress findFirstOrThrow
+   * RoadmapNode findFirstOrThrow
    */
-  export type UserCareerProgressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter, which UserCareerProgress to fetch.
+     * Filter, which RoadmapNode to fetch.
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserCareerProgresses to fetch.
+     * Determine the order of RoadmapNodes to fetch.
      */
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    orderBy?: RoadmapNodeOrderByWithRelationInput | RoadmapNodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for UserCareerProgresses.
+     * Sets the position for searching for RoadmapNodes.
      */
-    cursor?: UserCareerProgressWhereUniqueInput
+    cursor?: RoadmapNodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserCareerProgresses from the position of the cursor.
+     * Take `±n` RoadmapNodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserCareerProgresses.
+     * Skip the first `n` RoadmapNodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UserCareerProgresses.
+     * Filter by unique combinations of RoadmapNodes.
      */
-    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+    distinct?: RoadmapNodeScalarFieldEnum | RoadmapNodeScalarFieldEnum[]
   }
 
   /**
-   * UserCareerProgress findMany
+   * RoadmapNode findMany
    */
-  export type UserCareerProgressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter, which UserCareerProgresses to fetch.
+     * Filter, which RoadmapNodes to fetch.
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of UserCareerProgresses to fetch.
+     * Determine the order of RoadmapNodes to fetch.
      */
-    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    orderBy?: RoadmapNodeOrderByWithRelationInput | RoadmapNodeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing UserCareerProgresses.
+     * Sets the position for listing RoadmapNodes.
      */
-    cursor?: UserCareerProgressWhereUniqueInput
+    cursor?: RoadmapNodeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` UserCareerProgresses from the position of the cursor.
+     * Take `±n` RoadmapNodes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` UserCareerProgresses.
+     * Skip the first `n` RoadmapNodes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of UserCareerProgresses.
+     * Filter by unique combinations of RoadmapNodes.
      */
-    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+    distinct?: RoadmapNodeScalarFieldEnum | RoadmapNodeScalarFieldEnum[]
   }
 
   /**
-   * UserCareerProgress create
+   * RoadmapNode create
    */
-  export type UserCareerProgressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * The data needed to create a UserCareerProgress.
+     * The data needed to create a RoadmapNode.
      */
-    data: XOR<UserCareerProgressCreateInput, UserCareerProgressUncheckedCreateInput>
+    data: XOR<RoadmapNodeCreateInput, RoadmapNodeUncheckedCreateInput>
   }
 
   /**
-   * UserCareerProgress createMany
+   * RoadmapNode createMany
    */
-  export type UserCareerProgressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many UserCareerProgresses.
+     * The data used to create many RoadmapNodes.
      */
-    data: UserCareerProgressCreateManyInput | UserCareerProgressCreateManyInput[]
+    data: RoadmapNodeCreateManyInput | RoadmapNodeCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * UserCareerProgress createManyAndReturn
+   * RoadmapNode createManyAndReturn
    */
-  export type UserCareerProgressCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelectCreateManyAndReturn<ExtArgs> | null
+    select?: RoadmapNodeSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
-     * The data used to create many UserCareerProgresses.
+     * The data used to create many RoadmapNodes.
      */
-    data: UserCareerProgressCreateManyInput | UserCareerProgressCreateManyInput[]
+    data: RoadmapNodeCreateManyInput | RoadmapNodeCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: RoadmapNodeIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * UserCareerProgress update
+   * RoadmapNode update
    */
-  export type UserCareerProgressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * The data needed to update a UserCareerProgress.
+     * The data needed to update a RoadmapNode.
      */
-    data: XOR<UserCareerProgressUpdateInput, UserCareerProgressUncheckedUpdateInput>
+    data: XOR<RoadmapNodeUpdateInput, RoadmapNodeUncheckedUpdateInput>
     /**
-     * Choose, which UserCareerProgress to update.
+     * Choose, which RoadmapNode to update.
      */
-    where: UserCareerProgressWhereUniqueInput
+    where: RoadmapNodeWhereUniqueInput
   }
 
   /**
-   * UserCareerProgress updateMany
+   * RoadmapNode updateMany
    */
-  export type UserCareerProgressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update UserCareerProgresses.
+     * The data used to update RoadmapNodes.
      */
-    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyInput>
+    data: XOR<RoadmapNodeUpdateManyMutationInput, RoadmapNodeUncheckedUpdateManyInput>
     /**
-     * Filter which UserCareerProgresses to update
+     * Filter which RoadmapNodes to update
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
-     * Limit how many UserCareerProgresses to update.
+     * Limit how many RoadmapNodes to update.
      */
     limit?: number
   }
 
   /**
-   * UserCareerProgress updateManyAndReturn
+   * RoadmapNode updateManyAndReturn
    */
-  export type UserCareerProgressUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: RoadmapNodeSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
-     * The data used to update UserCareerProgresses.
+     * The data used to update RoadmapNodes.
      */
-    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyInput>
+    data: XOR<RoadmapNodeUpdateManyMutationInput, RoadmapNodeUncheckedUpdateManyInput>
     /**
-     * Filter which UserCareerProgresses to update
+     * Filter which RoadmapNodes to update
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
-     * Limit how many UserCareerProgresses to update.
+     * Limit how many RoadmapNodes to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: RoadmapNodeIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * UserCareerProgress upsert
+   * RoadmapNode upsert
    */
-  export type UserCareerProgressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * The filter to search for the UserCareerProgress to update in case it exists.
+     * The filter to search for the RoadmapNode to update in case it exists.
      */
-    where: UserCareerProgressWhereUniqueInput
+    where: RoadmapNodeWhereUniqueInput
     /**
-     * In case the UserCareerProgress found by the `where` argument doesn't exist, create a new UserCareerProgress with this data.
+     * In case the RoadmapNode found by the `where` argument doesn't exist, create a new RoadmapNode with this data.
      */
-    create: XOR<UserCareerProgressCreateInput, UserCareerProgressUncheckedCreateInput>
+    create: XOR<RoadmapNodeCreateInput, RoadmapNodeUncheckedCreateInput>
     /**
-     * In case the UserCareerProgress was found with the provided `where` argument, update it with this data.
+     * In case the RoadmapNode was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<UserCareerProgressUpdateInput, UserCareerProgressUncheckedUpdateInput>
+    update: XOR<RoadmapNodeUpdateInput, RoadmapNodeUncheckedUpdateInput>
   }
 
   /**
-   * UserCareerProgress delete
+   * RoadmapNode delete
    */
-  export type UserCareerProgressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapNode
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapNodeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapNode
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapNodeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapNodeInclude<ExtArgs> | null
     /**
-     * Filter which UserCareerProgress to delete.
+     * Filter which RoadmapNode to delete.
      */
-    where: UserCareerProgressWhereUniqueInput
+    where: RoadmapNodeWhereUniqueInput
   }
 
   /**
-   * UserCareerProgress deleteMany
+   * RoadmapNode deleteMany
    */
-  export type UserCareerProgressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which UserCareerProgresses to delete
+     * Filter which RoadmapNodes to delete
      */
-    where?: UserCareerProgressWhereInput
+    where?: RoadmapNodeWhereInput
     /**
-     * Limit how many UserCareerProgresses to delete.
+     * Limit how many RoadmapNodes to delete.
      */
     limit?: number
   }
 
   /**
-   * UserCareerProgress without action
+   * RoadmapNode.parents
    */
-  export type UserCareerProgressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type RoadmapNode$parentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserCareerProgress
+     * Select specific fields to fetch from the RoadmapEdge
      */
-    select?: UserCareerProgressSelect<ExtArgs> | null
+    select?: RoadmapEdgeSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserCareerProgress
+     * Omit specific fields from the RoadmapEdge
      */
-    omit?: UserCareerProgressOmit<ExtArgs> | null
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserCareerProgressInclude<ExtArgs> | null
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    where?: RoadmapEdgeWhereInput
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    cursor?: RoadmapEdgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoadmapEdgeScalarFieldEnum | RoadmapEdgeScalarFieldEnum[]
+  }
+
+  /**
+   * RoadmapNode.children
+   */
+  export type RoadmapNode$childrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    where?: RoadmapEdgeWhereInput
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    cursor?: RoadmapEdgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoadmapEdgeScalarFieldEnum | RoadmapEdgeScalarFieldEnum[]
+  }
+
+  /**
+   * RoadmapNode without action
+   */
+  export type RoadmapNodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapNode
+     */
+    select?: RoadmapNodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapNode
+     */
+    omit?: RoadmapNodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapNodeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RoadmapEdge
+   */
+
+  export type AggregateRoadmapEdge = {
+    _count: RoadmapEdgeCountAggregateOutputType | null
+    _min: RoadmapEdgeMinAggregateOutputType | null
+    _max: RoadmapEdgeMaxAggregateOutputType | null
+  }
+
+  export type RoadmapEdgeMinAggregateOutputType = {
+    parentId: string | null
+    childId: string | null
+  }
+
+  export type RoadmapEdgeMaxAggregateOutputType = {
+    parentId: string | null
+    childId: string | null
+  }
+
+  export type RoadmapEdgeCountAggregateOutputType = {
+    parentId: number
+    childId: number
+    _all: number
+  }
+
+
+  export type RoadmapEdgeMinAggregateInputType = {
+    parentId?: true
+    childId?: true
+  }
+
+  export type RoadmapEdgeMaxAggregateInputType = {
+    parentId?: true
+    childId?: true
+  }
+
+  export type RoadmapEdgeCountAggregateInputType = {
+    parentId?: true
+    childId?: true
+    _all?: true
+  }
+
+  export type RoadmapEdgeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoadmapEdge to aggregate.
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoadmapEdges to fetch.
+     */
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoadmapEdgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoadmapEdges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoadmapEdges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoadmapEdges
+    **/
+    _count?: true | RoadmapEdgeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoadmapEdgeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoadmapEdgeMaxAggregateInputType
+  }
+
+  export type GetRoadmapEdgeAggregateType<T extends RoadmapEdgeAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoadmapEdge]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoadmapEdge[P]>
+      : GetScalarType<T[P], AggregateRoadmapEdge[P]>
+  }
+
+
+
+
+  export type RoadmapEdgeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoadmapEdgeWhereInput
+    orderBy?: RoadmapEdgeOrderByWithAggregationInput | RoadmapEdgeOrderByWithAggregationInput[]
+    by: RoadmapEdgeScalarFieldEnum[] | RoadmapEdgeScalarFieldEnum
+    having?: RoadmapEdgeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoadmapEdgeCountAggregateInputType | true
+    _min?: RoadmapEdgeMinAggregateInputType
+    _max?: RoadmapEdgeMaxAggregateInputType
+  }
+
+  export type RoadmapEdgeGroupByOutputType = {
+    parentId: string
+    childId: string
+    _count: RoadmapEdgeCountAggregateOutputType | null
+    _min: RoadmapEdgeMinAggregateOutputType | null
+    _max: RoadmapEdgeMaxAggregateOutputType | null
+  }
+
+  type GetRoadmapEdgeGroupByPayload<T extends RoadmapEdgeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoadmapEdgeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoadmapEdgeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoadmapEdgeGroupByOutputType[P]>
+            : GetScalarType<T[P], RoadmapEdgeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoadmapEdgeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    parentId?: boolean
+    childId?: boolean
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapEdge"]>
+
+  export type RoadmapEdgeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    parentId?: boolean
+    childId?: boolean
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapEdge"]>
+
+  export type RoadmapEdgeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    parentId?: boolean
+    childId?: boolean
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roadmapEdge"]>
+
+  export type RoadmapEdgeSelectScalar = {
+    parentId?: boolean
+    childId?: boolean
+  }
+
+  export type RoadmapEdgeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"parentId" | "childId", ExtArgs["result"]["roadmapEdge"]>
+  export type RoadmapEdgeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }
+  export type RoadmapEdgeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }
+  export type RoadmapEdgeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+    child?: boolean | RoadmapNodeDefaultArgs<ExtArgs>
+  }
+
+  export type $RoadmapEdgePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoadmapEdge"
+    objects: {
+      parent: Prisma.$RoadmapNodePayload<ExtArgs>
+      child: Prisma.$RoadmapNodePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      parentId: string
+      childId: string
+    }, ExtArgs["result"]["roadmapEdge"]>
+    composites: {}
+  }
+
+  type RoadmapEdgeGetPayload<S extends boolean | null | undefined | RoadmapEdgeDefaultArgs> = $Result.GetResult<Prisma.$RoadmapEdgePayload, S>
+
+  type RoadmapEdgeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoadmapEdgeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoadmapEdgeCountAggregateInputType | true
+    }
+
+  export interface RoadmapEdgeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoadmapEdge'], meta: { name: 'RoadmapEdge' } }
+    /**
+     * Find zero or one RoadmapEdge that matches the filter.
+     * @param {RoadmapEdgeFindUniqueArgs} args - Arguments to find a RoadmapEdge
+     * @example
+     * // Get one RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoadmapEdgeFindUniqueArgs>(args: SelectSubset<T, RoadmapEdgeFindUniqueArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoadmapEdge that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoadmapEdgeFindUniqueOrThrowArgs} args - Arguments to find a RoadmapEdge
+     * @example
+     * // Get one RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoadmapEdgeFindUniqueOrThrowArgs>(args: SelectSubset<T, RoadmapEdgeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoadmapEdge that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeFindFirstArgs} args - Arguments to find a RoadmapEdge
+     * @example
+     * // Get one RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoadmapEdgeFindFirstArgs>(args?: SelectSubset<T, RoadmapEdgeFindFirstArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoadmapEdge that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeFindFirstOrThrowArgs} args - Arguments to find a RoadmapEdge
+     * @example
+     * // Get one RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoadmapEdgeFindFirstOrThrowArgs>(args?: SelectSubset<T, RoadmapEdgeFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoadmapEdges that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoadmapEdges
+     * const roadmapEdges = await prisma.roadmapEdge.findMany()
+     * 
+     * // Get first 10 RoadmapEdges
+     * const roadmapEdges = await prisma.roadmapEdge.findMany({ take: 10 })
+     * 
+     * // Only select the `parentId`
+     * const roadmapEdgeWithParentIdOnly = await prisma.roadmapEdge.findMany({ select: { parentId: true } })
+     * 
+     */
+    findMany<T extends RoadmapEdgeFindManyArgs>(args?: SelectSubset<T, RoadmapEdgeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoadmapEdge.
+     * @param {RoadmapEdgeCreateArgs} args - Arguments to create a RoadmapEdge.
+     * @example
+     * // Create one RoadmapEdge
+     * const RoadmapEdge = await prisma.roadmapEdge.create({
+     *   data: {
+     *     // ... data to create a RoadmapEdge
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoadmapEdgeCreateArgs>(args: SelectSubset<T, RoadmapEdgeCreateArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoadmapEdges.
+     * @param {RoadmapEdgeCreateManyArgs} args - Arguments to create many RoadmapEdges.
+     * @example
+     * // Create many RoadmapEdges
+     * const roadmapEdge = await prisma.roadmapEdge.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoadmapEdgeCreateManyArgs>(args?: SelectSubset<T, RoadmapEdgeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoadmapEdges and returns the data saved in the database.
+     * @param {RoadmapEdgeCreateManyAndReturnArgs} args - Arguments to create many RoadmapEdges.
+     * @example
+     * // Create many RoadmapEdges
+     * const roadmapEdge = await prisma.roadmapEdge.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoadmapEdges and only return the `parentId`
+     * const roadmapEdgeWithParentIdOnly = await prisma.roadmapEdge.createManyAndReturn({
+     *   select: { parentId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoadmapEdgeCreateManyAndReturnArgs>(args?: SelectSubset<T, RoadmapEdgeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoadmapEdge.
+     * @param {RoadmapEdgeDeleteArgs} args - Arguments to delete one RoadmapEdge.
+     * @example
+     * // Delete one RoadmapEdge
+     * const RoadmapEdge = await prisma.roadmapEdge.delete({
+     *   where: {
+     *     // ... filter to delete one RoadmapEdge
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoadmapEdgeDeleteArgs>(args: SelectSubset<T, RoadmapEdgeDeleteArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoadmapEdge.
+     * @param {RoadmapEdgeUpdateArgs} args - Arguments to update one RoadmapEdge.
+     * @example
+     * // Update one RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoadmapEdgeUpdateArgs>(args: SelectSubset<T, RoadmapEdgeUpdateArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoadmapEdges.
+     * @param {RoadmapEdgeDeleteManyArgs} args - Arguments to filter RoadmapEdges to delete.
+     * @example
+     * // Delete a few RoadmapEdges
+     * const { count } = await prisma.roadmapEdge.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoadmapEdgeDeleteManyArgs>(args?: SelectSubset<T, RoadmapEdgeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoadmapEdges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoadmapEdges
+     * const roadmapEdge = await prisma.roadmapEdge.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoadmapEdgeUpdateManyArgs>(args: SelectSubset<T, RoadmapEdgeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoadmapEdges and returns the data updated in the database.
+     * @param {RoadmapEdgeUpdateManyAndReturnArgs} args - Arguments to update many RoadmapEdges.
+     * @example
+     * // Update many RoadmapEdges
+     * const roadmapEdge = await prisma.roadmapEdge.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoadmapEdges and only return the `parentId`
+     * const roadmapEdgeWithParentIdOnly = await prisma.roadmapEdge.updateManyAndReturn({
+     *   select: { parentId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoadmapEdgeUpdateManyAndReturnArgs>(args: SelectSubset<T, RoadmapEdgeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoadmapEdge.
+     * @param {RoadmapEdgeUpsertArgs} args - Arguments to update or create a RoadmapEdge.
+     * @example
+     * // Update or create a RoadmapEdge
+     * const roadmapEdge = await prisma.roadmapEdge.upsert({
+     *   create: {
+     *     // ... data to create a RoadmapEdge
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoadmapEdge we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoadmapEdgeUpsertArgs>(args: SelectSubset<T, RoadmapEdgeUpsertArgs<ExtArgs>>): Prisma__RoadmapEdgeClient<$Result.GetResult<Prisma.$RoadmapEdgePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoadmapEdges.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeCountArgs} args - Arguments to filter RoadmapEdges to count.
+     * @example
+     * // Count the number of RoadmapEdges
+     * const count = await prisma.roadmapEdge.count({
+     *   where: {
+     *     // ... the filter for the RoadmapEdges we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoadmapEdgeCountArgs>(
+      args?: Subset<T, RoadmapEdgeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoadmapEdgeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoadmapEdge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoadmapEdgeAggregateArgs>(args: Subset<T, RoadmapEdgeAggregateArgs>): Prisma.PrismaPromise<GetRoadmapEdgeAggregateType<T>>
+
+    /**
+     * Group by RoadmapEdge.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapEdgeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoadmapEdgeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoadmapEdgeGroupByArgs['orderBy'] }
+        : { orderBy?: RoadmapEdgeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoadmapEdgeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoadmapEdgeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoadmapEdge model
+   */
+  readonly fields: RoadmapEdgeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoadmapEdge.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoadmapEdgeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    parent<T extends RoadmapNodeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapNodeDefaultArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    child<T extends RoadmapNodeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapNodeDefaultArgs<ExtArgs>>): Prisma__RoadmapNodeClient<$Result.GetResult<Prisma.$RoadmapNodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoadmapEdge model
+   */
+  interface RoadmapEdgeFieldRefs {
+    readonly parentId: FieldRef<"RoadmapEdge", 'String'>
+    readonly childId: FieldRef<"RoadmapEdge", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoadmapEdge findUnique
+   */
+  export type RoadmapEdgeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoadmapEdge to fetch.
+     */
+    where: RoadmapEdgeWhereUniqueInput
+  }
+
+  /**
+   * RoadmapEdge findUniqueOrThrow
+   */
+  export type RoadmapEdgeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoadmapEdge to fetch.
+     */
+    where: RoadmapEdgeWhereUniqueInput
+  }
+
+  /**
+   * RoadmapEdge findFirst
+   */
+  export type RoadmapEdgeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoadmapEdge to fetch.
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoadmapEdges to fetch.
+     */
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoadmapEdges.
+     */
+    cursor?: RoadmapEdgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoadmapEdges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoadmapEdges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoadmapEdges.
+     */
+    distinct?: RoadmapEdgeScalarFieldEnum | RoadmapEdgeScalarFieldEnum[]
+  }
+
+  /**
+   * RoadmapEdge findFirstOrThrow
+   */
+  export type RoadmapEdgeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoadmapEdge to fetch.
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoadmapEdges to fetch.
+     */
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoadmapEdges.
+     */
+    cursor?: RoadmapEdgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoadmapEdges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoadmapEdges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoadmapEdges.
+     */
+    distinct?: RoadmapEdgeScalarFieldEnum | RoadmapEdgeScalarFieldEnum[]
+  }
+
+  /**
+   * RoadmapEdge findMany
+   */
+  export type RoadmapEdgeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter, which RoadmapEdges to fetch.
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoadmapEdges to fetch.
+     */
+    orderBy?: RoadmapEdgeOrderByWithRelationInput | RoadmapEdgeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoadmapEdges.
+     */
+    cursor?: RoadmapEdgeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoadmapEdges from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoadmapEdges.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoadmapEdges.
+     */
+    distinct?: RoadmapEdgeScalarFieldEnum | RoadmapEdgeScalarFieldEnum[]
+  }
+
+  /**
+   * RoadmapEdge create
+   */
+  export type RoadmapEdgeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoadmapEdge.
+     */
+    data: XOR<RoadmapEdgeCreateInput, RoadmapEdgeUncheckedCreateInput>
+  }
+
+  /**
+   * RoadmapEdge createMany
+   */
+  export type RoadmapEdgeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoadmapEdges.
+     */
+    data: RoadmapEdgeCreateManyInput | RoadmapEdgeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoadmapEdge createManyAndReturn
+   */
+  export type RoadmapEdgeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoadmapEdges.
+     */
+    data: RoadmapEdgeCreateManyInput | RoadmapEdgeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoadmapEdge update
+   */
+  export type RoadmapEdgeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoadmapEdge.
+     */
+    data: XOR<RoadmapEdgeUpdateInput, RoadmapEdgeUncheckedUpdateInput>
+    /**
+     * Choose, which RoadmapEdge to update.
+     */
+    where: RoadmapEdgeWhereUniqueInput
+  }
+
+  /**
+   * RoadmapEdge updateMany
+   */
+  export type RoadmapEdgeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoadmapEdges.
+     */
+    data: XOR<RoadmapEdgeUpdateManyMutationInput, RoadmapEdgeUncheckedUpdateManyInput>
+    /**
+     * Filter which RoadmapEdges to update
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * Limit how many RoadmapEdges to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoadmapEdge updateManyAndReturn
+   */
+  export type RoadmapEdgeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * The data used to update RoadmapEdges.
+     */
+    data: XOR<RoadmapEdgeUpdateManyMutationInput, RoadmapEdgeUncheckedUpdateManyInput>
+    /**
+     * Filter which RoadmapEdges to update
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * Limit how many RoadmapEdges to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoadmapEdge upsert
+   */
+  export type RoadmapEdgeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoadmapEdge to update in case it exists.
+     */
+    where: RoadmapEdgeWhereUniqueInput
+    /**
+     * In case the RoadmapEdge found by the `where` argument doesn't exist, create a new RoadmapEdge with this data.
+     */
+    create: XOR<RoadmapEdgeCreateInput, RoadmapEdgeUncheckedCreateInput>
+    /**
+     * In case the RoadmapEdge was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoadmapEdgeUpdateInput, RoadmapEdgeUncheckedUpdateInput>
+  }
+
+  /**
+   * RoadmapEdge delete
+   */
+  export type RoadmapEdgeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
+    /**
+     * Filter which RoadmapEdge to delete.
+     */
+    where: RoadmapEdgeWhereUniqueInput
+  }
+
+  /**
+   * RoadmapEdge deleteMany
+   */
+  export type RoadmapEdgeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoadmapEdges to delete
+     */
+    where?: RoadmapEdgeWhereInput
+    /**
+     * Limit how many RoadmapEdges to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoadmapEdge without action
+   */
+  export type RoadmapEdgeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoadmapEdge
+     */
+    select?: RoadmapEdgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoadmapEdge
+     */
+    omit?: RoadmapEdgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoadmapEdgeInclude<ExtArgs> | null
   }
 
 
@@ -17185,30 +18212,32 @@ export namespace Prisma {
   export type CareerScalarFieldEnum = (typeof CareerScalarFieldEnum)[keyof typeof CareerScalarFieldEnum]
 
 
-  export const CareerRoadmapScalarFieldEnum: {
+  export const RoadmapScalarFieldEnum: {
     id: 'id',
+    title: 'title',
     userId: 'userId',
-    roadmapTitle: 'roadmapTitle',
-    summary: 'summary',
-    estimatedTimeline: 'estimatedTimeline',
-    skillsToLearn: 'skillsToLearn',
-    userNotes: 'userNotes',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    createdAt: 'createdAt'
   };
 
-  export type CareerRoadmapScalarFieldEnum = (typeof CareerRoadmapScalarFieldEnum)[keyof typeof CareerRoadmapScalarFieldEnum]
+  export type RoadmapScalarFieldEnum = (typeof RoadmapScalarFieldEnum)[keyof typeof RoadmapScalarFieldEnum]
 
 
-  export const UserCareerProgressScalarFieldEnum: {
+  export const RoadmapNodeScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    careerId: 'careerId',
-    completedMilestones: 'completedMilestones',
-    updatedAt: 'updatedAt'
+    title: 'title',
+    description: 'description',
+    roadmapId: 'roadmapId'
   };
 
-  export type UserCareerProgressScalarFieldEnum = (typeof UserCareerProgressScalarFieldEnum)[keyof typeof UserCareerProgressScalarFieldEnum]
+  export type RoadmapNodeScalarFieldEnum = (typeof RoadmapNodeScalarFieldEnum)[keyof typeof RoadmapNodeScalarFieldEnum]
+
+
+  export const RoadmapEdgeScalarFieldEnum: {
+    parentId: 'parentId',
+    childId: 'childId'
+  };
+
+  export type RoadmapEdgeScalarFieldEnum = (typeof RoadmapEdgeScalarFieldEnum)[keyof typeof RoadmapEdgeScalarFieldEnum]
 
 
   export const QuizScalarFieldEnum: {
@@ -17299,19 +18328,19 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
   export const NullableJsonNullValueInput: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -17401,20 +18430,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -17432,6 +18447,20 @@ export namespace Prisma {
    * Reference to a field of type 'QuestionType[]'
    */
   export type ListEnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -17463,8 +18492,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
-    careerProgress?: UserCareerProgressListRelationFilter
-    roadmaps?: CareerRoadmapListRelationFilter
+    roadmaps?: RoadmapListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17475,8 +18503,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     profile?: ProfileOrderByWithRelationInput
     assessmentAttempts?: AssessmentAttemptOrderByRelationAggregateInput
-    careerProgress?: UserCareerProgressOrderByRelationAggregateInput
-    roadmaps?: CareerRoadmapOrderByRelationAggregateInput
+    roadmaps?: RoadmapOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17490,8 +18517,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
-    careerProgress?: UserCareerProgressListRelationFilter
-    roadmaps?: CareerRoadmapListRelationFilter
+    roadmaps?: RoadmapListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -17713,7 +18739,6 @@ export namespace Prisma {
     milestones?: StringNullableListFilter<"Career">
     createdAt?: DateTimeFilter<"Career"> | Date | string
     updatedAt?: DateTimeFilter<"Career"> | Date | string
-    userProgress?: UserCareerProgressListRelationFilter
   }
 
   export type CareerOrderByWithRelationInput = {
@@ -17729,7 +18754,6 @@ export namespace Prisma {
     milestones?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userProgress?: UserCareerProgressOrderByRelationAggregateInput
   }
 
   export type CareerWhereUniqueInput = Prisma.AtLeast<{
@@ -17748,7 +18772,6 @@ export namespace Prisma {
     milestones?: StringNullableListFilter<"Career">
     createdAt?: DateTimeFilter<"Career"> | Date | string
     updatedAt?: DateTimeFilter<"Career"> | Date | string
-    userProgress?: UserCareerProgressListRelationFilter
   }, "id" | "slug">
 
   export type CareerOrderByWithAggregationInput = {
@@ -17787,140 +18810,157 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Career"> | Date | string
   }
 
-  export type CareerRoadmapWhereInput = {
-    AND?: CareerRoadmapWhereInput | CareerRoadmapWhereInput[]
-    OR?: CareerRoadmapWhereInput[]
-    NOT?: CareerRoadmapWhereInput | CareerRoadmapWhereInput[]
-    id?: StringFilter<"CareerRoadmap"> | string
-    userId?: StringFilter<"CareerRoadmap"> | string
-    roadmapTitle?: StringFilter<"CareerRoadmap"> | string
-    summary?: StringFilter<"CareerRoadmap"> | string
-    estimatedTimeline?: StringFilter<"CareerRoadmap"> | string
-    skillsToLearn?: JsonFilter<"CareerRoadmap">
-    userNotes?: StringNullableFilter<"CareerRoadmap"> | string | null
-    createdAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
-    updatedAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
+  export type RoadmapWhereInput = {
+    AND?: RoadmapWhereInput | RoadmapWhereInput[]
+    OR?: RoadmapWhereInput[]
+    NOT?: RoadmapWhereInput | RoadmapWhereInput[]
+    id?: StringFilter<"Roadmap"> | string
+    title?: StringFilter<"Roadmap"> | string
+    userId?: StringFilter<"Roadmap"> | string
+    createdAt?: DateTimeFilter<"Roadmap"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    nodes?: RoadmapNodeListRelationFilter
   }
 
-  export type CareerRoadmapOrderByWithRelationInput = {
+  export type RoadmapOrderByWithRelationInput = {
     id?: SortOrder
+    title?: SortOrder
     userId?: SortOrder
-    roadmapTitle?: SortOrder
-    summary?: SortOrder
-    estimatedTimeline?: SortOrder
-    skillsToLearn?: SortOrder
-    userNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    nodes?: RoadmapNodeOrderByRelationAggregateInput
   }
 
-  export type CareerRoadmapWhereUniqueInput = Prisma.AtLeast<{
+  export type RoadmapWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: CareerRoadmapWhereInput | CareerRoadmapWhereInput[]
-    OR?: CareerRoadmapWhereInput[]
-    NOT?: CareerRoadmapWhereInput | CareerRoadmapWhereInput[]
-    userId?: StringFilter<"CareerRoadmap"> | string
-    roadmapTitle?: StringFilter<"CareerRoadmap"> | string
-    summary?: StringFilter<"CareerRoadmap"> | string
-    estimatedTimeline?: StringFilter<"CareerRoadmap"> | string
-    skillsToLearn?: JsonFilter<"CareerRoadmap">
-    userNotes?: StringNullableFilter<"CareerRoadmap"> | string | null
-    createdAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
-    updatedAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
+    AND?: RoadmapWhereInput | RoadmapWhereInput[]
+    OR?: RoadmapWhereInput[]
+    NOT?: RoadmapWhereInput | RoadmapWhereInput[]
+    title?: StringFilter<"Roadmap"> | string
+    userId?: StringFilter<"Roadmap"> | string
+    createdAt?: DateTimeFilter<"Roadmap"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    nodes?: RoadmapNodeListRelationFilter
   }, "id">
 
-  export type CareerRoadmapOrderByWithAggregationInput = {
+  export type RoadmapOrderByWithAggregationInput = {
     id?: SortOrder
+    title?: SortOrder
     userId?: SortOrder
-    roadmapTitle?: SortOrder
-    summary?: SortOrder
-    estimatedTimeline?: SortOrder
-    skillsToLearn?: SortOrder
-    userNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: CareerRoadmapCountOrderByAggregateInput
-    _max?: CareerRoadmapMaxOrderByAggregateInput
-    _min?: CareerRoadmapMinOrderByAggregateInput
+    _count?: RoadmapCountOrderByAggregateInput
+    _max?: RoadmapMaxOrderByAggregateInput
+    _min?: RoadmapMinOrderByAggregateInput
   }
 
-  export type CareerRoadmapScalarWhereWithAggregatesInput = {
-    AND?: CareerRoadmapScalarWhereWithAggregatesInput | CareerRoadmapScalarWhereWithAggregatesInput[]
-    OR?: CareerRoadmapScalarWhereWithAggregatesInput[]
-    NOT?: CareerRoadmapScalarWhereWithAggregatesInput | CareerRoadmapScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CareerRoadmap"> | string
-    userId?: StringWithAggregatesFilter<"CareerRoadmap"> | string
-    roadmapTitle?: StringWithAggregatesFilter<"CareerRoadmap"> | string
-    summary?: StringWithAggregatesFilter<"CareerRoadmap"> | string
-    estimatedTimeline?: StringWithAggregatesFilter<"CareerRoadmap"> | string
-    skillsToLearn?: JsonWithAggregatesFilter<"CareerRoadmap">
-    userNotes?: StringNullableWithAggregatesFilter<"CareerRoadmap"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"CareerRoadmap"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"CareerRoadmap"> | Date | string
+  export type RoadmapScalarWhereWithAggregatesInput = {
+    AND?: RoadmapScalarWhereWithAggregatesInput | RoadmapScalarWhereWithAggregatesInput[]
+    OR?: RoadmapScalarWhereWithAggregatesInput[]
+    NOT?: RoadmapScalarWhereWithAggregatesInput | RoadmapScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Roadmap"> | string
+    title?: StringWithAggregatesFilter<"Roadmap"> | string
+    userId?: StringWithAggregatesFilter<"Roadmap"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Roadmap"> | Date | string
   }
 
-  export type UserCareerProgressWhereInput = {
-    AND?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
-    OR?: UserCareerProgressWhereInput[]
-    NOT?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
-    id?: StringFilter<"UserCareerProgress"> | string
-    userId?: StringFilter<"UserCareerProgress"> | string
-    careerId?: StringFilter<"UserCareerProgress"> | string
-    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
-    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    career?: XOR<CareerScalarRelationFilter, CareerWhereInput>
+  export type RoadmapNodeWhereInput = {
+    AND?: RoadmapNodeWhereInput | RoadmapNodeWhereInput[]
+    OR?: RoadmapNodeWhereInput[]
+    NOT?: RoadmapNodeWhereInput | RoadmapNodeWhereInput[]
+    id?: StringFilter<"RoadmapNode"> | string
+    title?: StringFilter<"RoadmapNode"> | string
+    description?: StringNullableFilter<"RoadmapNode"> | string | null
+    roadmapId?: StringFilter<"RoadmapNode"> | string
+    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
+    parents?: RoadmapEdgeListRelationFilter
+    children?: RoadmapEdgeListRelationFilter
   }
 
-  export type UserCareerProgressOrderByWithRelationInput = {
+  export type RoadmapNodeOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    careerId?: SortOrder
-    completedMilestones?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    career?: CareerOrderByWithRelationInput
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    roadmapId?: SortOrder
+    roadmap?: RoadmapOrderByWithRelationInput
+    parents?: RoadmapEdgeOrderByRelationAggregateInput
+    children?: RoadmapEdgeOrderByRelationAggregateInput
   }
 
-  export type UserCareerProgressWhereUniqueInput = Prisma.AtLeast<{
+  export type RoadmapNodeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId_careerId?: UserCareerProgressUserIdCareerIdCompoundUniqueInput
-    AND?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
-    OR?: UserCareerProgressWhereInput[]
-    NOT?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
-    userId?: StringFilter<"UserCareerProgress"> | string
-    careerId?: StringFilter<"UserCareerProgress"> | string
-    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
-    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    career?: XOR<CareerScalarRelationFilter, CareerWhereInput>
-  }, "id" | "userId_careerId">
+    AND?: RoadmapNodeWhereInput | RoadmapNodeWhereInput[]
+    OR?: RoadmapNodeWhereInput[]
+    NOT?: RoadmapNodeWhereInput | RoadmapNodeWhereInput[]
+    title?: StringFilter<"RoadmapNode"> | string
+    description?: StringNullableFilter<"RoadmapNode"> | string | null
+    roadmapId?: StringFilter<"RoadmapNode"> | string
+    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
+    parents?: RoadmapEdgeListRelationFilter
+    children?: RoadmapEdgeListRelationFilter
+  }, "id">
 
-  export type UserCareerProgressOrderByWithAggregationInput = {
+  export type RoadmapNodeOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    careerId?: SortOrder
-    completedMilestones?: SortOrder
-    updatedAt?: SortOrder
-    _count?: UserCareerProgressCountOrderByAggregateInput
-    _avg?: UserCareerProgressAvgOrderByAggregateInput
-    _max?: UserCareerProgressMaxOrderByAggregateInput
-    _min?: UserCareerProgressMinOrderByAggregateInput
-    _sum?: UserCareerProgressSumOrderByAggregateInput
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    roadmapId?: SortOrder
+    _count?: RoadmapNodeCountOrderByAggregateInput
+    _max?: RoadmapNodeMaxOrderByAggregateInput
+    _min?: RoadmapNodeMinOrderByAggregateInput
   }
 
-  export type UserCareerProgressScalarWhereWithAggregatesInput = {
-    AND?: UserCareerProgressScalarWhereWithAggregatesInput | UserCareerProgressScalarWhereWithAggregatesInput[]
-    OR?: UserCareerProgressScalarWhereWithAggregatesInput[]
-    NOT?: UserCareerProgressScalarWhereWithAggregatesInput | UserCareerProgressScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserCareerProgress"> | string
-    userId?: StringWithAggregatesFilter<"UserCareerProgress"> | string
-    careerId?: StringWithAggregatesFilter<"UserCareerProgress"> | string
-    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
-    updatedAt?: DateTimeWithAggregatesFilter<"UserCareerProgress"> | Date | string
+  export type RoadmapNodeScalarWhereWithAggregatesInput = {
+    AND?: RoadmapNodeScalarWhereWithAggregatesInput | RoadmapNodeScalarWhereWithAggregatesInput[]
+    OR?: RoadmapNodeScalarWhereWithAggregatesInput[]
+    NOT?: RoadmapNodeScalarWhereWithAggregatesInput | RoadmapNodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RoadmapNode"> | string
+    title?: StringWithAggregatesFilter<"RoadmapNode"> | string
+    description?: StringNullableWithAggregatesFilter<"RoadmapNode"> | string | null
+    roadmapId?: StringWithAggregatesFilter<"RoadmapNode"> | string
+  }
+
+  export type RoadmapEdgeWhereInput = {
+    AND?: RoadmapEdgeWhereInput | RoadmapEdgeWhereInput[]
+    OR?: RoadmapEdgeWhereInput[]
+    NOT?: RoadmapEdgeWhereInput | RoadmapEdgeWhereInput[]
+    parentId?: StringFilter<"RoadmapEdge"> | string
+    childId?: StringFilter<"RoadmapEdge"> | string
+    parent?: XOR<RoadmapNodeScalarRelationFilter, RoadmapNodeWhereInput>
+    child?: XOR<RoadmapNodeScalarRelationFilter, RoadmapNodeWhereInput>
+  }
+
+  export type RoadmapEdgeOrderByWithRelationInput = {
+    parentId?: SortOrder
+    childId?: SortOrder
+    parent?: RoadmapNodeOrderByWithRelationInput
+    child?: RoadmapNodeOrderByWithRelationInput
+  }
+
+  export type RoadmapEdgeWhereUniqueInput = Prisma.AtLeast<{
+    parentId_childId?: RoadmapEdgeParentIdChildIdCompoundUniqueInput
+    AND?: RoadmapEdgeWhereInput | RoadmapEdgeWhereInput[]
+    OR?: RoadmapEdgeWhereInput[]
+    NOT?: RoadmapEdgeWhereInput | RoadmapEdgeWhereInput[]
+    parentId?: StringFilter<"RoadmapEdge"> | string
+    childId?: StringFilter<"RoadmapEdge"> | string
+    parent?: XOR<RoadmapNodeScalarRelationFilter, RoadmapNodeWhereInput>
+    child?: XOR<RoadmapNodeScalarRelationFilter, RoadmapNodeWhereInput>
+  }, "parentId_childId">
+
+  export type RoadmapEdgeOrderByWithAggregationInput = {
+    parentId?: SortOrder
+    childId?: SortOrder
+    _count?: RoadmapEdgeCountOrderByAggregateInput
+    _max?: RoadmapEdgeMaxOrderByAggregateInput
+    _min?: RoadmapEdgeMinOrderByAggregateInput
+  }
+
+  export type RoadmapEdgeScalarWhereWithAggregatesInput = {
+    AND?: RoadmapEdgeScalarWhereWithAggregatesInput | RoadmapEdgeScalarWhereWithAggregatesInput[]
+    OR?: RoadmapEdgeScalarWhereWithAggregatesInput[]
+    NOT?: RoadmapEdgeScalarWhereWithAggregatesInput | RoadmapEdgeScalarWhereWithAggregatesInput[]
+    parentId?: StringWithAggregatesFilter<"RoadmapEdge"> | string
+    childId?: StringWithAggregatesFilter<"RoadmapEdge"> | string
   }
 
   export type QuizWhereInput = {
@@ -18376,8 +19416,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -18388,8 +19427,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapUncheckedCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -18400,8 +19438,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18412,8 +19449,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUncheckedUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18633,7 +19669,6 @@ export namespace Prisma {
     milestones?: CareerCreatemilestonesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    userProgress?: UserCareerProgressCreateNestedManyWithoutCareerInput
   }
 
   export type CareerUncheckedCreateInput = {
@@ -18649,7 +19684,6 @@ export namespace Prisma {
     milestones?: CareerCreatemilestonesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
-    userProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutCareerInput
   }
 
   export type CareerUpdateInput = {
@@ -18665,7 +19699,6 @@ export namespace Prisma {
     milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userProgress?: UserCareerProgressUpdateManyWithoutCareerNestedInput
   }
 
   export type CareerUncheckedUpdateInput = {
@@ -18681,7 +19714,6 @@ export namespace Prisma {
     milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userProgress?: UserCareerProgressUncheckedUpdateManyWithoutCareerNestedInput
   }
 
   export type CareerCreateManyInput = {
@@ -18729,141 +19761,146 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CareerRoadmapCreateInput = {
+  export type RoadmapCreateInput = {
     id?: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
+    title: string
     createdAt?: Date | string
-    updatedAt?: Date | string
     user: UserCreateNestedOneWithoutRoadmapsInput
+    nodes?: RoadmapNodeCreateNestedManyWithoutRoadmapInput
   }
 
-  export type CareerRoadmapUncheckedCreateInput = {
+  export type RoadmapUncheckedCreateInput = {
     id?: string
+    title: string
     userId: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
+    nodes?: RoadmapNodeUncheckedCreateNestedManyWithoutRoadmapInput
   }
 
-  export type CareerRoadmapUpdateInput = {
+  export type RoadmapUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutRoadmapsNestedInput
+    nodes?: RoadmapNodeUpdateManyWithoutRoadmapNestedInput
   }
 
-  export type CareerRoadmapUncheckedUpdateInput = {
+  export type RoadmapUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nodes?: RoadmapNodeUncheckedUpdateManyWithoutRoadmapNestedInput
   }
 
-  export type CareerRoadmapCreateManyInput = {
+  export type RoadmapCreateManyInput = {
     id?: string
+    title: string
     userId: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type CareerRoadmapUpdateManyMutationInput = {
+  export type RoadmapUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CareerRoadmapUncheckedUpdateManyInput = {
+  export type RoadmapUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCareerProgressCreateInput = {
+  export type RoadmapNodeCreateInput = {
     id?: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCareerProgressInput
-    career: CareerCreateNestedOneWithoutUserProgressInput
+    title: string
+    description?: string | null
+    roadmap: RoadmapCreateNestedOneWithoutNodesInput
+    parents?: RoadmapEdgeCreateNestedManyWithoutChildInput
+    children?: RoadmapEdgeCreateNestedManyWithoutParentInput
   }
 
-  export type UserCareerProgressUncheckedCreateInput = {
+  export type RoadmapNodeUncheckedCreateInput = {
     id?: string
-    userId: string
-    careerId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    roadmapId: string
+    parents?: RoadmapEdgeUncheckedCreateNestedManyWithoutChildInput
+    children?: RoadmapEdgeUncheckedCreateNestedManyWithoutParentInput
   }
 
-  export type UserCareerProgressUpdateInput = {
+  export type RoadmapNodeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCareerProgressNestedInput
-    career?: CareerUpdateOneRequiredWithoutUserProgressNestedInput
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmap?: RoadmapUpdateOneRequiredWithoutNodesNestedInput
+    parents?: RoadmapEdgeUpdateManyWithoutChildNestedInput
+    children?: RoadmapEdgeUpdateManyWithoutParentNestedInput
   }
 
-  export type UserCareerProgressUncheckedUpdateInput = {
+  export type RoadmapNodeUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    careerId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmapId?: StringFieldUpdateOperationsInput | string
+    parents?: RoadmapEdgeUncheckedUpdateManyWithoutChildNestedInput
+    children?: RoadmapEdgeUncheckedUpdateManyWithoutParentNestedInput
   }
 
-  export type UserCareerProgressCreateManyInput = {
+  export type RoadmapNodeCreateManyInput = {
     id?: string
-    userId: string
-    careerId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
+    title: string
+    description?: string | null
+    roadmapId: string
   }
 
-  export type UserCareerProgressUpdateManyMutationInput = {
+  export type RoadmapNodeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserCareerProgressUncheckedUpdateManyInput = {
+  export type RoadmapNodeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    careerId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmapId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoadmapEdgeCreateInput = {
+    parent: RoadmapNodeCreateNestedOneWithoutChildrenInput
+    child: RoadmapNodeCreateNestedOneWithoutParentsInput
+  }
+
+  export type RoadmapEdgeUncheckedCreateInput = {
+    parentId: string
+    childId: string
+  }
+
+  export type RoadmapEdgeUpdateInput = {
+    parent?: RoadmapNodeUpdateOneRequiredWithoutChildrenNestedInput
+    child?: RoadmapNodeUpdateOneRequiredWithoutParentsNestedInput
+  }
+
+  export type RoadmapEdgeUncheckedUpdateInput = {
+    parentId?: StringFieldUpdateOperationsInput | string
+    childId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoadmapEdgeCreateManyInput = {
+    parentId: string
+    childId: string
+  }
+
+  export type RoadmapEdgeUpdateManyMutationInput = {
+
+  }
+
+  export type RoadmapEdgeUncheckedUpdateManyInput = {
+    parentId?: StringFieldUpdateOperationsInput | string
+    childId?: StringFieldUpdateOperationsInput | string
   }
 
   export type QuizCreateInput = {
@@ -19382,16 +20419,10 @@ export namespace Prisma {
     none?: AssessmentAttemptWhereInput
   }
 
-  export type UserCareerProgressListRelationFilter = {
-    every?: UserCareerProgressWhereInput
-    some?: UserCareerProgressWhereInput
-    none?: UserCareerProgressWhereInput
-  }
-
-  export type CareerRoadmapListRelationFilter = {
-    every?: CareerRoadmapWhereInput
-    some?: CareerRoadmapWhereInput
-    none?: CareerRoadmapWhereInput
+  export type RoadmapListRelationFilter = {
+    every?: RoadmapWhereInput
+    some?: RoadmapWhereInput
+    none?: RoadmapWhereInput
   }
 
   export type SortOrderInput = {
@@ -19403,11 +20434,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UserCareerProgressOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CareerRoadmapOrderByRelationAggregateInput = {
+  export type RoadmapOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19718,136 +20745,97 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  export type RoadmapNodeListRelationFilter = {
+    every?: RoadmapNodeWhereInput
+    some?: RoadmapNodeWhereInput
+    none?: RoadmapNodeWhereInput
   }
 
-  export type CareerRoadmapCountOrderByAggregateInput = {
+  export type RoadmapNodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoadmapCountOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
     userId?: SortOrder
-    roadmapTitle?: SortOrder
-    summary?: SortOrder
-    estimatedTimeline?: SortOrder
-    skillsToLearn?: SortOrder
-    userNotes?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
-  export type CareerRoadmapMaxOrderByAggregateInput = {
+  export type RoadmapMaxOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
     userId?: SortOrder
-    roadmapTitle?: SortOrder
-    summary?: SortOrder
-    estimatedTimeline?: SortOrder
-    userNotes?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
-  export type CareerRoadmapMinOrderByAggregateInput = {
+  export type RoadmapMinOrderByAggregateInput = {
     id?: SortOrder
+    title?: SortOrder
     userId?: SortOrder
-    roadmapTitle?: SortOrder
-    summary?: SortOrder
-    estimatedTimeline?: SortOrder
-    userNotes?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
-  export type IntNullableListFilter<$PrismaModel = never> = {
-    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    has?: number | IntFieldRefInput<$PrismaModel> | null
-    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
-    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
+  export type RoadmapScalarRelationFilter = {
+    is?: RoadmapWhereInput
+    isNot?: RoadmapWhereInput
   }
 
-  export type CareerScalarRelationFilter = {
-    is?: CareerWhereInput
-    isNot?: CareerWhereInput
+  export type RoadmapEdgeListRelationFilter = {
+    every?: RoadmapEdgeWhereInput
+    some?: RoadmapEdgeWhereInput
+    none?: RoadmapEdgeWhereInput
   }
 
-  export type UserCareerProgressUserIdCareerIdCompoundUniqueInput = {
-    userId: string
-    careerId: string
+  export type RoadmapEdgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type UserCareerProgressCountOrderByAggregateInput = {
+  export type RoadmapNodeCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    careerId?: SortOrder
-    completedMilestones?: SortOrder
-    updatedAt?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    roadmapId?: SortOrder
   }
 
-  export type UserCareerProgressAvgOrderByAggregateInput = {
-    completedMilestones?: SortOrder
-  }
-
-  export type UserCareerProgressMaxOrderByAggregateInput = {
+  export type RoadmapNodeMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    careerId?: SortOrder
-    updatedAt?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    roadmapId?: SortOrder
   }
 
-  export type UserCareerProgressMinOrderByAggregateInput = {
+  export type RoadmapNodeMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    careerId?: SortOrder
-    updatedAt?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    roadmapId?: SortOrder
   }
 
-  export type UserCareerProgressSumOrderByAggregateInput = {
-    completedMilestones?: SortOrder
+  export type RoadmapNodeScalarRelationFilter = {
+    is?: RoadmapNodeWhereInput
+    isNot?: RoadmapNodeWhereInput
+  }
+
+  export type RoadmapEdgeParentIdChildIdCompoundUniqueInput = {
+    parentId: string
+    childId: string
+  }
+
+  export type RoadmapEdgeCountOrderByAggregateInput = {
+    parentId?: SortOrder
+    childId?: SortOrder
+  }
+
+  export type RoadmapEdgeMaxOrderByAggregateInput = {
+    parentId?: SortOrder
+    childId?: SortOrder
+  }
+
+  export type RoadmapEdgeMinOrderByAggregateInput = {
+    parentId?: SortOrder
+    childId?: SortOrder
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -20164,6 +21152,29 @@ export namespace Prisma {
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type AssessmentAttemptCountOrderByAggregateInput = {
     id?: SortOrder
@@ -20191,6 +21202,32 @@ export namespace Prisma {
     primary?: SortOrder
     secondary?: SortOrder
     createdAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type AssessmentAttemptScalarRelationFilter = {
@@ -20242,18 +21279,11 @@ export namespace Prisma {
     connect?: AssessmentAttemptWhereUniqueInput | AssessmentAttemptWhereUniqueInput[]
   }
 
-  export type UserCareerProgressCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
-    createMany?: UserCareerProgressCreateManyUserInputEnvelope
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-  }
-
-  export type CareerRoadmapCreateNestedManyWithoutUserInput = {
-    create?: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput> | CareerRoadmapCreateWithoutUserInput[] | CareerRoadmapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CareerRoadmapCreateOrConnectWithoutUserInput | CareerRoadmapCreateOrConnectWithoutUserInput[]
-    createMany?: CareerRoadmapCreateManyUserInputEnvelope
-    connect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
+  export type RoadmapCreateNestedManyWithoutUserInput = {
+    create?: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput> | RoadmapCreateWithoutUserInput[] | RoadmapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserInput | RoadmapCreateOrConnectWithoutUserInput[]
+    createMany?: RoadmapCreateManyUserInputEnvelope
+    connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
   }
 
   export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
@@ -20269,18 +21299,11 @@ export namespace Prisma {
     connect?: AssessmentAttemptWhereUniqueInput | AssessmentAttemptWhereUniqueInput[]
   }
 
-  export type UserCareerProgressUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
-    createMany?: UserCareerProgressCreateManyUserInputEnvelope
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-  }
-
-  export type CareerRoadmapUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput> | CareerRoadmapCreateWithoutUserInput[] | CareerRoadmapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CareerRoadmapCreateOrConnectWithoutUserInput | CareerRoadmapCreateOrConnectWithoutUserInput[]
-    createMany?: CareerRoadmapCreateManyUserInputEnvelope
-    connect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
+  export type RoadmapUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput> | RoadmapCreateWithoutUserInput[] | RoadmapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserInput | RoadmapCreateOrConnectWithoutUserInput[]
+    createMany?: RoadmapCreateManyUserInputEnvelope
+    connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -20323,32 +21346,18 @@ export namespace Prisma {
     deleteMany?: AssessmentAttemptScalarWhereInput | AssessmentAttemptScalarWhereInput[]
   }
 
-  export type UserCareerProgressUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
-    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutUserInput | UserCareerProgressUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserCareerProgressCreateManyUserInputEnvelope
-    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    update?: UserCareerProgressUpdateWithWhereUniqueWithoutUserInput | UserCareerProgressUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutUserInput | UserCareerProgressUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
-  }
-
-  export type CareerRoadmapUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput> | CareerRoadmapCreateWithoutUserInput[] | CareerRoadmapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CareerRoadmapCreateOrConnectWithoutUserInput | CareerRoadmapCreateOrConnectWithoutUserInput[]
-    upsert?: CareerRoadmapUpsertWithWhereUniqueWithoutUserInput | CareerRoadmapUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CareerRoadmapCreateManyUserInputEnvelope
-    set?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    disconnect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    delete?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    connect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    update?: CareerRoadmapUpdateWithWhereUniqueWithoutUserInput | CareerRoadmapUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CareerRoadmapUpdateManyWithWhereWithoutUserInput | CareerRoadmapUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CareerRoadmapScalarWhereInput | CareerRoadmapScalarWhereInput[]
+  export type RoadmapUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput> | RoadmapCreateWithoutUserInput[] | RoadmapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserInput | RoadmapCreateOrConnectWithoutUserInput[]
+    upsert?: RoadmapUpsertWithWhereUniqueWithoutUserInput | RoadmapUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RoadmapCreateManyUserInputEnvelope
+    set?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    disconnect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    delete?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    update?: RoadmapUpdateWithWhereUniqueWithoutUserInput | RoadmapUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RoadmapUpdateManyWithWhereWithoutUserInput | RoadmapUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
   }
 
   export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
@@ -20375,32 +21384,18 @@ export namespace Prisma {
     deleteMany?: AssessmentAttemptScalarWhereInput | AssessmentAttemptScalarWhereInput[]
   }
 
-  export type UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
-    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutUserInput | UserCareerProgressUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserCareerProgressCreateManyUserInputEnvelope
-    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    update?: UserCareerProgressUpdateWithWhereUniqueWithoutUserInput | UserCareerProgressUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutUserInput | UserCareerProgressUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
-  }
-
-  export type CareerRoadmapUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput> | CareerRoadmapCreateWithoutUserInput[] | CareerRoadmapUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CareerRoadmapCreateOrConnectWithoutUserInput | CareerRoadmapCreateOrConnectWithoutUserInput[]
-    upsert?: CareerRoadmapUpsertWithWhereUniqueWithoutUserInput | CareerRoadmapUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CareerRoadmapCreateManyUserInputEnvelope
-    set?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    disconnect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    delete?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    connect?: CareerRoadmapWhereUniqueInput | CareerRoadmapWhereUniqueInput[]
-    update?: CareerRoadmapUpdateWithWhereUniqueWithoutUserInput | CareerRoadmapUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CareerRoadmapUpdateManyWithWhereWithoutUserInput | CareerRoadmapUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CareerRoadmapScalarWhereInput | CareerRoadmapScalarWhereInput[]
+  export type RoadmapUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput> | RoadmapCreateWithoutUserInput[] | RoadmapUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserInput | RoadmapCreateOrConnectWithoutUserInput[]
+    upsert?: RoadmapUpsertWithWhereUniqueWithoutUserInput | RoadmapUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RoadmapCreateManyUserInputEnvelope
+    set?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    disconnect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    delete?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+    update?: RoadmapUpdateWithWhereUniqueWithoutUserInput | RoadmapUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RoadmapUpdateManyWithWhereWithoutUserInput | RoadmapUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
   }
 
   export type ProfileCreateinterestsInput = {
@@ -20558,57 +21553,29 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type UserCareerProgressCreateNestedManyWithoutCareerInput = {
-    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
-    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-  }
-
-  export type UserCareerProgressUncheckedCreateNestedManyWithoutCareerInput = {
-    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
-    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-  }
-
   export type CareerUpdatemilestonesInput = {
     set?: string[]
     push?: string | string[]
-  }
-
-  export type UserCareerProgressUpdateManyWithoutCareerNestedInput = {
-    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
-    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput | UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput[]
-    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
-    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    update?: UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput | UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput[]
-    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutCareerInput | UserCareerProgressUpdateManyWithWhereWithoutCareerInput[]
-    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
-  }
-
-  export type UserCareerProgressUncheckedUpdateManyWithoutCareerNestedInput = {
-    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
-    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
-    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput | UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput[]
-    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
-    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
-    update?: UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput | UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput[]
-    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutCareerInput | UserCareerProgressUpdateManyWithWhereWithoutCareerInput[]
-    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutRoadmapsInput = {
     create?: XOR<UserCreateWithoutRoadmapsInput, UserUncheckedCreateWithoutRoadmapsInput>
     connectOrCreate?: UserCreateOrConnectWithoutRoadmapsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type RoadmapNodeCreateNestedManyWithoutRoadmapInput = {
+    create?: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput> | RoadmapNodeCreateWithoutRoadmapInput[] | RoadmapNodeUncheckedCreateWithoutRoadmapInput[]
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutRoadmapInput | RoadmapNodeCreateOrConnectWithoutRoadmapInput[]
+    createMany?: RoadmapNodeCreateManyRoadmapInputEnvelope
+    connect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+  }
+
+  export type RoadmapNodeUncheckedCreateNestedManyWithoutRoadmapInput = {
+    create?: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput> | RoadmapNodeCreateWithoutRoadmapInput[] | RoadmapNodeUncheckedCreateWithoutRoadmapInput[]
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutRoadmapInput | RoadmapNodeCreateOrConnectWithoutRoadmapInput[]
+    createMany?: RoadmapNodeCreateManyRoadmapInputEnvelope
+    connect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutRoadmapsNestedInput = {
@@ -20619,41 +21586,158 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRoadmapsInput, UserUpdateWithoutRoadmapsInput>, UserUncheckedUpdateWithoutRoadmapsInput>
   }
 
-  export type UserCareerProgressCreatecompletedMilestonesInput = {
-    set: number[]
+  export type RoadmapNodeUpdateManyWithoutRoadmapNestedInput = {
+    create?: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput> | RoadmapNodeCreateWithoutRoadmapInput[] | RoadmapNodeUncheckedCreateWithoutRoadmapInput[]
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutRoadmapInput | RoadmapNodeCreateOrConnectWithoutRoadmapInput[]
+    upsert?: RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput | RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput[]
+    createMany?: RoadmapNodeCreateManyRoadmapInputEnvelope
+    set?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    disconnect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    delete?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    connect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    update?: RoadmapNodeUpdateWithWhereUniqueWithoutRoadmapInput | RoadmapNodeUpdateWithWhereUniqueWithoutRoadmapInput[]
+    updateMany?: RoadmapNodeUpdateManyWithWhereWithoutRoadmapInput | RoadmapNodeUpdateManyWithWhereWithoutRoadmapInput[]
+    deleteMany?: RoadmapNodeScalarWhereInput | RoadmapNodeScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutCareerProgressInput = {
-    create?: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCareerProgressInput
-    connect?: UserWhereUniqueInput
+  export type RoadmapNodeUncheckedUpdateManyWithoutRoadmapNestedInput = {
+    create?: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput> | RoadmapNodeCreateWithoutRoadmapInput[] | RoadmapNodeUncheckedCreateWithoutRoadmapInput[]
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutRoadmapInput | RoadmapNodeCreateOrConnectWithoutRoadmapInput[]
+    upsert?: RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput | RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput[]
+    createMany?: RoadmapNodeCreateManyRoadmapInputEnvelope
+    set?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    disconnect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    delete?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    connect?: RoadmapNodeWhereUniqueInput | RoadmapNodeWhereUniqueInput[]
+    update?: RoadmapNodeUpdateWithWhereUniqueWithoutRoadmapInput | RoadmapNodeUpdateWithWhereUniqueWithoutRoadmapInput[]
+    updateMany?: RoadmapNodeUpdateManyWithWhereWithoutRoadmapInput | RoadmapNodeUpdateManyWithWhereWithoutRoadmapInput[]
+    deleteMany?: RoadmapNodeScalarWhereInput | RoadmapNodeScalarWhereInput[]
   }
 
-  export type CareerCreateNestedOneWithoutUserProgressInput = {
-    create?: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
-    connectOrCreate?: CareerCreateOrConnectWithoutUserProgressInput
-    connect?: CareerWhereUniqueInput
+  export type RoadmapCreateNestedOneWithoutNodesInput = {
+    create?: XOR<RoadmapCreateWithoutNodesInput, RoadmapUncheckedCreateWithoutNodesInput>
+    connectOrCreate?: RoadmapCreateOrConnectWithoutNodesInput
+    connect?: RoadmapWhereUniqueInput
   }
 
-  export type UserCareerProgressUpdatecompletedMilestonesInput = {
-    set?: number[]
-    push?: number | number[]
+  export type RoadmapEdgeCreateNestedManyWithoutChildInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput> | RoadmapEdgeCreateWithoutChildInput[] | RoadmapEdgeUncheckedCreateWithoutChildInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutChildInput | RoadmapEdgeCreateOrConnectWithoutChildInput[]
+    createMany?: RoadmapEdgeCreateManyChildInputEnvelope
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutCareerProgressNestedInput = {
-    create?: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCareerProgressInput
-    upsert?: UserUpsertWithoutCareerProgressInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCareerProgressInput, UserUpdateWithoutCareerProgressInput>, UserUncheckedUpdateWithoutCareerProgressInput>
+  export type RoadmapEdgeCreateNestedManyWithoutParentInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput> | RoadmapEdgeCreateWithoutParentInput[] | RoadmapEdgeUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutParentInput | RoadmapEdgeCreateOrConnectWithoutParentInput[]
+    createMany?: RoadmapEdgeCreateManyParentInputEnvelope
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
   }
 
-  export type CareerUpdateOneRequiredWithoutUserProgressNestedInput = {
-    create?: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
-    connectOrCreate?: CareerCreateOrConnectWithoutUserProgressInput
-    upsert?: CareerUpsertWithoutUserProgressInput
-    connect?: CareerWhereUniqueInput
-    update?: XOR<XOR<CareerUpdateToOneWithWhereWithoutUserProgressInput, CareerUpdateWithoutUserProgressInput>, CareerUncheckedUpdateWithoutUserProgressInput>
+  export type RoadmapEdgeUncheckedCreateNestedManyWithoutChildInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput> | RoadmapEdgeCreateWithoutChildInput[] | RoadmapEdgeUncheckedCreateWithoutChildInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutChildInput | RoadmapEdgeCreateOrConnectWithoutChildInput[]
+    createMany?: RoadmapEdgeCreateManyChildInputEnvelope
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+  }
+
+  export type RoadmapEdgeUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput> | RoadmapEdgeCreateWithoutParentInput[] | RoadmapEdgeUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutParentInput | RoadmapEdgeCreateOrConnectWithoutParentInput[]
+    createMany?: RoadmapEdgeCreateManyParentInputEnvelope
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+  }
+
+  export type RoadmapUpdateOneRequiredWithoutNodesNestedInput = {
+    create?: XOR<RoadmapCreateWithoutNodesInput, RoadmapUncheckedCreateWithoutNodesInput>
+    connectOrCreate?: RoadmapCreateOrConnectWithoutNodesInput
+    upsert?: RoadmapUpsertWithoutNodesInput
+    connect?: RoadmapWhereUniqueInput
+    update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutNodesInput, RoadmapUpdateWithoutNodesInput>, RoadmapUncheckedUpdateWithoutNodesInput>
+  }
+
+  export type RoadmapEdgeUpdateManyWithoutChildNestedInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput> | RoadmapEdgeCreateWithoutChildInput[] | RoadmapEdgeUncheckedCreateWithoutChildInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutChildInput | RoadmapEdgeCreateOrConnectWithoutChildInput[]
+    upsert?: RoadmapEdgeUpsertWithWhereUniqueWithoutChildInput | RoadmapEdgeUpsertWithWhereUniqueWithoutChildInput[]
+    createMany?: RoadmapEdgeCreateManyChildInputEnvelope
+    set?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    disconnect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    delete?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    update?: RoadmapEdgeUpdateWithWhereUniqueWithoutChildInput | RoadmapEdgeUpdateWithWhereUniqueWithoutChildInput[]
+    updateMany?: RoadmapEdgeUpdateManyWithWhereWithoutChildInput | RoadmapEdgeUpdateManyWithWhereWithoutChildInput[]
+    deleteMany?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+  }
+
+  export type RoadmapEdgeUpdateManyWithoutParentNestedInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput> | RoadmapEdgeCreateWithoutParentInput[] | RoadmapEdgeUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutParentInput | RoadmapEdgeCreateOrConnectWithoutParentInput[]
+    upsert?: RoadmapEdgeUpsertWithWhereUniqueWithoutParentInput | RoadmapEdgeUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: RoadmapEdgeCreateManyParentInputEnvelope
+    set?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    disconnect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    delete?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    update?: RoadmapEdgeUpdateWithWhereUniqueWithoutParentInput | RoadmapEdgeUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: RoadmapEdgeUpdateManyWithWhereWithoutParentInput | RoadmapEdgeUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+  }
+
+  export type RoadmapEdgeUncheckedUpdateManyWithoutChildNestedInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput> | RoadmapEdgeCreateWithoutChildInput[] | RoadmapEdgeUncheckedCreateWithoutChildInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutChildInput | RoadmapEdgeCreateOrConnectWithoutChildInput[]
+    upsert?: RoadmapEdgeUpsertWithWhereUniqueWithoutChildInput | RoadmapEdgeUpsertWithWhereUniqueWithoutChildInput[]
+    createMany?: RoadmapEdgeCreateManyChildInputEnvelope
+    set?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    disconnect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    delete?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    update?: RoadmapEdgeUpdateWithWhereUniqueWithoutChildInput | RoadmapEdgeUpdateWithWhereUniqueWithoutChildInput[]
+    updateMany?: RoadmapEdgeUpdateManyWithWhereWithoutChildInput | RoadmapEdgeUpdateManyWithWhereWithoutChildInput[]
+    deleteMany?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+  }
+
+  export type RoadmapEdgeUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput> | RoadmapEdgeCreateWithoutParentInput[] | RoadmapEdgeUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: RoadmapEdgeCreateOrConnectWithoutParentInput | RoadmapEdgeCreateOrConnectWithoutParentInput[]
+    upsert?: RoadmapEdgeUpsertWithWhereUniqueWithoutParentInput | RoadmapEdgeUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: RoadmapEdgeCreateManyParentInputEnvelope
+    set?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    disconnect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    delete?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    connect?: RoadmapEdgeWhereUniqueInput | RoadmapEdgeWhereUniqueInput[]
+    update?: RoadmapEdgeUpdateWithWhereUniqueWithoutParentInput | RoadmapEdgeUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: RoadmapEdgeUpdateManyWithWhereWithoutParentInput | RoadmapEdgeUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+  }
+
+  export type RoadmapNodeCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<RoadmapNodeCreateWithoutChildrenInput, RoadmapNodeUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutChildrenInput
+    connect?: RoadmapNodeWhereUniqueInput
+  }
+
+  export type RoadmapNodeCreateNestedOneWithoutParentsInput = {
+    create?: XOR<RoadmapNodeCreateWithoutParentsInput, RoadmapNodeUncheckedCreateWithoutParentsInput>
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutParentsInput
+    connect?: RoadmapNodeWhereUniqueInput
+  }
+
+  export type RoadmapNodeUpdateOneRequiredWithoutChildrenNestedInput = {
+    create?: XOR<RoadmapNodeCreateWithoutChildrenInput, RoadmapNodeUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutChildrenInput
+    upsert?: RoadmapNodeUpsertWithoutChildrenInput
+    connect?: RoadmapNodeWhereUniqueInput
+    update?: XOR<XOR<RoadmapNodeUpdateToOneWithWhereWithoutChildrenInput, RoadmapNodeUpdateWithoutChildrenInput>, RoadmapNodeUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type RoadmapNodeUpdateOneRequiredWithoutParentsNestedInput = {
+    create?: XOR<RoadmapNodeCreateWithoutParentsInput, RoadmapNodeUncheckedCreateWithoutParentsInput>
+    connectOrCreate?: RoadmapNodeCreateOrConnectWithoutParentsInput
+    upsert?: RoadmapNodeUpsertWithoutParentsInput
+    connect?: RoadmapNodeWhereUniqueInput
+    update?: XOR<XOR<RoadmapNodeUpdateToOneWithWhereWithoutParentsInput, RoadmapNodeUpdateWithoutParentsInput>, RoadmapNodeUncheckedUpdateWithoutParentsInput>
   }
 
   export type QuizSectionCreateNestedManyWithoutQuizInput = {
@@ -21307,29 +22391,6 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
-  export type NestedJsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
@@ -21368,6 +22429,29 @@ export namespace Prisma {
     | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
   export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -21443,59 +22527,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserCareerProgressCreateWithoutUserInput = {
+  export type RoadmapCreateWithoutUserInput = {
     id?: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-    career: CareerCreateNestedOneWithoutUserProgressInput
-  }
-
-  export type UserCareerProgressUncheckedCreateWithoutUserInput = {
-    id?: string
-    careerId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-  }
-
-  export type UserCareerProgressCreateOrConnectWithoutUserInput = {
-    where: UserCareerProgressWhereUniqueInput
-    create: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserCareerProgressCreateManyUserInputEnvelope = {
-    data: UserCareerProgressCreateManyUserInput | UserCareerProgressCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CareerRoadmapCreateWithoutUserInput = {
-    id?: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
+    title: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    nodes?: RoadmapNodeCreateNestedManyWithoutRoadmapInput
   }
 
-  export type CareerRoadmapUncheckedCreateWithoutUserInput = {
+  export type RoadmapUncheckedCreateWithoutUserInput = {
     id?: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
+    title: string
     createdAt?: Date | string
-    updatedAt?: Date | string
+    nodes?: RoadmapNodeUncheckedCreateNestedManyWithoutRoadmapInput
   }
 
-  export type CareerRoadmapCreateOrConnectWithoutUserInput = {
-    where: CareerRoadmapWhereUniqueInput
-    create: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput>
+  export type RoadmapCreateOrConnectWithoutUserInput = {
+    where: RoadmapWhereUniqueInput
+    create: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput>
   }
 
-  export type CareerRoadmapCreateManyUserInputEnvelope = {
-    data: CareerRoadmapCreateManyUserInput | CareerRoadmapCreateManyUserInput[]
+  export type RoadmapCreateManyUserInputEnvelope = {
+    data: RoadmapCreateManyUserInput | RoadmapCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -21563,62 +22615,30 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AssessmentAttempt"> | Date | string
   }
 
-  export type UserCareerProgressUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserCareerProgressWhereUniqueInput
-    update: XOR<UserCareerProgressUpdateWithoutUserInput, UserCareerProgressUncheckedUpdateWithoutUserInput>
-    create: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput>
+  export type RoadmapUpsertWithWhereUniqueWithoutUserInput = {
+    where: RoadmapWhereUniqueInput
+    update: XOR<RoadmapUpdateWithoutUserInput, RoadmapUncheckedUpdateWithoutUserInput>
+    create: XOR<RoadmapCreateWithoutUserInput, RoadmapUncheckedCreateWithoutUserInput>
   }
 
-  export type UserCareerProgressUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserCareerProgressWhereUniqueInput
-    data: XOR<UserCareerProgressUpdateWithoutUserInput, UserCareerProgressUncheckedUpdateWithoutUserInput>
+  export type RoadmapUpdateWithWhereUniqueWithoutUserInput = {
+    where: RoadmapWhereUniqueInput
+    data: XOR<RoadmapUpdateWithoutUserInput, RoadmapUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserCareerProgressUpdateManyWithWhereWithoutUserInput = {
-    where: UserCareerProgressScalarWhereInput
-    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyWithoutUserInput>
+  export type RoadmapUpdateManyWithWhereWithoutUserInput = {
+    where: RoadmapScalarWhereInput
+    data: XOR<RoadmapUpdateManyMutationInput, RoadmapUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type UserCareerProgressScalarWhereInput = {
-    AND?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
-    OR?: UserCareerProgressScalarWhereInput[]
-    NOT?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
-    id?: StringFilter<"UserCareerProgress"> | string
-    userId?: StringFilter<"UserCareerProgress"> | string
-    careerId?: StringFilter<"UserCareerProgress"> | string
-    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
-    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
-  }
-
-  export type CareerRoadmapUpsertWithWhereUniqueWithoutUserInput = {
-    where: CareerRoadmapWhereUniqueInput
-    update: XOR<CareerRoadmapUpdateWithoutUserInput, CareerRoadmapUncheckedUpdateWithoutUserInput>
-    create: XOR<CareerRoadmapCreateWithoutUserInput, CareerRoadmapUncheckedCreateWithoutUserInput>
-  }
-
-  export type CareerRoadmapUpdateWithWhereUniqueWithoutUserInput = {
-    where: CareerRoadmapWhereUniqueInput
-    data: XOR<CareerRoadmapUpdateWithoutUserInput, CareerRoadmapUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CareerRoadmapUpdateManyWithWhereWithoutUserInput = {
-    where: CareerRoadmapScalarWhereInput
-    data: XOR<CareerRoadmapUpdateManyMutationInput, CareerRoadmapUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CareerRoadmapScalarWhereInput = {
-    AND?: CareerRoadmapScalarWhereInput | CareerRoadmapScalarWhereInput[]
-    OR?: CareerRoadmapScalarWhereInput[]
-    NOT?: CareerRoadmapScalarWhereInput | CareerRoadmapScalarWhereInput[]
-    id?: StringFilter<"CareerRoadmap"> | string
-    userId?: StringFilter<"CareerRoadmap"> | string
-    roadmapTitle?: StringFilter<"CareerRoadmap"> | string
-    summary?: StringFilter<"CareerRoadmap"> | string
-    estimatedTimeline?: StringFilter<"CareerRoadmap"> | string
-    skillsToLearn?: JsonFilter<"CareerRoadmap">
-    userNotes?: StringNullableFilter<"CareerRoadmap"> | string | null
-    createdAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
-    updatedAt?: DateTimeFilter<"CareerRoadmap"> | Date | string
+  export type RoadmapScalarWhereInput = {
+    AND?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
+    OR?: RoadmapScalarWhereInput[]
+    NOT?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
+    id?: StringFilter<"Roadmap"> | string
+    title?: StringFilter<"Roadmap"> | string
+    userId?: StringFilter<"Roadmap"> | string
+    createdAt?: DateTimeFilter<"Roadmap"> | Date | string
   }
 
   export type UserCreateWithoutProfileInput = {
@@ -21628,8 +22648,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -21639,8 +22658,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapUncheckedCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -21688,8 +22706,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -21699,8 +22716,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUncheckedUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSkillUpsertWithWhereUniqueWithoutProfileInput = {
@@ -21871,46 +22887,6 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UserCareerProgressCreateWithoutCareerInput = {
-    id?: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCareerProgressInput
-  }
-
-  export type UserCareerProgressUncheckedCreateWithoutCareerInput = {
-    id?: string
-    userId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-  }
-
-  export type UserCareerProgressCreateOrConnectWithoutCareerInput = {
-    where: UserCareerProgressWhereUniqueInput
-    create: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput>
-  }
-
-  export type UserCareerProgressCreateManyCareerInputEnvelope = {
-    data: UserCareerProgressCreateManyCareerInput | UserCareerProgressCreateManyCareerInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput = {
-    where: UserCareerProgressWhereUniqueInput
-    update: XOR<UserCareerProgressUpdateWithoutCareerInput, UserCareerProgressUncheckedUpdateWithoutCareerInput>
-    create: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput>
-  }
-
-  export type UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput = {
-    where: UserCareerProgressWhereUniqueInput
-    data: XOR<UserCareerProgressUpdateWithoutCareerInput, UserCareerProgressUncheckedUpdateWithoutCareerInput>
-  }
-
-  export type UserCareerProgressUpdateManyWithWhereWithoutCareerInput = {
-    where: UserCareerProgressScalarWhereInput
-    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyWithoutCareerInput>
-  }
-
   export type UserCreateWithoutRoadmapsInput = {
     id?: string
     email: string
@@ -21919,7 +22895,6 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoadmapsInput = {
@@ -21930,12 +22905,37 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
-    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoadmapsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutRoadmapsInput, UserUncheckedCreateWithoutRoadmapsInput>
+  }
+
+  export type RoadmapNodeCreateWithoutRoadmapInput = {
+    id?: string
+    title: string
+    description?: string | null
+    parents?: RoadmapEdgeCreateNestedManyWithoutChildInput
+    children?: RoadmapEdgeCreateNestedManyWithoutParentInput
+  }
+
+  export type RoadmapNodeUncheckedCreateWithoutRoadmapInput = {
+    id?: string
+    title: string
+    description?: string | null
+    parents?: RoadmapEdgeUncheckedCreateNestedManyWithoutChildInput
+    children?: RoadmapEdgeUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type RoadmapNodeCreateOrConnectWithoutRoadmapInput = {
+    where: RoadmapNodeWhereUniqueInput
+    create: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput>
+  }
+
+  export type RoadmapNodeCreateManyRoadmapInputEnvelope = {
+    data: RoadmapNodeCreateManyRoadmapInput | RoadmapNodeCreateManyRoadmapInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutRoadmapsInput = {
@@ -21957,7 +22957,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoadmapsInput = {
@@ -21968,143 +22967,248 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutCareerProgressInput = {
+  export type RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput = {
+    where: RoadmapNodeWhereUniqueInput
+    update: XOR<RoadmapNodeUpdateWithoutRoadmapInput, RoadmapNodeUncheckedUpdateWithoutRoadmapInput>
+    create: XOR<RoadmapNodeCreateWithoutRoadmapInput, RoadmapNodeUncheckedCreateWithoutRoadmapInput>
+  }
+
+  export type RoadmapNodeUpdateWithWhereUniqueWithoutRoadmapInput = {
+    where: RoadmapNodeWhereUniqueInput
+    data: XOR<RoadmapNodeUpdateWithoutRoadmapInput, RoadmapNodeUncheckedUpdateWithoutRoadmapInput>
+  }
+
+  export type RoadmapNodeUpdateManyWithWhereWithoutRoadmapInput = {
+    where: RoadmapNodeScalarWhereInput
+    data: XOR<RoadmapNodeUpdateManyMutationInput, RoadmapNodeUncheckedUpdateManyWithoutRoadmapInput>
+  }
+
+  export type RoadmapNodeScalarWhereInput = {
+    AND?: RoadmapNodeScalarWhereInput | RoadmapNodeScalarWhereInput[]
+    OR?: RoadmapNodeScalarWhereInput[]
+    NOT?: RoadmapNodeScalarWhereInput | RoadmapNodeScalarWhereInput[]
+    id?: StringFilter<"RoadmapNode"> | string
+    title?: StringFilter<"RoadmapNode"> | string
+    description?: StringNullableFilter<"RoadmapNode"> | string | null
+    roadmapId?: StringFilter<"RoadmapNode"> | string
+  }
+
+  export type RoadmapCreateWithoutNodesInput = {
     id?: string
-    email: string
-    passwordHash?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    profile?: ProfileCreateNestedOneWithoutUserInput
-    assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCareerProgressInput = {
-    id?: string
-    email: string
-    passwordHash?: string | null
-    role?: $Enums.Role
-    createdAt?: Date | string
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCareerProgressInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
-  }
-
-  export type CareerCreateWithoutUserProgressInput = {
-    id?: string
-    slug: string
     title: string
-    industry: string
-    description: string
-    icon?: string | null
-    color?: string | null
-    gradient?: string | null
-    border?: string | null
-    milestones?: CareerCreatemilestonesInput | string[]
     createdAt?: Date | string
-    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutRoadmapsInput
   }
 
-  export type CareerUncheckedCreateWithoutUserProgressInput = {
+  export type RoadmapUncheckedCreateWithoutNodesInput = {
     id?: string
-    slug: string
     title: string
-    industry: string
-    description: string
-    icon?: string | null
-    color?: string | null
-    gradient?: string | null
-    border?: string | null
-    milestones?: CareerCreatemilestonesInput | string[]
+    userId: string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type CareerCreateOrConnectWithoutUserProgressInput = {
-    where: CareerWhereUniqueInput
-    create: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
+  export type RoadmapCreateOrConnectWithoutNodesInput = {
+    where: RoadmapWhereUniqueInput
+    create: XOR<RoadmapCreateWithoutNodesInput, RoadmapUncheckedCreateWithoutNodesInput>
   }
 
-  export type UserUpsertWithoutCareerProgressInput = {
-    update: XOR<UserUpdateWithoutCareerProgressInput, UserUncheckedUpdateWithoutCareerProgressInput>
-    create: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
-    where?: UserWhereInput
+  export type RoadmapEdgeCreateWithoutChildInput = {
+    parent: RoadmapNodeCreateNestedOneWithoutChildrenInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutCareerProgressInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCareerProgressInput, UserUncheckedUpdateWithoutCareerProgressInput>
+  export type RoadmapEdgeUncheckedCreateWithoutChildInput = {
+    parentId: string
   }
 
-  export type UserUpdateWithoutCareerProgressInput = {
+  export type RoadmapEdgeCreateOrConnectWithoutChildInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    create: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput>
+  }
+
+  export type RoadmapEdgeCreateManyChildInputEnvelope = {
+    data: RoadmapEdgeCreateManyChildInput | RoadmapEdgeCreateManyChildInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoadmapEdgeCreateWithoutParentInput = {
+    child: RoadmapNodeCreateNestedOneWithoutParentsInput
+  }
+
+  export type RoadmapEdgeUncheckedCreateWithoutParentInput = {
+    childId: string
+  }
+
+  export type RoadmapEdgeCreateOrConnectWithoutParentInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    create: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput>
+  }
+
+  export type RoadmapEdgeCreateManyParentInputEnvelope = {
+    data: RoadmapEdgeCreateManyParentInput | RoadmapEdgeCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoadmapUpsertWithoutNodesInput = {
+    update: XOR<RoadmapUpdateWithoutNodesInput, RoadmapUncheckedUpdateWithoutNodesInput>
+    create: XOR<RoadmapCreateWithoutNodesInput, RoadmapUncheckedCreateWithoutNodesInput>
+    where?: RoadmapWhereInput
+  }
+
+  export type RoadmapUpdateToOneWithWhereWithoutNodesInput = {
+    where?: RoadmapWhereInput
+    data: XOR<RoadmapUpdateWithoutNodesInput, RoadmapUncheckedUpdateWithoutNodesInput>
+  }
+
+  export type RoadmapUpdateWithoutNodesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneWithoutUserNestedInput
-    assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCareerProgressInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type CareerUpsertWithoutUserProgressInput = {
-    update: XOR<CareerUpdateWithoutUserProgressInput, CareerUncheckedUpdateWithoutUserProgressInput>
-    create: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
-    where?: CareerWhereInput
-  }
-
-  export type CareerUpdateToOneWithWhereWithoutUserProgressInput = {
-    where?: CareerWhereInput
-    data: XOR<CareerUpdateWithoutUserProgressInput, CareerUncheckedUpdateWithoutUserProgressInput>
-  }
-
-  export type CareerUpdateWithoutUserProgressInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    industry?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    gradient?: NullableStringFieldUpdateOperationsInput | string | null
-    border?: NullableStringFieldUpdateOperationsInput | string | null
-    milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRoadmapsNestedInput
   }
 
-  export type CareerUncheckedUpdateWithoutUserProgressInput = {
+  export type RoadmapUncheckedUpdateWithoutNodesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
-    industry?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    color?: NullableStringFieldUpdateOperationsInput | string | null
-    gradient?: NullableStringFieldUpdateOperationsInput | string | null
-    border?: NullableStringFieldUpdateOperationsInput | string | null
-    milestones?: CareerUpdatemilestonesInput | string[]
+    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoadmapEdgeUpsertWithWhereUniqueWithoutChildInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    update: XOR<RoadmapEdgeUpdateWithoutChildInput, RoadmapEdgeUncheckedUpdateWithoutChildInput>
+    create: XOR<RoadmapEdgeCreateWithoutChildInput, RoadmapEdgeUncheckedCreateWithoutChildInput>
+  }
+
+  export type RoadmapEdgeUpdateWithWhereUniqueWithoutChildInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    data: XOR<RoadmapEdgeUpdateWithoutChildInput, RoadmapEdgeUncheckedUpdateWithoutChildInput>
+  }
+
+  export type RoadmapEdgeUpdateManyWithWhereWithoutChildInput = {
+    where: RoadmapEdgeScalarWhereInput
+    data: XOR<RoadmapEdgeUpdateManyMutationInput, RoadmapEdgeUncheckedUpdateManyWithoutChildInput>
+  }
+
+  export type RoadmapEdgeScalarWhereInput = {
+    AND?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+    OR?: RoadmapEdgeScalarWhereInput[]
+    NOT?: RoadmapEdgeScalarWhereInput | RoadmapEdgeScalarWhereInput[]
+    parentId?: StringFilter<"RoadmapEdge"> | string
+    childId?: StringFilter<"RoadmapEdge"> | string
+  }
+
+  export type RoadmapEdgeUpsertWithWhereUniqueWithoutParentInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    update: XOR<RoadmapEdgeUpdateWithoutParentInput, RoadmapEdgeUncheckedUpdateWithoutParentInput>
+    create: XOR<RoadmapEdgeCreateWithoutParentInput, RoadmapEdgeUncheckedCreateWithoutParentInput>
+  }
+
+  export type RoadmapEdgeUpdateWithWhereUniqueWithoutParentInput = {
+    where: RoadmapEdgeWhereUniqueInput
+    data: XOR<RoadmapEdgeUpdateWithoutParentInput, RoadmapEdgeUncheckedUpdateWithoutParentInput>
+  }
+
+  export type RoadmapEdgeUpdateManyWithWhereWithoutParentInput = {
+    where: RoadmapEdgeScalarWhereInput
+    data: XOR<RoadmapEdgeUpdateManyMutationInput, RoadmapEdgeUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type RoadmapNodeCreateWithoutChildrenInput = {
+    id?: string
+    title: string
+    description?: string | null
+    roadmap: RoadmapCreateNestedOneWithoutNodesInput
+    parents?: RoadmapEdgeCreateNestedManyWithoutChildInput
+  }
+
+  export type RoadmapNodeUncheckedCreateWithoutChildrenInput = {
+    id?: string
+    title: string
+    description?: string | null
+    roadmapId: string
+    parents?: RoadmapEdgeUncheckedCreateNestedManyWithoutChildInput
+  }
+
+  export type RoadmapNodeCreateOrConnectWithoutChildrenInput = {
+    where: RoadmapNodeWhereUniqueInput
+    create: XOR<RoadmapNodeCreateWithoutChildrenInput, RoadmapNodeUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type RoadmapNodeCreateWithoutParentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    roadmap: RoadmapCreateNestedOneWithoutNodesInput
+    children?: RoadmapEdgeCreateNestedManyWithoutParentInput
+  }
+
+  export type RoadmapNodeUncheckedCreateWithoutParentsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    roadmapId: string
+    children?: RoadmapEdgeUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type RoadmapNodeCreateOrConnectWithoutParentsInput = {
+    where: RoadmapNodeWhereUniqueInput
+    create: XOR<RoadmapNodeCreateWithoutParentsInput, RoadmapNodeUncheckedCreateWithoutParentsInput>
+  }
+
+  export type RoadmapNodeUpsertWithoutChildrenInput = {
+    update: XOR<RoadmapNodeUpdateWithoutChildrenInput, RoadmapNodeUncheckedUpdateWithoutChildrenInput>
+    create: XOR<RoadmapNodeCreateWithoutChildrenInput, RoadmapNodeUncheckedCreateWithoutChildrenInput>
+    where?: RoadmapNodeWhereInput
+  }
+
+  export type RoadmapNodeUpdateToOneWithWhereWithoutChildrenInput = {
+    where?: RoadmapNodeWhereInput
+    data: XOR<RoadmapNodeUpdateWithoutChildrenInput, RoadmapNodeUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type RoadmapNodeUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmap?: RoadmapUpdateOneRequiredWithoutNodesNestedInput
+    parents?: RoadmapEdgeUpdateManyWithoutChildNestedInput
+  }
+
+  export type RoadmapNodeUncheckedUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmapId?: StringFieldUpdateOperationsInput | string
+    parents?: RoadmapEdgeUncheckedUpdateManyWithoutChildNestedInput
+  }
+
+  export type RoadmapNodeUpsertWithoutParentsInput = {
+    update: XOR<RoadmapNodeUpdateWithoutParentsInput, RoadmapNodeUncheckedUpdateWithoutParentsInput>
+    create: XOR<RoadmapNodeCreateWithoutParentsInput, RoadmapNodeUncheckedCreateWithoutParentsInput>
+    where?: RoadmapNodeWhereInput
+  }
+
+  export type RoadmapNodeUpdateToOneWithWhereWithoutParentsInput = {
+    where?: RoadmapNodeWhereInput
+    data: XOR<RoadmapNodeUpdateWithoutParentsInput, RoadmapNodeUncheckedUpdateWithoutParentsInput>
+  }
+
+  export type RoadmapNodeUpdateWithoutParentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmap?: RoadmapUpdateOneRequiredWithoutNodesNestedInput
+    children?: RoadmapEdgeUpdateManyWithoutParentNestedInput
+  }
+
+  export type RoadmapNodeUncheckedUpdateWithoutParentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    roadmapId?: StringFieldUpdateOperationsInput | string
+    children?: RoadmapEdgeUncheckedUpdateManyWithoutParentNestedInput
   }
 
   export type QuizSectionCreateWithoutQuizInput = {
@@ -22755,8 +23859,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
-    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssessmentAttemptsInput = {
@@ -22766,8 +23869,7 @@ export namespace Prisma {
     role?: $Enums.Role
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
-    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
-    roadmaps?: CareerRoadmapUncheckedCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssessmentAttemptsInput = {
@@ -22846,8 +23948,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssessmentAttemptsInput = {
@@ -22857,8 +23958,7 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
-    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
-    roadmaps?: CareerRoadmapUncheckedUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type QuizUpsertWithoutAssessmentAttemptsInput = {
@@ -23111,22 +24211,10 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type UserCareerProgressCreateManyUserInput = {
+  export type RoadmapCreateManyUserInput = {
     id?: string
-    careerId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
-  }
-
-  export type CareerRoadmapCreateManyUserInput = {
-    id?: string
-    roadmapTitle: string
-    summary: string
-    estimatedTimeline: string
-    skillsToLearn: JsonNullValueInput | InputJsonValue
-    userNotes?: string | null
+    title: string
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type AssessmentAttemptUpdateWithoutUserInput = {
@@ -23158,58 +24246,24 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCareerProgressUpdateWithoutUserInput = {
+  export type RoadmapUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    career?: CareerUpdateOneRequiredWithoutUserProgressNestedInput
-  }
-
-  export type UserCareerProgressUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    careerId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserCareerProgressUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    careerId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CareerRoadmapUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nodes?: RoadmapNodeUpdateManyWithoutRoadmapNestedInput
   }
 
-  export type CareerRoadmapUncheckedUpdateWithoutUserInput = {
+  export type RoadmapUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    nodes?: RoadmapNodeUncheckedUpdateManyWithoutRoadmapNestedInput
   }
 
-  export type CareerRoadmapUncheckedUpdateManyWithoutUserInput = {
+  export type RoadmapUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    roadmapTitle?: StringFieldUpdateOperationsInput | string
-    summary?: StringFieldUpdateOperationsInput | string
-    estimatedTimeline?: StringFieldUpdateOperationsInput | string
-    skillsToLearn?: JsonNullValueInput | InputJsonValue
-    userNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserSkillCreateManyProfileInput = {
@@ -23260,32 +24314,64 @@ export namespace Prisma {
     level?: IntFieldUpdateOperationsInput | number
   }
 
-  export type UserCareerProgressCreateManyCareerInput = {
+  export type RoadmapNodeCreateManyRoadmapInput = {
     id?: string
-    userId: string
-    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
-    updatedAt?: Date | string
+    title: string
+    description?: string | null
   }
 
-  export type UserCareerProgressUpdateWithoutCareerInput = {
+  export type RoadmapNodeUpdateWithoutRoadmapInput = {
     id?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCareerProgressNestedInput
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parents?: RoadmapEdgeUpdateManyWithoutChildNestedInput
+    children?: RoadmapEdgeUpdateManyWithoutParentNestedInput
   }
 
-  export type UserCareerProgressUncheckedUpdateWithoutCareerInput = {
+  export type RoadmapNodeUncheckedUpdateWithoutRoadmapInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parents?: RoadmapEdgeUncheckedUpdateManyWithoutChildNestedInput
+    children?: RoadmapEdgeUncheckedUpdateManyWithoutParentNestedInput
   }
 
-  export type UserCareerProgressUncheckedUpdateManyWithoutCareerInput = {
+  export type RoadmapNodeUncheckedUpdateManyWithoutRoadmapInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RoadmapEdgeCreateManyChildInput = {
+    parentId: string
+  }
+
+  export type RoadmapEdgeCreateManyParentInput = {
+    childId: string
+  }
+
+  export type RoadmapEdgeUpdateWithoutChildInput = {
+    parent?: RoadmapNodeUpdateOneRequiredWithoutChildrenNestedInput
+  }
+
+  export type RoadmapEdgeUncheckedUpdateWithoutChildInput = {
+    parentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoadmapEdgeUncheckedUpdateManyWithoutChildInput = {
+    parentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoadmapEdgeUpdateWithoutParentInput = {
+    child?: RoadmapNodeUpdateOneRequiredWithoutParentsNestedInput
+  }
+
+  export type RoadmapEdgeUncheckedUpdateWithoutParentInput = {
+    childId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoadmapEdgeUncheckedUpdateManyWithoutParentInput = {
+    childId?: StringFieldUpdateOperationsInput | string
   }
 
   export type QuizSectionCreateManyQuizInput = {
