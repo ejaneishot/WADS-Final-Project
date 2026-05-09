@@ -22,7 +22,6 @@ export default function ResumeOptimizer() {
     immediatelyRender: false,
   });
 
-  // Step 1: Extract PDF Text to Editor
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !editor) return;
@@ -44,21 +43,19 @@ export default function ResumeOptimizer() {
         return;
       }
       if (data.text) {
-        // Formats plain text into simple HTML paragraphs for Tiptap
         const html = data.text
           .split("\n\n")
           .map((p: string) => `<p>${p}</p>`)
           .join("");
         editor.commands.setContent(html);
       }
-    } catch (err) {
+    } catch {
       alert("Failed to upload PDF");
     } finally {
       setIsUploading(false);
     }
   };
 
-  // Step 2: Analyze Text from Editor
   const analyzeContent = async () => {
     if (!editor) return;
     setIsAnalyzing(true);
@@ -75,7 +72,7 @@ export default function ResumeOptimizer() {
         return;
       }
       setAnalysis(data);
-    } catch (err) {
+    } catch {
       alert("Analysis failed");
     } finally {
       setIsAnalyzing(false);
@@ -93,7 +90,7 @@ export default function ResumeOptimizer() {
         const regex = new RegExp(`(${escapeRe(item.phrase)})`, "gi");
         html = html.replace(
           regex,
-          `<span title="${item.reason}" class="bg-green-100 text-green-800 border-b-2 border-green-400 cursor-help">$1</span>`,
+          `<span title="${item.reason}" class="bg-emerald-400/20 text-emerald-200 border-b border-emerald-300 cursor-help">$1</span>`,
         );
       },
     );
@@ -102,7 +99,7 @@ export default function ResumeOptimizer() {
       const regex = new RegExp(`(${escapeRe(item.phrase)})`, "gi");
       html = html.replace(
         regex,
-        `<span title="${item.reason}" class="bg-red-100 text-red-800 border-b-2 border-red-400 cursor-help">$1</span>`,
+        `<span title="${item.reason}" class="bg-red-500/20 text-red-200 border-b border-red-300 cursor-help">$1</span>`,
       );
     });
 
@@ -110,15 +107,24 @@ export default function ResumeOptimizer() {
       <div className="space-y-6 animate-in fade-in duration-700">
         <h3 className="text-lg font-bold">Visual Feedback</h3>
         <div
-          className="prose max-w-none p-6 border rounded-xl bg-white shadow-sm"
+          className="max-w-none p-6 rounded-xl text-sm leading-relaxed"
+          style={{
+            background: "var(--surface-raised)",
+            border: "1px solid var(--border)",
+            color: "var(--text-primary)",
+          }}
           dangerouslySetInnerHTML={{ __html: html }}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-            <h4 className="font-bold text-emerald-900 mb-2">
-              Skills to Add (ATS)
-            </h4>
+          <div
+            className="p-4 rounded-lg"
+            style={{
+              background: "rgba(52,211,153,0.08)",
+              border: "1px solid var(--border-accent)",
+            }}
+          >
+            <h4 className="font-bold text-emerald-200 mb-2">Skills to Add (ATS)</h4>
             <div className="flex flex-wrap gap-2">
               {(Array.isArray(analysis.suggestedSkills)
                 ? analysis.suggestedSkills
@@ -126,18 +132,27 @@ export default function ResumeOptimizer() {
               ).map((s, i) => (
                 <span
                   key={i}
-                  className="bg-white px-2 py-1 rounded text-xs border border-emerald-300 text-emerald-700"
+                  className="px-2 py-1 rounded text-xs border"
+                  style={{
+                    background: "var(--surface-raised)",
+                    borderColor: "var(--border-accent)",
+                    color: "var(--accent)",
+                  }}
                 >
                   {s}
                 </span>
               ))}
             </div>
           </div>
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-            <h4 className="font-bold text-amber-900 mb-2">
-              Critical Improvements
-            </h4>
-            <p className="text-sm text-amber-800 leading-relaxed">
+          <div
+            className="p-4 rounded-lg"
+            style={{
+              background: "rgba(245,158,11,0.08)",
+              border: "1px solid rgba(245,158,11,0.25)",
+            }}
+          >
+            <h4 className="font-bold text-amber-200 mb-2">Critical Improvements</h4>
+            <p className="text-sm leading-relaxed text-amber-100">
               {analysis.criticalImprovements}
             </p>
           </div>
@@ -147,48 +162,73 @@ export default function ResumeOptimizer() {
   };
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex flex-wrap gap-4 items-center bg-slate-50 p-4 rounded-xl border">
-        <label className="flex-1 min-w-[200px]">
-          <span className="sr-only">Upload PDF</span>
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleFileUpload}
-            className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
-          />
-        </label>
+    <div className="container-page relative z-10 py-12 space-y-8">
+      <div className="absolute top-0 left-0 w-[280px] h-[280px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
 
-        <button
-          onClick={analyzeContent}
-          disabled={isAnalyzing || isUploading}
-          className="bg-blue-600 text-white px-8 py-2 rounded-full font-bold hover:bg-blue-700 disabled:bg-slate-300 transition-all"
-        >
-          {isAnalyzing ? "Analyzing..." : "Run AI Analysis"}
-        </button>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="section-label">Tools</p>
+          <h1 className="mt-2 text-3xl font-bold">Resume Optimizer</h1>
+          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+            Upload your CV and get AI feedback tailored for ATS screening.
+          </p>
+        </div>
+        <span className="badge">AI Analysis</span>
+      </div>
+
+      <div className="card-dark glow-ring">
+        <div className="flex flex-wrap gap-4 items-center">
+          <label className="flex-1 min-w-[220px]">
+            <span className="sr-only">Upload PDF</span>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileUpload}
+              className="block w-full text-sm cursor-pointer text-[var(--text-secondary)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border file:border-[var(--border-accent)] file:text-xs file:font-semibold file:bg-emerald-400/10 file:text-emerald-300 hover:file:bg-emerald-400/20"
+            />
+          </label>
+
+          <button
+            onClick={analyzeContent}
+            disabled={isAnalyzing || isUploading}
+            className="btn-accent"
+          >
+            {isAnalyzing ? "Analyzing..." : "Run AI Analysis"}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="font-semibold text-slate-700">Editor (Editable)</h2>
+            <h2 className="font-semibold">Editor (Editable)</h2>
             {isUploading && (
-              <span className="text-xs text-blue-500 animate-pulse">
+              <span className="text-xs animate-pulse text-emerald-300">
                 Extracting text...
               </span>
             )}
           </div>
-          <div className="border-2 border-slate-200 rounded-2xl p-6 bg-white min-h-[500px] focus-within:border-blue-400 transition-colors">
-            <EditorContent editor={editor} className="outline-none" />
+          <div className="card-dark min-h-[500px] focus-within:border-[var(--border-accent)] transition-colors">
+            <EditorContent
+              editor={editor}
+              className="outline-none min-h-[440px] text-sm leading-relaxed text-[var(--text-primary)] [&_.ProseMirror]:min-h-[440px] [&_.ProseMirror]:outline-none [&_.ProseMirror]:whitespace-pre-wrap"
+            />
           </div>
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-semibold text-slate-700">Analysis Results</h2>
+          <h2 className="font-semibold">Analysis Results</h2>
           {analysis ? (
             renderHighlights()
           ) : (
-            <div className="h-[500px] border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 space-y-2">
+            <div
+              className="h-[500px] rounded-2xl flex flex-col items-center justify-center space-y-2"
+              style={{
+                background: "var(--surface-overlay)",
+                border: "1px dashed var(--border)",
+                color: "var(--text-secondary)",
+              }}
+            >
               <p>Upload a file and click "Run AI Analysis"</p>
             </div>
           )}
