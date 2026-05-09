@@ -4,10 +4,7 @@ import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
 import { z } from "zod";
 
-const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
-
 const SubmitSchema = z.object({
-  quizSlug: z.string().min(1).optional(),
   answers: z
     .array(
       z.object({
@@ -55,7 +52,7 @@ function topTwo(scores: Record<RoleTag, number>) {
  * /api/assessment/submit:
  *   post:
  *     summary: Submit assessment answers
- *     description: Submits answers for the assessment quiz, computes role scores based on option scoring weights, stores the attempt, and returns the computed result.
+ *     description: Submits assessment answers, computes role scores based on option scoring weights, stores the attempt, and returns the computed result.
  *     tags:
  *       - Assessment
  *     security:
@@ -69,10 +66,6 @@ function topTwo(scores: Record<RoleTag, number>) {
  *             required:
  *               - answers
  *             properties:
- *               quizSlug:
- *                 type: string
- *                 description: Slug of the quiz. If omitted, the default quiz is used.
- *                 example: tech-career-matcher-v1
  *               answers:
  *                 type: array
  *                 description: List of answers selected by the user.
@@ -90,7 +83,6 @@ function topTwo(scores: Record<RoleTag, number>) {
  *                       type: string
  *                       example: opt_987654
  *           example:
- *             quizSlug: tech-career-matcher-v1
  *             answers:
  *               - questionId: q1
  *                 optionId: opt1
@@ -173,16 +165,6 @@ function topTwo(scores: Record<RoleTag, number>) {
  *                 message:
  *                   type: string
  *                   example: Unauthorized
- *       404:
- *         description: Quiz not found or inactive
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Quiz not found or inactive
  *       500:
  *         description: Failed to compute result
  *         content:
@@ -207,7 +189,6 @@ export async function POST(req: Request) {
     );
   }
 
-  const quizSlug = parsed.data.quizSlug ?? DEFAULT_QUIZ_SLUG;
   const answers = parsed.data.answers;
 
   // Prevent duplicates of same question in payload
@@ -222,23 +203,9 @@ export async function POST(req: Request) {
     qSet.add(a.questionId);
   }
 
-  // Load quiz
-  const quiz = await prisma.quiz.findUnique({
-    where: { slug: quizSlug },
-    select: { id: true, isActive: true },
-  });
-
-  if (!quiz || !quiz.isActive) {
-    return NextResponse.json(
-      { message: "Quiz not found or inactive" },
-      { status: 404 },
-    );
-  }
-
   // Fetch all selected options, and verify:
   // - option exists
   // - option belongs to question
-  // - question belongs to quiz
   const optionIds = answers.map((a) => a.optionId);
 
   const options = await prisma.quizOption.findMany({
@@ -247,7 +214,7 @@ export async function POST(req: Request) {
       id: true,
       questionId: true,
       scoring: true,
-      question: { select: { id: true, quizId: true } },
+      question: { select: { id: true } },
     },
   });
 
@@ -261,7 +228,7 @@ export async function POST(req: Request) {
   // Build lookup
   const optById = new Map(options.map((o) => [o.id, o]));
 
-  // Validate all (questionId, optionId) pairs match & belong to quiz
+  // Validate all (questionId, optionId) pairs match
   for (const a of answers) {
     const opt = optById.get(a.optionId);
     if (!opt) {
@@ -273,12 +240,6 @@ export async function POST(req: Request) {
     if (opt.questionId !== a.questionId) {
       return NextResponse.json(
         { message: "optionId does not belong to questionId" },
-        { status: 400 },
-      );
-    }
-    if (opt.question.quizId !== quiz.id) {
-      return NextResponse.json(
-        { message: "Answer question does not belong to this quiz" },
         { status: 400 },
       );
     }
@@ -316,7 +277,6 @@ export async function POST(req: Request) {
     const created = await tx.assessmentAttempt.create({
       data: {
         userId: user!.sub,
-        quizId: quiz.id,
         scores,
         primary,
         secondary: secondary ?? null,

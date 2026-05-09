@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // 1. Align the Tracks with your Backend's RoleTags
@@ -71,12 +70,10 @@ const TRACKS: Record<
 };
 
 export default function AssessmentPage() {
-  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [phase, setPhase] = useState<"intro" | "quiz" | "result">("intro");
 
   // Dynamic state for backend data
-  const [quizSlug, setQuizSlug] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(true);
 
@@ -104,7 +101,6 @@ export default function AssessmentPage() {
       // 1. Load the questions
       if (quizRes.ok) {
         const data = await quizRes.json();
-        setQuizSlug(data.quiz.slug);
         const flatQuestions = data.sections.flatMap(
           (section: any) => section.questions,
         );
@@ -353,7 +349,7 @@ export default function AssessmentPage() {
         const res = await fetch("/api/assessment/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ quizSlug, answers: newAnswers }),
+          body: JSON.stringify({ answers: newAnswers }),
         });
 
         if (res.ok) {

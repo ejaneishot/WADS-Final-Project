@@ -187,20 +187,8 @@ exports.Prisma.RoadmapEdgeScalarFieldEnum = {
   childId: 'childId'
 };
 
-exports.Prisma.QuizScalarFieldEnum = {
-  id: 'id',
-  slug: 'slug',
-  title: 'title',
-  description: 'description',
-  isActive: 'isActive',
-  version: 'version',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.QuizSectionScalarFieldEnum = {
   id: 'id',
-  quizId: 'quizId',
   title: 'title',
   description: 'description',
   order: 'order',
@@ -210,7 +198,6 @@ exports.Prisma.QuizSectionScalarFieldEnum = {
 
 exports.Prisma.QuizQuestionScalarFieldEnum = {
   id: 'id',
-  quizId: 'quizId',
   sectionId: 'sectionId',
   prompt: 'prompt',
   helperText: 'helperText',
@@ -235,7 +222,6 @@ exports.Prisma.QuizOptionScalarFieldEnum = {
 exports.Prisma.AssessmentAttemptScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  quizId: 'quizId',
   scores: 'scores',
   primary: 'primary',
   secondary: 'secondary',
@@ -296,7 +282,6 @@ exports.Prisma.ModelName = {
   Roadmap: 'Roadmap',
   RoadmapNode: 'RoadmapNode',
   RoadmapEdge: 'RoadmapEdge',
-  Quiz: 'Quiz',
   QuizSection: 'QuizSection',
   QuizQuestion: 'QuizQuestion',
   QuizOption: 'QuizOption',

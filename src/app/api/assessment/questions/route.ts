@@ -3,30 +3,27 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
 
-// If you seeded this slug, keep it as the default
-const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
+const ASSESSMENT_META = {
+  id: "tech-career-matcher",
+  slug: "tech-career-matcher-v1",
+  title: "Tech Career Matcher (Buzzfeed-style) v1",
+  description:
+    "A multiple-choice assessment that maps preferences to tech role clusters.",
+} as const;
 
 /**
  * @swagger
  * /api/assessment/questions:
  *   get:
- *     summary: Get assessment quiz questions
- *     description: Returns the active assessment quiz with its sections, questions, and options. Requires authentication.
+ *     summary: Get assessment questions
+ *     description: Returns the assessment sections, questions, and options. Requires authentication.
  *     tags:
  *       - Assessment
  *     security:
  *       - cookieAuth: []
- *     parameters:
- *       - in: query
- *         name: slug
- *         required: false
- *         schema:
- *           type: string
- *         description: Quiz slug identifier. If omitted, the default quiz will be returned.
- *         example: tech-career-matcher-v1
  *     responses:
  *       200:
- *         description: Successfully retrieved quiz questions
+ *         description: Successfully retrieved assessment questions
  *         content:
  *           application/json:
  *             schema:
@@ -110,7 +107,7 @@ const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
  *                   type: string
  *                   example: Unauthorized
  *       404:
- *         description: Quiz not found or inactive
+ *         description: Assessment questions not found
  *         content:
  *           application/json:
  *             schema:
@@ -118,7 +115,7 @@ const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Assessment quiz not found or inactive.
+ *                   example: Assessment questions not found.
  *       500:
  *         description: Server error while retrieving quiz questions
  *         content:
@@ -130,77 +127,53 @@ const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
  *                   type: string
  *                   example: Failed to load assessment questions.
  */
-export async function GET(req: Request) {
+export async function GET() {
   // Auth (JWT)
   const { error } = await requireAuth();
   if (error) return error;
 
   try {
-    const { searchParams } = new URL(req.url);
-    const slug = searchParams.get("slug") ?? DEFAULT_QUIZ_SLUG;
-
-    const quiz = await prisma.quiz.findUnique({
-      where: { slug },
+    const sections = await prisma.quizSection.findMany({
+      orderBy: { order: "asc" },
       select: {
         id: true,
-        slug: true,
         title: true,
         description: true,
-        isActive: true,
-        sections: {
+        order: true,
+        questions: {
           orderBy: { order: "asc" },
           select: {
             id: true,
-            title: true,
-            description: true,
+            prompt: true,
+            helperText: true,
+            type: true,
             order: true,
-            questions: {
+            isRequired: true,
+            options: {
               orderBy: { order: "asc" },
               select: {
                 id: true,
-                prompt: true,
-                helperText: true,
-                type: true,
+                label: true,
+                value: true,
                 order: true,
-                isRequired: true,
-                options: {
-                  orderBy: { order: "asc" },
-                  select: {
-                    id: true,
-                    label: true,
-                    value: true,
-                    order: true,
-                    // IMPORTANT: do NOT leak scoring to the client unless you want to.
-                    // scoring: true,
-                  },
-                },
               },
             },
           },
         },
-
-        // Optional: if you also support questions directly under quiz (no sections),
-        // you can include them here and merge client-side.
-        // questions: { ... }
       },
     });
 
-    if (!quiz || !quiz.isActive) {
+    if (sections.length === 0) {
       return NextResponse.json(
-        { error: "Assessment quiz not found or inactive." },
+        { error: "Assessment questions not found." },
         { status: 404 },
       );
     }
 
     return NextResponse.json(
       {
-        quiz: {
-          id: quiz.id,
-          slug: quiz.slug,
-          title: quiz.title,
-          description: quiz.description,
-        },
-        sections: quiz.sections,
+        quiz: ASSESSMENT_META,
+        sections,
       },
       { status: 200 },
     );

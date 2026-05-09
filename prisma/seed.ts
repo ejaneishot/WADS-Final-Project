@@ -21,8 +21,6 @@ const prisma = new PrismaClient({ adapter });
 type RoleTag = "SWE" | "FE" | "BE" | "AI" | "SEC" | "GAME" | "QA" | "PM";
 type ScoringItem = { tag: RoleTag; weight: number };
 
-const quizSlug = "tech-career-matcher-v1";
-
 function scoringJson(
   scoring?: ScoringItem[],
 ): Prisma.InputJsonValue | undefined {
@@ -154,20 +152,13 @@ async function seedCareers() {
 }
 
 async function seedQuizTechCareerMatcher() {
-  // Guard: if quiz exists, do nothing
-  const existing = await prisma.quiz.findUnique({ where: { slug: quizSlug } });
-  if (existing) return;
-
-  // Create quiz
-  const quiz = await prisma.quiz.create({
-    data: {
-      slug: quizSlug,
-      title: "Tech Career Matcher (Buzzfeed-style) v1",
-      description:
-        "A multiple-choice quiz that maps preferences to tech job role clusters.",
-      isActive: true,
-      version: 1,
-    },
+  // Always reseed assessment content so updates to prompts/scoring are applied.
+  await prisma.$transaction(async (tx) => {
+    await tx.assessmentAnswer.deleteMany();
+    await tx.assessmentAttempt.deleteMany();
+    await tx.quizOption.deleteMany();
+    await tx.quizQuestion.deleteMany();
+    await tx.quizSection.deleteMany();
   });
 
   // Sections + questions + options
@@ -710,7 +701,6 @@ async function seedQuizTechCareerMatcher() {
   for (const s of sections) {
     const section = await prisma.quizSection.create({
       data: {
-        quizId: quiz.id,
         title: s.title,
         description: s.description,
         order: s.order,
@@ -720,7 +710,6 @@ async function seedQuizTechCareerMatcher() {
     for (const q of s.questions) {
       const question = await prisma.quizQuestion.create({
         data: {
-          quizId: quiz.id,
           sectionId: section.id,
           prompt: q.prompt,
           helperText: undefined,

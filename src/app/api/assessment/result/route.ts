@@ -3,26 +3,22 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
 
-const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
+const ASSESSMENT_META = {
+  id: "tech-career-matcher",
+  slug: "tech-career-matcher-v1",
+  title: "Tech Career Matcher (Buzzfeed-style) v1",
+} as const;
 
 /**
  * @swagger
  * /api/assessment/result:
  *   get:
  *     summary: Get latest assessment result
- *     description: Returns the most recent assessment result for the authenticated user for a given quiz.
+ *     description: Returns the most recent assessment result for the authenticated user.
  *     tags:
  *       - Assessment
  *     security:
  *       - cookieAuth: []
- *     parameters:
- *       - in: query
- *         name: quizSlug
- *         required: false
- *         schema:
- *           type: string
- *         description: Slug of the quiz. If omitted, the default quiz is used.
- *         example: tech-career-matcher-v1
  *     responses:
  *       200:
  *         description: Successfully retrieved assessment result or confirmed no result exists
@@ -89,16 +85,6 @@ const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
  *                 message:
  *                   type: string
  *                   example: Unauthorized
- *       404:
- *         description: Quiz not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Quiz not found
  *       500:
  *         description: Failed to retrieve assessment result
  *         content:
@@ -110,26 +96,13 @@ const DEFAULT_QUIZ_SLUG = "tech-career-matcher-v1";
  *                   type: string
  *                   example: Failed to load latest assessment result.
  */
-export async function GET(req: Request) {
+export async function GET() {
   const { user, error } = await requireAuth();
   if (error) return error;
 
   try {
-    const { searchParams } = new URL(req.url);
-    const quizSlug = searchParams.get("quizSlug") ?? DEFAULT_QUIZ_SLUG;
-
-    // Find quiz id (so slug changes don't break attempts)
-    const quiz = await prisma.quiz.findUnique({
-      where: { slug: quizSlug },
-      select: { id: true, title: true, slug: true },
-    });
-
-    if (!quiz) {
-      return NextResponse.json({ message: "Quiz not found" }, { status: 404 });
-    }
-
     const attempt = await prisma.assessmentAttempt.findFirst({
-      where: { userId: user!.sub, quizId: quiz.id },
+      where: { userId: user!.sub },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -151,7 +124,7 @@ export async function GET(req: Request) {
       {
         ok: true,
         hasResult: true,
-        quiz: { id: quiz.id, slug: quiz.slug, title: quiz.title },
+        quiz: ASSESSMENT_META,
         attempt: {
           id: attempt.id,
           createdAt: attempt.createdAt,
