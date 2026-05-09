@@ -2,16 +2,20 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import RoadmapCanvas from "@/components/RoadmapCanvas";
+import { getAuth } from "@/lib/auth";
 
 export default async function RoadmapDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const auth = await getAuth();
+  if (!auth?.sub) notFound();
+
   const { id } = await params;
 
-  const roadmap = await prisma.roadmap.findUnique({
-    where: { id },
+  const roadmap = await prisma.roadmap.findFirst({
+    where: { id, userId: auth.sub },
     include: {
       nodes: {
         include: {

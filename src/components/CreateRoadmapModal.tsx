@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function CreateRoadmapModal({ userId }: { userId: string }) {
+export default function CreateRoadmapModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function CreateRoadmapModal({ userId }: { userId: string }) {
       const res = await fetch("/api/roadmaps", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, userId }),
+        body: JSON.stringify({ title }),
       });
 
       if (res.ok) {

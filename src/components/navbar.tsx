@@ -64,6 +64,20 @@ export function Navbar() {
           >
             Careers
           </Link>
+          <Link
+            href="/roadmaps"
+            className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Roadmaps
+          </Link>
+          <Link
+            href="/resume-optimizer"
+            className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Resume Optimizer
+          </Link>
           {me?.role === "admin" && (
             <Link
               href="/admin"

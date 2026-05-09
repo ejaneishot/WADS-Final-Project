@@ -1,26 +1,20 @@
 // src/app/roadmaps/page.tsx
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import CreateRoadmapModal from "@/components/CreateRoadmapModal";
 import RoadmapCardActions from "@/components/RoadmapCardActions";
+import { getAuth } from "@/lib/auth";
 
 export default async function RoadmapsDashboard() {
-  const session = await getServerSession();
+  const auth = await getAuth();
 
-  if (!session?.user?.email) {
+  if (!auth?.sub) {
     redirect("/login");
   }
 
-  // Fetch the user to get the ID for the modal
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true },
-  });
-
   const userRoadmaps = await prisma.roadmap.findMany({
-    where: { userId: user?.id },
+    where: { userId: auth.sub },
     orderBy: { createdAt: "desc" },
   });
 
@@ -36,7 +30,7 @@ export default async function RoadmapsDashboard() {
             Manage and continue your learning paths.
           </p>
         </div>
-        {user && <CreateRoadmapModal userId={user.id} />}
+        <CreateRoadmapModal />
       </header>
 
       <div className="grid gap-4">

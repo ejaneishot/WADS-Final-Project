@@ -1,6 +1,7 @@
 // src/app/api/nodes/[nodeId]/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { getAuth } from "@/lib/auth";
 
 // UPDATE an individual node
 export async function PATCH(
@@ -8,8 +9,21 @@ export async function PATCH(
   { params }: { params: Promise<{ nodeId: string }> },
 ) {
   try {
+    const auth = await getAuth();
+    if (!auth) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { nodeId } = await params;
     const { title, description } = await req.json();
+
+    const ownedNode = await prisma.roadmapNode.findFirst({
+      where: { id: nodeId, roadmap: { userId: auth.sub } },
+      select: { id: true },
+    });
+    if (!ownedNode) {
+      return NextResponse.json({ error: "Node not found" }, { status: 404 });
+    }
 
     const updatedNode = await prisma.roadmapNode.update({
       where: { id: nodeId },
@@ -35,7 +49,20 @@ export async function DELETE(
   { params }: { params: Promise<{ nodeId: string }> },
 ) {
   try {
+    const auth = await getAuth();
+    if (!auth) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { nodeId } = await params;
+
+    const ownedNode = await prisma.roadmapNode.findFirst({
+      where: { id: nodeId, roadmap: { userId: auth.sub } },
+      select: { id: true },
+    });
+    if (!ownedNode) {
+      return NextResponse.json({ error: "Node not found" }, { status: 404 });
+    }
 
     // We use a transaction to ensure edges are cleared before the node is removed
     await prisma.$transaction(async (tx) => {

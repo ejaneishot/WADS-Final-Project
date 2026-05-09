@@ -1,14 +1,28 @@
 // src/app/api/roadmaps/[id]/nodes/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { getAuth } from "@/lib/auth";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }, // Change to Promise
 ) {
   try {
+    const auth = await getAuth();
+    if (!auth) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params; // 1. Unwrap params
     const { title, description, parentIds } = await req.json();
+
+    const ownedRoadmap = await prisma.roadmap.findFirst({
+      where: { id, userId: auth.sub },
+      select: { id: true },
+    });
+    if (!ownedRoadmap) {
+      return NextResponse.json({ error: "Roadmap not found" }, { status: 404 });
+    }
 
     const newNode = await prisma.$transaction(async (tx) => {
       const node = await tx.roadmapNode.create({

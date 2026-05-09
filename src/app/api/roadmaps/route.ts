@@ -1,16 +1,46 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { getAuth } from "@/lib/auth";
 
 export async function POST(req: Request) {
-  const { title, userId } = await req.json();
+  const auth = await getAuth();
+  if (!auth) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { title } = await req.json();
+  if (!title || typeof title !== "string") {
+    return NextResponse.json({ error: "Title is required" }, { status: 400 });
+  }
+
   const roadmap = await prisma.roadmap.create({
-    data: { title, userId },
+    data: { title, userId: auth.sub },
   });
   return NextResponse.json(roadmap);
 }
 
 export async function PATCH(req: Request) {
+  const auth = await getAuth();
+  if (!auth) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { id, title } = await req.json();
+  if (!id || !title) {
+    return NextResponse.json(
+      { error: "Roadmap id and title are required" },
+      { status: 400 },
+    );
+  }
+
+  const owned = await prisma.roadmap.findFirst({
+    where: { id, userId: auth.sub },
+    select: { id: true },
+  });
+  if (!owned) {
+    return NextResponse.json({ error: "Roadmap not found" }, { status: 404 });
+  }
+
   const updated = await prisma.roadmap.update({
     where: { id },
     data: { title },
@@ -20,6 +50,11 @@ export async function PATCH(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
+    const auth = await getAuth();
+    if (!auth) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await req.json();
 
     if (!id) {
@@ -27,6 +62,14 @@ export async function DELETE(req: Request) {
         { error: "Roadmap ID is required" },
         { status: 400 },
       );
+    }
+
+    const owned = await prisma.roadmap.findFirst({
+      where: { id, userId: auth.sub },
+      select: { id: true },
+    });
+    if (!owned) {
+      return NextResponse.json({ error: "Roadmap not found" }, { status: 404 });
     }
 
     await prisma.$transaction(async (tx) => {

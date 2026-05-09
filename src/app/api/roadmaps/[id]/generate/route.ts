@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { getAuth } from "@/lib/auth";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -10,8 +11,21 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const auth = await getAuth();
+    if (!auth) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
     const { topic } = await req.json();
+
+    const ownedRoadmap = await prisma.roadmap.findFirst({
+      where: { id, userId: auth.sub },
+      select: { id: true },
+    });
+    if (!ownedRoadmap) {
+      return NextResponse.json({ error: "Roadmap not found" }, { status: 404 });
+    }
 
     // 1. Initialize model with JSON constraint
     const model = genAI.getGenerativeModel({
