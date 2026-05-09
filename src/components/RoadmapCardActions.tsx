@@ -64,14 +64,24 @@ export default function RoadmapCardActions({
           e.preventDefault();
           setIsEditOpen(true);
         }}
-        className="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded"
+        className="text-xs px-3 py-1 rounded border transition"
+        style={{
+          background: "var(--surface)",
+          borderColor: "var(--border)",
+          color: "var(--text-secondary)",
+        }}
       >
         Rename
       </button>
       <button
         onClick={handleDelete}
         disabled={loading}
-        className="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1 rounded"
+        className="text-xs px-3 py-1 rounded border transition disabled:opacity-50"
+        style={{
+          background: "rgba(239,68,68,0.08)",
+          borderColor: "rgba(239,68,68,0.25)",
+          color: "#fca5a5",
+        }}
       >
         {loading ? "..." : "Delete"}
       </button>
@@ -79,12 +89,18 @@ export default function RoadmapCardActions({
       {/* Rename Modal */}
       {isEditOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
-          <div className="bg-white p-6 rounded-lg shadow-xl w-80">
-            <h3 className="font-bold mb-4 text-gray-900">Rename Roadmap</h3>
+          <div
+            className="p-6 rounded-xl shadow-xl w-80"
+            style={{
+              background: "var(--surface-raised)",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <h3 className="font-bold mb-4">Rename Roadmap</h3>
             <form onSubmit={handleUpdate} className="flex flex-col gap-3">
               <input
                 autoFocus
-                className="border p-2 rounded text-black"
+                className="input-dark"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 required
@@ -93,14 +109,14 @@ export default function RoadmapCardActions({
                 <button
                   type="button"
                   onClick={() => setIsEditOpen(false)}
-                  className="px-3 py-1 text-sm text-gray-500 hover:bg-gray-100 rounded"
+                  className="btn-ghost !py-1.5 !px-3 !text-xs"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition"
+                  className="btn-accent !py-1.5 !px-3 !text-xs"
                 >
                   {loading ? "Saving..." : "Save"}
                 </button>

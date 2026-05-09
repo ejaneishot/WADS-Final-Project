@@ -35,10 +35,7 @@ export default function CreateRoadmapModal({ userId }: { userId: string }) {
 
   if (!isOpen) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
-      >
+      <button onClick={() => setIsOpen(true)} className="btn-accent">
         New Roadmap
       </button>
     );
@@ -46,8 +43,17 @@ export default function CreateRoadmapModal({ userId }: { userId: string }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Create New Roadmap</h2>
+      <div
+        className="p-6 rounded-xl shadow-xl w-full max-w-md"
+        style={{
+          background: "var(--surface-raised)",
+          border: "1px solid var(--border)",
+        }}
+      >
+        <h2 className="text-xl font-bold mb-2">Create New Roadmap</h2>
+        <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
+          Start a new learning path with your own title.
+        </p>
         <form onSubmit={handleCreate} className="flex flex-col gap-4">
           <input
             autoFocus
@@ -55,21 +61,21 @@ export default function CreateRoadmapModal({ userId }: { userId: string }) {
             placeholder="Roadmap Title (e.g., Fullstack Developer)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="input-dark"
             required
           />
           <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+              className="btn-ghost !py-2 !px-4"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 text-white px-4 py-2 rounded disabled:bg-blue-300"
+              className="btn-accent !py-2 !px-4 disabled:opacity-50"
             >
               {loading ? "Creating..." : "Create"}
             </button>

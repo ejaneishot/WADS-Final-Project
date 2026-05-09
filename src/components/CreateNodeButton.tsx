@@ -69,28 +69,34 @@ export default function CreateNodeButton({
       {!isSelecting ? (
         <button
           onClick={() => setIsSelecting(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition font-medium shadow-sm"
+          className="btn-accent !py-2 !px-4"
         >
           + Create Branch
         </button>
       ) : (
-        <div className="bg-blue-50 p-6 rounded-lg border border-blue-200 w-80 shadow-lg">
+        <div
+          className="p-6 rounded-lg w-80 shadow-lg"
+          style={{
+            background: "var(--surface-raised)",
+            border: "1px solid var(--border)",
+          }}
+        >
           {!showForm ? (
             <>
-              <p className="text-sm font-bold text-blue-800 mb-4">
+              <p className="text-sm font-bold mb-4 text-emerald-300">
                 Step 1: Click nodes to set as parents (
                 {selectedParentIds.length} selected)
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-blue-600 text-white px-3 py-2 rounded text-sm font-semibold flex-1"
+                  className="btn-accent !rounded-md !py-2 !px-3 !text-xs flex-1"
                 >
                   Next: Details
                 </button>
                 <button
                   onClick={resetState}
-                  className="bg-gray-400 text-white px-3 py-2 rounded text-sm font-semibold"
+                  className="btn-ghost !rounded-md !py-2 !px-3 !text-xs"
                 >
                   Cancel
                 </button>
@@ -98,21 +104,19 @@ export default function CreateNodeButton({
             </>
           ) : (
             <form onSubmit={handleCreate} className="flex flex-col gap-3">
-              <p className="text-sm font-bold text-blue-800">
-                Step 2: Node Details
-              </p>
+              <p className="text-sm font-bold text-emerald-300">Step 2: Node Details</p>
               <input
                 autoFocus
                 type="text"
                 placeholder="Skill Title (e.g. Next.js)"
-                className="p-2 text-sm border rounded border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
+                className="input-dark !text-xs"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
               <textarea
                 placeholder="What will you learn? (Description)"
-                className="p-2 text-sm border rounded border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[80px] text-black"
+                className="input-dark !text-xs min-h-[80px]"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -120,14 +124,14 @@ export default function CreateNodeButton({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-green-600 text-white px-3 py-2 rounded text-sm font-semibold flex-1 disabled:bg-green-300"
+                  className="btn-accent !rounded-md !py-2 !px-3 !text-xs flex-1"
                 >
                   {loading ? "Creating..." : "Finish & Create"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="bg-gray-400 text-white px-3 py-2 rounded text-sm font-semibold"
+                  className="btn-ghost !rounded-md !py-2 !px-3 !text-xs"
                 >
                   Back
                 </button>

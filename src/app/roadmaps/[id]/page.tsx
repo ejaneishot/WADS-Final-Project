@@ -25,14 +25,24 @@ export default async function RoadmapDetailPage({
   if (!roadmap) notFound();
 
   return (
-    <div className="p-8">
+    <div className="container-page relative z-10 py-12">
+      <div className="absolute top-0 right-0 w-[280px] h-[280px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
+
       <header className="mb-8">
+        <p className="section-label">Roadmap</p>
         <h1 className="text-3xl font-bold">{roadmap.title}</h1>
-        <p className="text-gray-500 text-sm">ID: {roadmap.id}</p>
+        <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          ID: {roadmap.id}
+        </p>
       </header>
 
-      {/* Let the Canvas handle whether it is empty or has flow nodes */}
-      <div className="border rounded-lg min-h-[600px] bg-gray-50 relative">
+      <div
+        className="rounded-xl min-h-[600px] relative overflow-hidden"
+        style={{
+          background: "var(--surface-raised)",
+          border: "1px solid var(--border)",
+        }}
+      >
         <RoadmapCanvas roadmapId={id} initialNodes={roadmap.nodes} />
       </div>
     </div>

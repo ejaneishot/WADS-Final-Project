@@ -42,12 +42,22 @@ export default function RoadmapNode({ data, id }: { data: any; id: string }) {
 
   return (
     <div
-      className={`group px-4 py-2 shadow-md rounded-md bg-white border-2 transition-all ${data.isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200"}`}
+      className={`group px-4 py-2 rounded-md border transition-all shadow-md ${
+        data.isSelected ? "border-emerald-400 bg-emerald-400/10" : ""
+      }`}
+      style={
+        data.isSelected
+          ? undefined
+          : {
+              background: "var(--surface-raised)",
+              borderColor: "var(--border)",
+            }
+      }
     >
       <Handle
         type="target"
         position={Position.Top}
-        className="w-2 h-2 !bg-blue-400"
+        className="w-2 h-2 !bg-emerald-400"
       />
 
       {isEditing ? (
@@ -57,27 +67,27 @@ export default function RoadmapNode({ data, id }: { data: any; id: string }) {
           onClick={(e) => e.stopPropagation()}
         >
           <input
-            className="text-xs border p-1 rounded"
+            className="input-dark !text-xs !p-1.5"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             autoFocus
           />
           <textarea
-            className="text-[10px] border p-1 rounded"
+            className="input-dark !text-[10px] !p-1.5"
             value={editDesc}
             onChange={(e) => setEditDesc(e.target.value)}
           />
           <div className="flex gap-1">
             <button
               type="submit"
-              className="text-[10px] bg-green-500 text-white px-2 py-1 rounded"
+              className="text-[10px] px-2 py-1 rounded btn-accent !py-1 !px-2"
             >
               Save
             </button>
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="text-[10px] bg-gray-300 px-2 py-1 rounded"
+              className="text-[10px] px-2 py-1 rounded btn-ghost !py-1 !px-2"
             >
               X
             </button>
@@ -92,21 +102,31 @@ export default function RoadmapNode({ data, id }: { data: any; id: string }) {
                 e.stopPropagation();
                 setIsEditing(true);
               }}
-              className="bg-gray-100 p-1 rounded border hover:bg-gray-200 text-[10px]"
+              className="p-1 rounded border text-[10px]"
+              style={{
+                background: "var(--surface)",
+                borderColor: "var(--border)",
+                color: "var(--text-secondary)",
+              }}
             >
               Edit
             </button>
             <button
               onClick={handleDelete}
-              className="bg-red-50 p-1 rounded border border-red-200 hover:bg-red-100 text-red-600 text-[10px]"
+              className="p-1 rounded border text-[10px]"
+              style={{
+                background: "rgba(239,68,68,0.08)",
+                borderColor: "rgba(239,68,68,0.25)",
+                color: "#fca5a5",
+              }}
             >
               Del
             </button>
           </div>
 
-          <div className="font-bold text-sm text-gray-800">{data.label}</div>
+          <div className="font-bold text-sm text-[var(--text-primary)]">{data.label}</div>
           {data.description && (
-            <div className="text-[10px] text-gray-500 mt-1 max-w-[150px] line-clamp-2 italic">
+            <div className="text-[10px] mt-1 max-w-[150px] line-clamp-2 italic text-[var(--text-secondary)]">
               {data.description}
             </div>
           )}
@@ -116,7 +136,7 @@ export default function RoadmapNode({ data, id }: { data: any; id: string }) {
       <Handle
         type="source"
         position={Position.Bottom}
-        className="w-2 h-2 !bg-blue-400"
+        className="w-2 h-2 !bg-emerald-400"
       />
     </div>
   );

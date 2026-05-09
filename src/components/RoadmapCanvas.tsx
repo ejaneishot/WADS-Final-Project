@@ -82,7 +82,7 @@ export default function RoadmapCanvas({
           source: edge.parentId,
           target: node.id,
           animated: true,
-          style: { stroke: "#3b82f6", strokeWidth: 2 },
+          style: { stroke: "#34d399", strokeWidth: 2 },
         });
       });
     });
@@ -118,8 +118,9 @@ export default function RoadmapCanvas({
         nodeTypes={nodeTypes} // Apply custom node types
         onNodeClick={onNodeClick}
         fitView
+        className="bg-transparent"
       >
-        <Background color="#aaa" gap={20} />
+        <Background color="rgba(255,255,255,0.08)" gap={20} />
         <Controls />
       </ReactFlow>
     </div>

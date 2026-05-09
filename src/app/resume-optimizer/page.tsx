@@ -85,15 +85,13 @@ export default function ResumeOptimizer() {
 
     const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-    [...(Array.isArray(analysis.good) ? analysis.good : [])].forEach(
-      (item) => {
-        const regex = new RegExp(`(${escapeRe(item.phrase)})`, "gi");
-        html = html.replace(
-          regex,
-          `<span title="${item.reason}" class="bg-emerald-400/20 text-emerald-200 border-b border-emerald-300 cursor-help">$1</span>`,
-        );
-      },
-    );
+    [...(Array.isArray(analysis.good) ? analysis.good : [])].forEach((item) => {
+      const regex = new RegExp(`(${escapeRe(item.phrase)})`, "gi");
+      html = html.replace(
+        regex,
+        `<span title="${item.reason}" class="bg-emerald-400/20 text-emerald-200 border-b border-emerald-300 cursor-help">$1</span>`,
+      );
+    });
 
     [...(Array.isArray(analysis.bad) ? analysis.bad : [])].forEach((item) => {
       const regex = new RegExp(`(${escapeRe(item.phrase)})`, "gi");
@@ -124,7 +122,9 @@ export default function ResumeOptimizer() {
               border: "1px solid var(--border-accent)",
             }}
           >
-            <h4 className="font-bold text-emerald-200 mb-2">Skills to Add (ATS)</h4>
+            <h4 className="font-bold text-emerald-200 mb-2">
+              Skills to Add (ATS)
+            </h4>
             <div className="flex flex-wrap gap-2">
               {(Array.isArray(analysis.suggestedSkills)
                 ? analysis.suggestedSkills
@@ -151,7 +151,9 @@ export default function ResumeOptimizer() {
               border: "1px solid rgba(245,158,11,0.25)",
             }}
           >
-            <h4 className="font-bold text-amber-200 mb-2">Critical Improvements</h4>
+            <h4 className="font-bold text-amber-200 mb-2">
+              Critical Improvements
+            </h4>
             <p className="text-sm leading-relaxed text-amber-100">
               {analysis.criticalImprovements}
             </p>
@@ -169,7 +171,10 @@ export default function ResumeOptimizer() {
         <div>
           <p className="section-label">Tools</p>
           <h1 className="mt-2 text-3xl font-bold">Resume Optimizer</h1>
-          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p
+            className="mt-1 text-sm"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Upload your CV and get AI feedback tailored for ATS screening.
           </p>
         </div>

@@ -25,33 +25,47 @@ export default async function RoadmapsDashboard() {
   });
 
   return (
-    <div className="p-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Your Roadmaps</h1>
+    <div className="container-page relative z-10 py-12">
+      <div className="absolute top-0 right-0 w-[280px] h-[280px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none" />
+
+      <header className="flex flex-wrap justify-between items-end gap-4 mb-8">
+        <div>
+          <p className="section-label">Planner</p>
+          <h1 className="mt-2 text-3xl font-bold">Your Roadmaps</h1>
+          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+            Manage and continue your learning paths.
+          </p>
+        </div>
         {user && <CreateRoadmapModal userId={user.id} />}
       </header>
 
       <div className="grid gap-4">
         {userRoadmaps.length === 0 ? (
-          <p className="text-gray-500">No roadmaps found.</p>
+          <div
+            className="rounded-xl p-6 text-center"
+            style={{
+              background: "var(--surface-overlay)",
+              border: "1px dashed var(--border)",
+              color: "var(--text-secondary)",
+            }}
+          >
+            No roadmaps found.
+          </div>
         ) : (
           userRoadmaps.map((map) => (
-            /* We use a div as the wrapper instead of the Link covering everything */
             <div
               key={map.id}
-              className="border p-4 rounded hover:bg-gray-50 transition flex justify-between items-center group"
+              className="card-dark glow-ring transition flex justify-between items-center gap-4 group"
             >
-              {/* This Link now only wraps the text content */}
               <Link href={`/roadmaps/${map.id}`} className="flex-1">
-                <h2 className="font-semibold text-lg group-hover:text-blue-600 transition">
+                <h2 className="font-semibold text-lg transition group-hover:text-emerald-300">
                   {map.title}
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
                   Created: {map.createdAt.toLocaleDateString()}
                 </p>
               </Link>
 
-              {/* The actions are now completely outside the Link tag */}
               <RoadmapCardActions id={map.id} currentTitle={map.title} />
             </div>
           ))
