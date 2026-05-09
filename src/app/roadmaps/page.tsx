@@ -26,7 +26,10 @@ export default async function RoadmapsDashboard() {
         <div>
           <p className="section-label">Planner</p>
           <h1 className="mt-2 text-3xl font-bold">Your Roadmaps</h1>
-          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p
+            className="mt-1 text-sm"
+            style={{ color: "var(--text-secondary)" }}
+          >
             Manage and continue your learning paths.
           </p>
         </div>
@@ -55,7 +58,10 @@ export default async function RoadmapsDashboard() {
                 <h2 className="font-semibold text-lg transition group-hover:text-emerald-300">
                   {map.title}
                 </h2>
-                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  className="text-sm"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   Created: {map.createdAt.toLocaleDateString()}
                 </p>
               </Link>
