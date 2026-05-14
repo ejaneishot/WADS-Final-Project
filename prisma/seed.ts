@@ -29,9 +29,6 @@ function scoringJson(
 }
 
 async function seedCareers() {
-  const count = await prisma.career.count();
-  if (count > 0) return;
-
   const careersData = [
     {
       slug: "software-engineering",
@@ -52,21 +49,40 @@ async function seedCareers() {
       ],
     },
     {
-      slug: "data-science",
-      title: "Data Science",
+      slug: "frontend-engineering",
+      title: "Frontend Engineering",
       industry: "Technology",
       description:
-        "Master data analysis, machine learning, and statistical modeling.",
-      icon: "📊",
-      color: "from-violet-500 to-purple-600",
-      gradient: "from-violet-500/20 to-purple-600/20",
-      border: "rgba(167,139,250,0.2)",
+        "Ship fast, accessible interfaces with modern web frameworks and design systems.",
+      icon: "🎨",
+      color: "from-pink-500 to-rose-500",
+      gradient: "from-pink-500/20 to-rose-500/20",
+      border: "rgba(236,72,153,0.2)",
       milestones: [
-        "Learn Python & statistics",
-        "Data wrangling with Pandas",
-        "Data visualization with Matplotlib/Seaborn",
-        "Machine learning basics with Scikit-learn",
-        "Build an end-to-end data project",
+        "HTML, CSS, and responsive layout fundamentals",
+        "JavaScript/TypeScript and a framework (React/Vue/Svelte)",
+        "State management, routing, and API integration",
+        "Accessibility (a11y), performance, and Core Web Vitals",
+        "Build a polished UI portfolio (2–3 case studies)",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "backend-engineering",
+      title: "Backend Engineering",
+      industry: "Technology",
+      description:
+        "Design reliable APIs, data layers, and services that power products at scale.",
+      icon: "⚙️",
+      color: "from-gray-600 to-gray-900",
+      gradient: "from-gray-600/20 to-gray-900/20",
+      border: "rgba(75,85,99,0.25)",
+      milestones: [
+        "Pick a backend language (Node, Java, Go, etc.)",
+        "Relational databases, SQL, and schema design",
+        "REST/GraphQL APIs, auth (JWT/OAuth), and validation",
+        "Caching, queues, and basic distributed-systems concepts",
+        "Ship a backend-led project (API + DB + tests)",
         "Apply for internships",
       ],
     },
@@ -107,48 +123,85 @@ async function seedCareers() {
       ],
     },
     {
-      slug: "cloud-devops",
-      title: "Cloud & DevOps",
+      slug: "game-development",
+      title: "Game Development",
       industry: "Technology",
-      description: "Deploy, scale, and automate infrastructure in the cloud.",
-      icon: "☁️",
-      color: "from-sky-400 to-blue-500",
-      gradient: "from-sky-500/20 to-blue-400/20",
-      border: "rgba(14,165,233,0.2)",
+      description:
+        "Build gameplay systems, engines, and interactive experiences players love.",
+      icon: "🎮",
+      color: "from-fuchsia-600 to-indigo-600",
+      gradient: "from-fuchsia-600/20 to-indigo-600/20",
+      border: "rgba(192,38,211,0.22)",
       milestones: [
-        "Linux & networking basics",
-        "Learn Docker & containerization",
-        "Kubernetes fundamentals",
-        "Cloud provider basics (AWS/GCP/Azure)",
-        "Build a CI/CD pipeline",
+        "Game math, physics intuition, and C#/C++ or GDScript basics",
+        "Unity or Unreal fundamentals and a small prototype",
+        "Gameplay loops, input, animation, and UI in-engine",
+        "Optimization, build pipelines, and version control for games",
+        "Ship a playable portfolio project (itch.io / demo reel)",
         "Apply for internships",
       ],
     },
     {
-      slug: "ux-product",
-      title: "UX & Product",
-      industry: "Product",
-      description: "Shape user experiences and drive product strategy.",
-      icon: "🎨",
-      color: "from-pink-500 to-rose-500",
-      gradient: "from-pink-500/20 to-rose-500/20",
-      border: "rgba(236,72,153,0.2)",
+      slug: "quality-assurance",
+      title: "Quality Assurance",
+      industry: "Technology",
+      description:
+        "Prevent regressions through test design, automation, and rigorous quality practices.",
+      icon: "✅",
+      color: "from-yellow-400 to-orange-500",
+      gradient: "from-yellow-400/20 to-orange-500/20",
+      border: "rgba(251,191,36,0.25)",
       milestones: [
-        "Design thinking & UX fundamentals",
-        "Learn Figma",
-        "Conduct user research & usability tests",
-        "Build a UX case study portfolio",
-        "Product management basics",
+        "Testing fundamentals: cases, suites, and bug reporting",
+        "Manual exploratory testing and API testing (Postman/Insomnia)",
+        "Automated UI tests (Playwright/Cypress/Selenium)",
+        "CI basics and integrating tests into pipelines",
+        "Build a QA portfolio (plans, automation repo, sample reports)",
+        "Apply for internships",
+      ],
+    },
+    {
+      slug: "product-management",
+      title: "Product Management",
+      industry: "Product",
+      description:
+        "Discover problems worth solving and align teams around outcomes and roadmaps.",
+      icon: "📈",
+      color: "from-sky-400 to-blue-500",
+      gradient: "from-sky-400/20 to-blue-500/20",
+      border: "rgba(56,189,248,0.22)",
+      milestones: [
+        "User discovery, personas, and problem framing",
+        "Prioritization frameworks (RICE, MoSCoW) and roadmapping",
+        "Writing PRDs / user stories and acceptance criteria",
+        "Working with design and engineering in agile ceremonies",
+        "Ship a 0→1 or improvement case study with metrics",
         "Apply for internships",
       ],
     },
   ];
 
   for (const career of careersData) {
-    await prisma.career.create({
-      data: career,
+    await prisma.career.upsert({
+      where: { slug: career.slug },
+      create: career,
+      update: {
+        title: career.title,
+        industry: career.industry,
+        description: career.description,
+        icon: career.icon,
+        color: career.color,
+        gradient: career.gradient,
+        border: career.border,
+        milestones: career.milestones,
+      },
     });
   }
+
+  const allowedSlugs = careersData.map((c) => c.slug);
+  await prisma.career.deleteMany({
+    where: { slug: { notIn: allowedSlugs } },
+  });
 }
 
 async function seedQuizTechCareerMatcher() {

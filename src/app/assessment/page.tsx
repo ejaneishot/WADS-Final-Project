@@ -50,7 +50,7 @@ const TRACKS: Record<
     label: "Game Development",
     slug: "game-development",
     icon: "🎮",
-    color: "from-violet-500 to-purple-600",
+    color: "from-fuchsia-600 to-indigo-600",
     desc: "Build immersive worlds, gameplay mechanics, and simulations.",
   },
   QA: {

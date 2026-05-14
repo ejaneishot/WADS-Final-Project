@@ -20,13 +20,13 @@ type Career = {
 // Map the backend RoleTags (from the assessment) to the new DB Career Slugs
 const TAG_TO_SLUG: Record<string, string> = {
   SWE: "software-engineering",
-  FE: "software-engineering", // Front-end falls under SWE
-  BE: "cloud-devops", // Back-end maps nicely to Cloud/DevOps
+  FE: "frontend-engineering",
+  BE: "backend-engineering",
   AI: "artificial-intelligence",
   SEC: "cybersecurity",
-  GAME: "software-engineering",
-  QA: "software-engineering",
-  PM: "ux-product", // Product Manager maps to UX & Product
+  GAME: "game-development",
+  QA: "quality-assurance",
+  PM: "product-management",
 };
 
 export default function CareersPage() {

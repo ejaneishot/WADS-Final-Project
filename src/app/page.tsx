@@ -40,7 +40,7 @@ const tutors = [
   },
   {
     name: "Marcus Rivera",
-    role: "Cloud & DevOps",
+    role: "Backend Engineering",
     initials: "MR",
     color: "from-sky-400 to-blue-600",
     rating: 4.8,
@@ -67,9 +67,9 @@ const tutors = [
   },
   {
     name: "Aisha Okonkwo",
-    role: "Data Science",
+    role: "Quality Assurance",
     initials: "AO",
-    color: "from-violet-400 to-purple-600",
+    color: "from-yellow-400 to-orange-500",
     rating: 4.9,
     sessions: 156,
     tag: "Expert",
@@ -129,16 +129,28 @@ const testimonials = [
 
 const tracks = [
   {
-    name: "Data Science",
-    slug: "data-science",
-    icon: "📊",
-    color: "from-violet-500/10 to-purple-500/10",
-  },
-  {
     name: "Software Engineering",
     slug: "software-engineering",
-    icon: "⚙️",
+    icon: "💻",
     color: "from-blue-500/10 to-cyan-500/10",
+  },
+  {
+    name: "Frontend Engineering",
+    slug: "frontend-engineering",
+    icon: "🎨",
+    color: "from-pink-500/10 to-rose-500/10",
+  },
+  {
+    name: "Backend Engineering",
+    slug: "backend-engineering",
+    icon: "⚙️",
+    color: "from-zinc-500/10 to-slate-700/10",
+  },
+  {
+    name: "Artificial Intelligence",
+    slug: "artificial-intelligence",
+    icon: "🤖",
+    color: "from-emerald-500/10 to-teal-500/10",
   },
   {
     name: "Cybersecurity",
@@ -147,22 +159,22 @@ const tracks = [
     color: "from-red-500/10 to-orange-500/10",
   },
   {
-    name: "Artificial Intelligence",
-    slug: "artificial-intelligence",
-    icon: "🧠",
-    color: "from-emerald-500/10 to-teal-500/10",
+    name: "Game Development",
+    slug: "game-development",
+    icon: "🎮",
+    color: "from-fuchsia-500/10 to-indigo-500/10",
   },
   {
-    name: "Cloud & DevOps",
-    slug: "cloud-devops",
-    icon: "☁️",
-    color: "from-sky-500/10 to-blue-500/10",
+    name: "Quality Assurance",
+    slug: "quality-assurance",
+    icon: "✅",
+    color: "from-yellow-400/10 to-orange-500/10",
   },
   {
-    name: "UX & Product",
-    slug: "ux-product",
-    icon: "🎨",
-    color: "from-pink-500/10 to-rose-500/10",
+    name: "Product Management",
+    slug: "product-management",
+    icon: "📈",
+    color: "from-sky-400/10 to-blue-500/10",
   },
 ];
 
