@@ -59,34 +59,6 @@ export function AdminNavbar({ email }: Props) {
         </Link>
 
         <nav className="flex flex-1 flex-wrap items-center justify-end gap-1 sm:flex-nowrap sm:justify-end">
-          <Link
-            href="/dashboard"
-            className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5"
-            style={{
-              color: pathActive("/dashboard")
-                ? "var(--accent)"
-                : "var(--text-secondary)",
-            }}
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/careers"
-            className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5"
-            style={{
-              color: pathActive("/careers")
-                ? "var(--accent)"
-                : "var(--text-secondary)",
-            }}
-          >
-            Careers
-          </Link>
-
-          <div
-            className="mx-1 hidden h-5 w-px shrink-0 sm:block"
-            style={{ background: "var(--border)" }}
-            aria-hidden
-          />
           <span
             className="w-full py-1 text-[10px] font-semibold uppercase tracking-wider sm:mr-1 sm:w-auto sm:py-0"
             style={{ color: "var(--text-muted)" }}

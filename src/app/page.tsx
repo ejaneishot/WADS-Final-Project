@@ -190,6 +190,18 @@ export default function HomePage() {
     result?: { primary: string };
   } | null>(null);
   const [streak, setStreak] = useState(1);
+  const [careerTrackCount, setCareerTrackCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/careers/count")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && typeof data.count === "number") {
+          setCareerTrackCount(data.count);
+        }
+      })
+      .catch(() => setCareerTrackCount(null));
+  }, []);
 
   useEffect(() => {
     fetch("/api/me").then((r) => {
@@ -314,7 +326,13 @@ export default function HomePage() {
               {/* Stat boxes */}
               <div className="grid grid-cols-3 gap-3 pt-4">
                 {[
-                  { value: "6", label: "career tracks" },
+                  {
+                    value:
+                      careerTrackCount != null
+                        ? String(careerTrackCount)
+                        : "—",
+                    label: "career tracks",
+                  },
                   { value: "100+", label: "question signals" },
                   { value: "AI", label: "personalized guidance" },
                 ].map((stat) => (

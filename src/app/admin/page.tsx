@@ -12,13 +12,8 @@ type AdminStats = {
 };
 
 export default function AdminPage() {
-  const [title, setTitle] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [description, setDescription] = useState("");
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [statsError, setStatsError] = useState<string | null>(null);
-  const [msg, setMsg] = useState<{ text: string; ok: boolean } | null>(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/overview")
@@ -43,7 +38,7 @@ export default function AdminPage() {
           <p className="section-label">Admin Dashboard</p>
           <h1 className="mt-2 text-3xl font-bold">Admin Panel</h1>
           <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-            Manage platform data and create career entries.
+            View platform stats and open the careers or assessment editors.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link href="/admin/careers" className="btn-ghost">
@@ -82,93 +77,6 @@ export default function AdminPage() {
           ))}
         </div>
         {statsError && <div className="error-box mb-5">{statsError}</div>}
-
-        {/* Card */}
-        <div className="card-dark glow-ring">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold">New Career</h2>
-            <span className="badge">Admin Only</span>
-          </div>
-
-          <form
-            className="space-y-4"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              setMsg(null);
-              setLoading(true);
-              const res = await fetch("/api/admin/careers", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title, industry, description }),
-              });
-              const j = await res.json().catch(() => ({}));
-              setLoading(false);
-              setMsg({
-                text: res.ok ? "Career created successfully!" : (j.message ?? "Failed to create"),
-                ok: res.ok,
-              });
-              if (res.ok) {
-                setTitle("");
-                setIndustry("");
-                setDescription("");
-                const overview = await fetch("/api/admin/overview")
-                  .then((r) => (r.ok ? r.json() : null))
-                  .catch(() => null);
-                if (overview?.stats) setStats(overview.stats);
-              }
-            }}
-          >
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
-                  Title
-                </label>
-                <input
-                  className="input-dark"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Data Analyst"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
-                  Industry
-                </label>
-                <input
-                  className="input-dark"
-                  value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
-                  placeholder="e.g. Technology"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>
-                Description
-              </label>
-              <textarea
-                className="input-dark !min-h-[100px] resize-y"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe the career path, responsibilities, and growth opportunities..."
-                required
-              />
-            </div>
-
-            {msg && (
-              <div className={msg.ok ? "success-box" : "error-box"}>
-                {msg.text}
-              </div>
-            )}
-
-            <button disabled={loading} className="btn-accent !rounded-xl !py-2.5">
-              {loading ? "Creating..." : "Create Career"}
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   );
