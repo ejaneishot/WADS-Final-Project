@@ -1,5 +1,5 @@
 // src/app/roadmaps/page.tsx
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import CreateRoadmapModal from "@/components/CreateRoadmapModal";

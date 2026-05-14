@@ -1,5 +1,5 @@
 // src/app/roadmaps/[id]/page.tsx
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import RoadmapCanvas from "@/components/RoadmapCanvas";
 import { getAuth } from "@/lib/auth";

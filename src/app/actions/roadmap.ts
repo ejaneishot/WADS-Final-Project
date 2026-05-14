@@ -1,7 +1,7 @@
 // src/app/actions/roadmap.ts
 "use server";
 
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 

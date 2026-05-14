@@ -1,6 +1,6 @@
 // src/app/api/roadmaps/[id]/nodes/route.ts
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
 
 export async function POST(
