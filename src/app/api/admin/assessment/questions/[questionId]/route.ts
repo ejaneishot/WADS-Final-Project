@@ -1,13 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
-import { z } from "zod";
-
-const UpdateQuestionSchema = z.object({
-  prompt: z.string().min(5),
-  helperText: z.string().nullable().optional(),
-  isRequired: z.boolean().optional(),
-});
+import {
+  UpdateQuestionSchema,
+  updateQuizQuestion,
+  deleteQuizQuestion,
+} from "@/lib/services/adminAssessmentService";
 
 type Params = { params: Promise<{ questionId: string }> };
 
@@ -25,22 +22,15 @@ export async function PATCH(req: Request, { params }: Params) {
     );
   }
 
-  const updated = await prisma.quizQuestion.update({
-    where: { id: questionId },
-    data: {
-      prompt: parsed.data.prompt,
-      helperText: parsed.data.helperText ?? null,
-      isRequired: parsed.data.isRequired ?? true,
-    },
-    select: {
-      id: true,
-      prompt: true,
-      helperText: true,
-      isRequired: true,
-    },
-  });
+  const result = await updateQuizQuestion(questionId, parsed.data);
+  if (!result.ok) {
+    return NextResponse.json(
+      { message: result.message },
+      { status: result.status },
+    );
+  }
 
-  return NextResponse.json({ ok: true, question: updated }, { status: 200 });
+  return NextResponse.json({ ok: true, question: result.question }, { status: 200 });
 }
 
 export async function DELETE(_req: Request, { params }: Params) {
@@ -48,16 +38,13 @@ export async function DELETE(_req: Request, { params }: Params) {
   if (error) return error;
 
   const { questionId } = await params;
-
-  const existing = await prisma.quizQuestion.findUnique({
-    where: { id: questionId },
-    select: { id: true },
-  });
-  if (!existing) {
-    return NextResponse.json({ message: "Question not found" }, { status: 404 });
+  const result = await deleteQuizQuestion(questionId);
+  if (!result.ok) {
+    return NextResponse.json(
+      { message: result.message },
+      { status: result.status },
+    );
   }
-
-  await prisma.quizQuestion.delete({ where: { id: questionId } });
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }

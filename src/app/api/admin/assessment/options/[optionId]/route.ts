@@ -1,26 +1,24 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
-import { z } from "zod";
 import {
-  buildAllowedScoringTagSet,
-  getAllowedScoringTags,
-} from "@/lib/assessmentScoring";
-
-const UpdateOptionSchema = z.object({
-  label: z.string().min(1),
-  value: z.string().nullable().optional(),
-  scoring: z
-    .array(
-      z.object({
-        tag: z.string().min(1).max(96),
-        weight: z.number().int().min(0).max(10),
-      }),
-    )
-    .default([]),
-});
+  UpdateOptionSchema,
+  updateQuizOption,
+  deleteQuizOption,
+} from "@/lib/services/adminAssessmentService";
 
 type Params = { params: Promise<{ optionId: string }> };
+
+function jsonForUpdateOptionFailure(
+  result: Extract<Awaited<ReturnType<typeof updateQuizOption>>, { ok: false }>,
+) {
+  if (result.status === 400 && "invalidTags" in result) {
+    return NextResponse.json(
+      { message: result.message, invalidTags: result.invalidTags },
+      { status: 400 },
+    );
+  }
+  return NextResponse.json({ message: result.message }, { status: result.status });
+}
 
 export async function PATCH(req: Request, { params }: Params) {
   const { error } = await requireRole(["admin"]);
@@ -36,47 +34,12 @@ export async function PATCH(req: Request, { params }: Params) {
     );
   }
 
-  const allowedList = await getAllowedScoringTags(prisma);
-  const allowed = buildAllowedScoringTagSet(allowedList);
-  const invalidTags = parsed.data.scoring
-    .map((s) => s.tag)
-    .filter((tag) => !allowed.has(tag));
-  if (invalidTags.length > 0) {
-    return NextResponse.json(
-      {
-        message:
-          "Each scoring tag must match a Career.tag value (e.g. SWE, FE) from the database.",
-        invalidTags: [...new Set(invalidTags)],
-      },
-      { status: 400 },
-    );
+  const result = await updateQuizOption(optionId, parsed.data);
+  if (!result.ok) {
+    return jsonForUpdateOptionFailure(result);
   }
 
-  const deduped = new Map<string, number>();
-  for (const item of parsed.data.scoring) {
-    deduped.set(item.tag, item.weight);
-  }
-
-  const normalized = [...deduped.entries()]
-    .filter(([, weight]) => weight > 0)
-    .map(([tag, weight]) => ({ tag, weight }));
-
-  const updated = await prisma.quizOption.update({
-    where: { id: optionId },
-    data: {
-      label: parsed.data.label,
-      value: parsed.data.value ?? null,
-      scoring: normalized,
-    },
-    select: {
-      id: true,
-      label: true,
-      value: true,
-      scoring: true,
-    },
-  });
-
-  return NextResponse.json({ ok: true, option: updated }, { status: 200 });
+  return NextResponse.json({ ok: true, option: result.option }, { status: 200 });
 }
 
 export async function DELETE(_req: Request, { params }: Params) {
@@ -84,16 +47,13 @@ export async function DELETE(_req: Request, { params }: Params) {
   if (error) return error;
 
   const { optionId } = await params;
-
-  const existing = await prisma.quizOption.findUnique({
-    where: { id: optionId },
-    select: { id: true },
-  });
-  if (!existing) {
-    return NextResponse.json({ message: "Option not found" }, { status: 404 });
+  const result = await deleteQuizOption(optionId);
+  if (!result.ok) {
+    return NextResponse.json(
+      { message: result.message },
+      { status: result.status },
+    );
   }
-
-  await prisma.quizOption.delete({ where: { id: optionId } });
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
