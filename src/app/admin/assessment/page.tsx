@@ -228,9 +228,14 @@ export default function AdminAssessmentEditorPage() {
               stored on career rows in the database.
             </p>
           </div>
-          <Link href="/admin" className="btn-ghost">
-            Back to Admin
-          </Link>
+          <div className="flex flex-wrap gap-2 justify-end">
+            <Link href="/admin/careers" className="btn-ghost">
+              Careers
+            </Link>
+            <Link href="/admin" className="btn-ghost">
+              Back to Admin
+            </Link>
+          </div>
         </div>
 
         <div className="mb-5 grid gap-3 sm:grid-cols-3">

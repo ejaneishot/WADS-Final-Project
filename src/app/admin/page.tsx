@@ -45,7 +45,10 @@ export default function AdminPage() {
           <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
             Manage platform data and create career entries.
           </p>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href="/admin/careers" className="btn-ghost">
+              Manage careers
+            </Link>
             <Link href="/admin/assessment" className="btn-ghost">
               Open Assessment Editor
             </Link>
