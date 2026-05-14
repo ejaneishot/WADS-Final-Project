@@ -25,6 +25,8 @@ model User {
   assessmentAttempts AssessmentAttempt[]
 
   roadmaps Roadmap[]
+
+  careerProgress UserCareerProgress[]
 }
 
 model Profile {
@@ -78,6 +80,24 @@ model Career {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userProgress UserCareerProgress[]
+}
+
+/// Per-user checklist state for career milestone steps (see /api/careers).
+model UserCareerProgress {
+  id                  String   @id @default(cuid())
+  userId              String
+  careerId            String
+  completedMilestones Int[]    @default([])
+  updatedAt           DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  career Career @relation(fields: [careerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, careerId])
+  @@index([userId])
+  @@index([careerId])
 }
 
 model Roadmap {

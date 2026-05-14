@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROTECTED_PATHS = ["/dashboard", "/resume-optimizer"];
+const PROTECTED_PATHS = ["/dashboard", "/resume-optimizer", "/admin"];
 const COOKIE_CANDIDATES = ["smartcareer_token", "token"];
 
 export function middleware(req: NextRequest) {
@@ -26,5 +26,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/resume-optimizer/:path*"],
+  matcher: ["/dashboard/:path*", "/resume-optimizer/:path*", "/admin/:path*"],
 };

@@ -12,7 +12,7 @@ export function Navbar() {
   useEffect(() => {
     fetch("/api/me")
       .then((r) => (r.ok ? r.json() : null))
-      .then(setMe)
+      .then((payload) => setMe(payload?.user ?? null))
       .catch(() => setMe(null));
   }, []);
 

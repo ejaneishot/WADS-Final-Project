@@ -32,7 +32,9 @@ export default function LoginPage() {
         setErr(j.message ?? "Google login failed");
         return;
       }
-      window.location.href = "/dashboard";
+      const payload = await res.json().catch(() => null);
+      const role = payload?.user?.role;
+      window.location.href = role === "admin" ? "/admin" : "/dashboard";
     } catch {
       setErr("Google sign-in failed");
     } finally {
@@ -81,7 +83,9 @@ export default function LoginPage() {
                 setErr(j.message ?? "Login failed");
                 return;
               }
-              window.location.href = "/dashboard";
+              const payload = await res.json().catch(() => null);
+              const role = payload?.user?.role;
+              window.location.href = role === "admin" ? "/admin" : "/dashboard";
             }}
           >
             <div>

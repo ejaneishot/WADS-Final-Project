@@ -1,13 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+type AdminStats = {
+  totalUsers: number;
+  totalStudents: number;
+  totalAdmins: number;
+  totalCareers: number;
+  totalAttempts: number;
+};
 
 export default function AdminPage() {
   const [title, setTitle] = useState("");
   const [industry, setIndustry] = useState("");
   const [description, setDescription] = useState("");
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [statsError, setStatsError] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/overview")
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load admin overview");
+        }
+        return res.json();
+      })
+      .then((data) => setStats(data.stats))
+      .catch((err: Error) => setStatsError(err.message));
+  }, []);
 
   return (
     <div className="container-page relative z-10 py-12">
@@ -17,12 +40,45 @@ export default function AdminPage() {
       <div className="mx-auto max-w-2xl">
         {/* Header */}
         <div className="mb-8">
-          <p className="section-label">Management</p>
+          <p className="section-label">Admin Dashboard</p>
           <h1 className="mt-2 text-3xl font-bold">Admin Panel</h1>
           <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-            Create and manage career entries. Requires admin role.
+            Manage platform data and create career entries.
           </p>
+          <div className="mt-4">
+            <Link href="/admin/assessment" className="btn-ghost">
+              Open Assessment Editor
+            </Link>
+          </div>
         </div>
+
+        {/* Quick stats */}
+        <div className="grid gap-3 sm:grid-cols-2 mb-5">
+          {[
+            { label: "Users", value: stats?.totalUsers },
+            { label: "Students", value: stats?.totalStudents },
+            { label: "Admins", value: stats?.totalAdmins },
+            { label: "Career Tracks", value: stats?.totalCareers },
+            { label: "Assessment Attempts", value: stats?.totalAttempts },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-xl p-4"
+              style={{
+                background: "var(--surface-raised)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <p className="text-xs mono" style={{ color: "var(--text-muted)" }}>
+                {item.label}
+              </p>
+              <p className="mt-1 text-xl font-semibold">
+                {typeof item.value === "number" ? item.value : "-"}
+              </p>
+            </div>
+          ))}
+        </div>
+        {statsError && <div className="error-box mb-5">{statsError}</div>}
 
         {/* Card */}
         <div className="card-dark glow-ring">
@@ -37,7 +93,7 @@ export default function AdminPage() {
               e.preventDefault();
               setMsg(null);
               setLoading(true);
-              const res = await fetch("/api/careers", {
+              const res = await fetch("/api/admin/careers", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title, industry, description }),
@@ -52,6 +108,10 @@ export default function AdminPage() {
                 setTitle("");
                 setIndustry("");
                 setDescription("");
+                const overview = await fetch("/api/admin/overview")
+                  .then((r) => (r.ok ? r.json() : null))
+                  .catch(() => null);
+                if (overview?.stats) setStats(overview.stats);
               }
             }}
           >

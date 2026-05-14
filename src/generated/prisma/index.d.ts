@@ -39,6 +39,11 @@ export type UserSkill = $Result.DefaultSelection<Prisma.$UserSkillPayload>
  */
 export type Career = $Result.DefaultSelection<Prisma.$CareerPayload>
 /**
+ * Model UserCareerProgress
+ * Per-user checklist state for career milestone steps (see /api/careers).
+ */
+export type UserCareerProgress = $Result.DefaultSelection<Prisma.$UserCareerProgressPayload>
+/**
  * Model Roadmap
  * 
  */
@@ -277,6 +282,16 @@ export class PrismaClient<
     * ```
     */
   get career(): Prisma.CareerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userCareerProgress`: Exposes CRUD operations for the **UserCareerProgress** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserCareerProgresses
+    * const userCareerProgresses = await prisma.userCareerProgress.findMany()
+    * ```
+    */
+  get userCareerProgress(): Prisma.UserCareerProgressDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.roadmap`: Exposes CRUD operations for the **Roadmap** model.
@@ -796,6 +811,7 @@ export namespace Prisma {
     Skill: 'Skill',
     UserSkill: 'UserSkill',
     Career: 'Career',
+    UserCareerProgress: 'UserCareerProgress',
     Roadmap: 'Roadmap',
     RoadmapNode: 'RoadmapNode',
     RoadmapEdge: 'RoadmapEdge',
@@ -819,7 +835,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "profile" | "skill" | "userSkill" | "career" | "roadmap" | "roadmapNode" | "roadmapEdge" | "quizSection" | "quizQuestion" | "quizOption" | "assessmentAttempt" | "assessmentAnswer"
+      modelProps: "user" | "profile" | "skill" | "userSkill" | "career" | "userCareerProgress" | "roadmap" | "roadmapNode" | "roadmapEdge" | "quizSection" | "quizQuestion" | "quizOption" | "assessmentAttempt" | "assessmentAnswer"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1190,6 +1206,80 @@ export namespace Prisma {
           count: {
             args: Prisma.CareerCountArgs<ExtArgs>
             result: $Utils.Optional<CareerCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserCareerProgress: {
+        payload: Prisma.$UserCareerProgressPayload<ExtArgs>
+        fields: Prisma.UserCareerProgressFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserCareerProgressFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserCareerProgressFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          findFirst: {
+            args: Prisma.UserCareerProgressFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserCareerProgressFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          findMany: {
+            args: Prisma.UserCareerProgressFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+          }
+          create: {
+            args: Prisma.UserCareerProgressCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          createMany: {
+            args: Prisma.UserCareerProgressCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserCareerProgressCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+          }
+          delete: {
+            args: Prisma.UserCareerProgressDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          update: {
+            args: Prisma.UserCareerProgressUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserCareerProgressDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserCareerProgressUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserCareerProgressUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserCareerProgressUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserCareerProgressPayload>
+          }
+          aggregate: {
+            args: Prisma.UserCareerProgressAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserCareerProgress>
+          }
+          groupBy: {
+            args: Prisma.UserCareerProgressGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserCareerProgressGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserCareerProgressCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCareerProgressCountAggregateOutputType> | number
           }
         }
       }
@@ -1898,6 +1988,7 @@ export namespace Prisma {
     skill?: SkillOmit
     userSkill?: UserSkillOmit
     career?: CareerOmit
+    userCareerProgress?: UserCareerProgressOmit
     roadmap?: RoadmapOmit
     roadmapNode?: RoadmapNodeOmit
     roadmapEdge?: RoadmapEdgeOmit
@@ -1988,11 +2079,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     assessmentAttempts: number
     roadmaps: number
+    careerProgress: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assessmentAttempts?: boolean | UserCountOutputTypeCountAssessmentAttemptsArgs
     roadmaps?: boolean | UserCountOutputTypeCountRoadmapsArgs
+    careerProgress?: boolean | UserCountOutputTypeCountCareerProgressArgs
   }
 
   // Custom InputTypes
@@ -2018,6 +2111,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountRoadmapsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RoadmapWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCareerProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserCareerProgressWhereInput
   }
 
 
@@ -2080,6 +2180,37 @@ export namespace Prisma {
    */
   export type SkillCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserSkillWhereInput
+  }
+
+
+  /**
+   * Count Type CareerCountOutputType
+   */
+
+  export type CareerCountOutputType = {
+    userProgress: number
+  }
+
+  export type CareerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProgress?: boolean | CareerCountOutputTypeCountUserProgressArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CareerCountOutputType without action
+   */
+  export type CareerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CareerCountOutputType
+     */
+    select?: CareerCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CareerCountOutputType without action
+   */
+  export type CareerCountOutputTypeCountUserProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserCareerProgressWhereInput
   }
 
 
@@ -2458,6 +2589,7 @@ export namespace Prisma {
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
     roadmaps?: boolean | User$roadmapsArgs<ExtArgs>
+    careerProgress?: boolean | User$careerProgressArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2490,6 +2622,7 @@ export namespace Prisma {
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
     roadmaps?: boolean | User$roadmapsArgs<ExtArgs>
+    careerProgress?: boolean | User$careerProgressArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2501,6 +2634,7 @@ export namespace Prisma {
       profile: Prisma.$ProfilePayload<ExtArgs> | null
       assessmentAttempts: Prisma.$AssessmentAttemptPayload<ExtArgs>[]
       roadmaps: Prisma.$RoadmapPayload<ExtArgs>[]
+      careerProgress: Prisma.$UserCareerProgressPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2905,6 +3039,7 @@ export namespace Prisma {
     profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     assessmentAttempts<T extends User$assessmentAttemptsArgs<ExtArgs> = {}>(args?: Subset<T, User$assessmentAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     roadmaps<T extends User$roadmapsArgs<ExtArgs> = {}>(args?: Subset<T, User$roadmapsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    careerProgress<T extends User$careerProgressArgs<ExtArgs> = {}>(args?: Subset<T, User$careerProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3396,6 +3531,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RoadmapScalarFieldEnum | RoadmapScalarFieldEnum[]
+  }
+
+  /**
+   * User.careerProgress
+   */
+  export type User$careerProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    where?: UserCareerProgressWhereInput
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    cursor?: UserCareerProgressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
   }
 
   /**
@@ -6949,6 +7108,8 @@ export namespace Prisma {
     milestones?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userProgress?: boolean | Career$userProgressArgs<ExtArgs>
+    _count?: boolean | CareerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["career"]>
 
   export type CareerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6997,10 +7158,18 @@ export namespace Prisma {
   }
 
   export type CareerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "industry" | "description" | "icon" | "color" | "gradient" | "border" | "milestones" | "createdAt" | "updatedAt", ExtArgs["result"]["career"]>
+  export type CareerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProgress?: boolean | Career$userProgressArgs<ExtArgs>
+    _count?: boolean | CareerCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CareerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CareerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $CareerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Career"
-    objects: {}
+    objects: {
+      userProgress: Prisma.$UserCareerProgressPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       slug: string
@@ -7408,6 +7577,7 @@ export namespace Prisma {
    */
   export interface Prisma__CareerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    userProgress<T extends Career$userProgressArgs<ExtArgs> = {}>(args?: Subset<T, Career$userProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7466,6 +7636,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * Filter, which Career to fetch.
      */
     where: CareerWhereUniqueInput
@@ -7484,6 +7658,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * Filter, which Career to fetch.
      */
     where: CareerWhereUniqueInput
@@ -7501,6 +7679,10 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
     /**
      * Filter, which Career to fetch.
      */
@@ -7550,6 +7732,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * Filter, which Career to fetch.
      */
     where?: CareerWhereInput
@@ -7597,6 +7783,10 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
     /**
      * Filter, which Careers to fetch.
      */
@@ -7646,6 +7836,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * The data needed to create a Career.
      */
     data: XOR<CareerCreateInput, CareerUncheckedCreateInput>
@@ -7693,6 +7887,10 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
     /**
      * The data needed to update a Career.
      */
@@ -7760,6 +7958,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * The filter to search for the Career to update in case it exists.
      */
     where: CareerWhereUniqueInput
@@ -7786,6 +7988,10 @@ export namespace Prisma {
      */
     omit?: CareerOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+    /**
      * Filter which Career to delete.
      */
     where: CareerWhereUniqueInput
@@ -7806,6 +8012,30 @@ export namespace Prisma {
   }
 
   /**
+   * Career.userProgress
+   */
+  export type Career$userProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    where?: UserCareerProgressWhereInput
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    cursor?: UserCareerProgressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+  }
+
+  /**
    * Career without action
    */
   export type CareerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7817,6 +8047,1111 @@ export namespace Prisma {
      * Omit specific fields from the Career
      */
     omit?: CareerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CareerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserCareerProgress
+   */
+
+  export type AggregateUserCareerProgress = {
+    _count: UserCareerProgressCountAggregateOutputType | null
+    _avg: UserCareerProgressAvgAggregateOutputType | null
+    _sum: UserCareerProgressSumAggregateOutputType | null
+    _min: UserCareerProgressMinAggregateOutputType | null
+    _max: UserCareerProgressMaxAggregateOutputType | null
+  }
+
+  export type UserCareerProgressAvgAggregateOutputType = {
+    completedMilestones: number | null
+  }
+
+  export type UserCareerProgressSumAggregateOutputType = {
+    completedMilestones: number[]
+  }
+
+  export type UserCareerProgressMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    careerId: string | null
+    updatedAt: Date | null
+  }
+
+  export type UserCareerProgressMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    careerId: string | null
+    updatedAt: Date | null
+  }
+
+  export type UserCareerProgressCountAggregateOutputType = {
+    id: number
+    userId: number
+    careerId: number
+    completedMilestones: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserCareerProgressAvgAggregateInputType = {
+    completedMilestones?: true
+  }
+
+  export type UserCareerProgressSumAggregateInputType = {
+    completedMilestones?: true
+  }
+
+  export type UserCareerProgressMinAggregateInputType = {
+    id?: true
+    userId?: true
+    careerId?: true
+    updatedAt?: true
+  }
+
+  export type UserCareerProgressMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    careerId?: true
+    updatedAt?: true
+  }
+
+  export type UserCareerProgressCountAggregateInputType = {
+    id?: true
+    userId?: true
+    careerId?: true
+    completedMilestones?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserCareerProgressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserCareerProgress to aggregate.
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserCareerProgresses to fetch.
+     */
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserCareerProgressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserCareerProgresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserCareerProgresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserCareerProgresses
+    **/
+    _count?: true | UserCareerProgressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserCareerProgressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserCareerProgressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserCareerProgressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserCareerProgressMaxAggregateInputType
+  }
+
+  export type GetUserCareerProgressAggregateType<T extends UserCareerProgressAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserCareerProgress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserCareerProgress[P]>
+      : GetScalarType<T[P], AggregateUserCareerProgress[P]>
+  }
+
+
+
+
+  export type UserCareerProgressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserCareerProgressWhereInput
+    orderBy?: UserCareerProgressOrderByWithAggregationInput | UserCareerProgressOrderByWithAggregationInput[]
+    by: UserCareerProgressScalarFieldEnum[] | UserCareerProgressScalarFieldEnum
+    having?: UserCareerProgressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserCareerProgressCountAggregateInputType | true
+    _avg?: UserCareerProgressAvgAggregateInputType
+    _sum?: UserCareerProgressSumAggregateInputType
+    _min?: UserCareerProgressMinAggregateInputType
+    _max?: UserCareerProgressMaxAggregateInputType
+  }
+
+  export type UserCareerProgressGroupByOutputType = {
+    id: string
+    userId: string
+    careerId: string
+    completedMilestones: number[]
+    updatedAt: Date
+    _count: UserCareerProgressCountAggregateOutputType | null
+    _avg: UserCareerProgressAvgAggregateOutputType | null
+    _sum: UserCareerProgressSumAggregateOutputType | null
+    _min: UserCareerProgressMinAggregateOutputType | null
+    _max: UserCareerProgressMaxAggregateOutputType | null
+  }
+
+  type GetUserCareerProgressGroupByPayload<T extends UserCareerProgressGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserCareerProgressGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserCareerProgressGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserCareerProgressGroupByOutputType[P]>
+            : GetScalarType<T[P], UserCareerProgressGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserCareerProgressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    careerId?: boolean
+    completedMilestones?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userCareerProgress"]>
+
+  export type UserCareerProgressSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    careerId?: boolean
+    completedMilestones?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userCareerProgress"]>
+
+  export type UserCareerProgressSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    careerId?: boolean
+    completedMilestones?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userCareerProgress"]>
+
+  export type UserCareerProgressSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    careerId?: boolean
+    completedMilestones?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserCareerProgressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "careerId" | "completedMilestones" | "updatedAt", ExtArgs["result"]["userCareerProgress"]>
+  export type UserCareerProgressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }
+  export type UserCareerProgressIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }
+  export type UserCareerProgressIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    career?: boolean | CareerDefaultArgs<ExtArgs>
+  }
+
+  export type $UserCareerProgressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserCareerProgress"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      career: Prisma.$CareerPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      careerId: string
+      completedMilestones: number[]
+      updatedAt: Date
+    }, ExtArgs["result"]["userCareerProgress"]>
+    composites: {}
+  }
+
+  type UserCareerProgressGetPayload<S extends boolean | null | undefined | UserCareerProgressDefaultArgs> = $Result.GetResult<Prisma.$UserCareerProgressPayload, S>
+
+  type UserCareerProgressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserCareerProgressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCareerProgressCountAggregateInputType | true
+    }
+
+  export interface UserCareerProgressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserCareerProgress'], meta: { name: 'UserCareerProgress' } }
+    /**
+     * Find zero or one UserCareerProgress that matches the filter.
+     * @param {UserCareerProgressFindUniqueArgs} args - Arguments to find a UserCareerProgress
+     * @example
+     * // Get one UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserCareerProgressFindUniqueArgs>(args: SelectSubset<T, UserCareerProgressFindUniqueArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserCareerProgress that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserCareerProgressFindUniqueOrThrowArgs} args - Arguments to find a UserCareerProgress
+     * @example
+     * // Get one UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserCareerProgressFindUniqueOrThrowArgs>(args: SelectSubset<T, UserCareerProgressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserCareerProgress that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressFindFirstArgs} args - Arguments to find a UserCareerProgress
+     * @example
+     * // Get one UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserCareerProgressFindFirstArgs>(args?: SelectSubset<T, UserCareerProgressFindFirstArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserCareerProgress that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressFindFirstOrThrowArgs} args - Arguments to find a UserCareerProgress
+     * @example
+     * // Get one UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserCareerProgressFindFirstOrThrowArgs>(args?: SelectSubset<T, UserCareerProgressFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserCareerProgresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserCareerProgresses
+     * const userCareerProgresses = await prisma.userCareerProgress.findMany()
+     * 
+     * // Get first 10 UserCareerProgresses
+     * const userCareerProgresses = await prisma.userCareerProgress.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserCareerProgressFindManyArgs>(args?: SelectSubset<T, UserCareerProgressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserCareerProgress.
+     * @param {UserCareerProgressCreateArgs} args - Arguments to create a UserCareerProgress.
+     * @example
+     * // Create one UserCareerProgress
+     * const UserCareerProgress = await prisma.userCareerProgress.create({
+     *   data: {
+     *     // ... data to create a UserCareerProgress
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserCareerProgressCreateArgs>(args: SelectSubset<T, UserCareerProgressCreateArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserCareerProgresses.
+     * @param {UserCareerProgressCreateManyArgs} args - Arguments to create many UserCareerProgresses.
+     * @example
+     * // Create many UserCareerProgresses
+     * const userCareerProgress = await prisma.userCareerProgress.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserCareerProgressCreateManyArgs>(args?: SelectSubset<T, UserCareerProgressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserCareerProgresses and returns the data saved in the database.
+     * @param {UserCareerProgressCreateManyAndReturnArgs} args - Arguments to create many UserCareerProgresses.
+     * @example
+     * // Create many UserCareerProgresses
+     * const userCareerProgress = await prisma.userCareerProgress.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserCareerProgresses and only return the `id`
+     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserCareerProgressCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCareerProgressCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserCareerProgress.
+     * @param {UserCareerProgressDeleteArgs} args - Arguments to delete one UserCareerProgress.
+     * @example
+     * // Delete one UserCareerProgress
+     * const UserCareerProgress = await prisma.userCareerProgress.delete({
+     *   where: {
+     *     // ... filter to delete one UserCareerProgress
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserCareerProgressDeleteArgs>(args: SelectSubset<T, UserCareerProgressDeleteArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserCareerProgress.
+     * @param {UserCareerProgressUpdateArgs} args - Arguments to update one UserCareerProgress.
+     * @example
+     * // Update one UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserCareerProgressUpdateArgs>(args: SelectSubset<T, UserCareerProgressUpdateArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserCareerProgresses.
+     * @param {UserCareerProgressDeleteManyArgs} args - Arguments to filter UserCareerProgresses to delete.
+     * @example
+     * // Delete a few UserCareerProgresses
+     * const { count } = await prisma.userCareerProgress.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserCareerProgressDeleteManyArgs>(args?: SelectSubset<T, UserCareerProgressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserCareerProgresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserCareerProgresses
+     * const userCareerProgress = await prisma.userCareerProgress.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserCareerProgressUpdateManyArgs>(args: SelectSubset<T, UserCareerProgressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserCareerProgresses and returns the data updated in the database.
+     * @param {UserCareerProgressUpdateManyAndReturnArgs} args - Arguments to update many UserCareerProgresses.
+     * @example
+     * // Update many UserCareerProgresses
+     * const userCareerProgress = await prisma.userCareerProgress.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserCareerProgresses and only return the `id`
+     * const userCareerProgressWithIdOnly = await prisma.userCareerProgress.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserCareerProgressUpdateManyAndReturnArgs>(args: SelectSubset<T, UserCareerProgressUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserCareerProgress.
+     * @param {UserCareerProgressUpsertArgs} args - Arguments to update or create a UserCareerProgress.
+     * @example
+     * // Update or create a UserCareerProgress
+     * const userCareerProgress = await prisma.userCareerProgress.upsert({
+     *   create: {
+     *     // ... data to create a UserCareerProgress
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserCareerProgress we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserCareerProgressUpsertArgs>(args: SelectSubset<T, UserCareerProgressUpsertArgs<ExtArgs>>): Prisma__UserCareerProgressClient<$Result.GetResult<Prisma.$UserCareerProgressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserCareerProgresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressCountArgs} args - Arguments to filter UserCareerProgresses to count.
+     * @example
+     * // Count the number of UserCareerProgresses
+     * const count = await prisma.userCareerProgress.count({
+     *   where: {
+     *     // ... the filter for the UserCareerProgresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserCareerProgressCountArgs>(
+      args?: Subset<T, UserCareerProgressCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserCareerProgressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserCareerProgress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserCareerProgressAggregateArgs>(args: Subset<T, UserCareerProgressAggregateArgs>): Prisma.PrismaPromise<GetUserCareerProgressAggregateType<T>>
+
+    /**
+     * Group by UserCareerProgress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCareerProgressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserCareerProgressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserCareerProgressGroupByArgs['orderBy'] }
+        : { orderBy?: UserCareerProgressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserCareerProgressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserCareerProgressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserCareerProgress model
+   */
+  readonly fields: UserCareerProgressFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserCareerProgress.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserCareerProgressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    career<T extends CareerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CareerDefaultArgs<ExtArgs>>): Prisma__CareerClient<$Result.GetResult<Prisma.$CareerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserCareerProgress model
+   */
+  interface UserCareerProgressFieldRefs {
+    readonly id: FieldRef<"UserCareerProgress", 'String'>
+    readonly userId: FieldRef<"UserCareerProgress", 'String'>
+    readonly careerId: FieldRef<"UserCareerProgress", 'String'>
+    readonly completedMilestones: FieldRef<"UserCareerProgress", 'Int[]'>
+    readonly updatedAt: FieldRef<"UserCareerProgress", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserCareerProgress findUnique
+   */
+  export type UserCareerProgressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter, which UserCareerProgress to fetch.
+     */
+    where: UserCareerProgressWhereUniqueInput
+  }
+
+  /**
+   * UserCareerProgress findUniqueOrThrow
+   */
+  export type UserCareerProgressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter, which UserCareerProgress to fetch.
+     */
+    where: UserCareerProgressWhereUniqueInput
+  }
+
+  /**
+   * UserCareerProgress findFirst
+   */
+  export type UserCareerProgressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter, which UserCareerProgress to fetch.
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserCareerProgresses to fetch.
+     */
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserCareerProgresses.
+     */
+    cursor?: UserCareerProgressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserCareerProgresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserCareerProgresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserCareerProgresses.
+     */
+    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+  }
+
+  /**
+   * UserCareerProgress findFirstOrThrow
+   */
+  export type UserCareerProgressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter, which UserCareerProgress to fetch.
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserCareerProgresses to fetch.
+     */
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserCareerProgresses.
+     */
+    cursor?: UserCareerProgressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserCareerProgresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserCareerProgresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserCareerProgresses.
+     */
+    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+  }
+
+  /**
+   * UserCareerProgress findMany
+   */
+  export type UserCareerProgressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter, which UserCareerProgresses to fetch.
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserCareerProgresses to fetch.
+     */
+    orderBy?: UserCareerProgressOrderByWithRelationInput | UserCareerProgressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserCareerProgresses.
+     */
+    cursor?: UserCareerProgressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserCareerProgresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserCareerProgresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserCareerProgresses.
+     */
+    distinct?: UserCareerProgressScalarFieldEnum | UserCareerProgressScalarFieldEnum[]
+  }
+
+  /**
+   * UserCareerProgress create
+   */
+  export type UserCareerProgressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserCareerProgress.
+     */
+    data: XOR<UserCareerProgressCreateInput, UserCareerProgressUncheckedCreateInput>
+  }
+
+  /**
+   * UserCareerProgress createMany
+   */
+  export type UserCareerProgressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserCareerProgresses.
+     */
+    data: UserCareerProgressCreateManyInput | UserCareerProgressCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserCareerProgress createManyAndReturn
+   */
+  export type UserCareerProgressCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserCareerProgresses.
+     */
+    data: UserCareerProgressCreateManyInput | UserCareerProgressCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserCareerProgress update
+   */
+  export type UserCareerProgressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserCareerProgress.
+     */
+    data: XOR<UserCareerProgressUpdateInput, UserCareerProgressUncheckedUpdateInput>
+    /**
+     * Choose, which UserCareerProgress to update.
+     */
+    where: UserCareerProgressWhereUniqueInput
+  }
+
+  /**
+   * UserCareerProgress updateMany
+   */
+  export type UserCareerProgressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserCareerProgresses.
+     */
+    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyInput>
+    /**
+     * Filter which UserCareerProgresses to update
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * Limit how many UserCareerProgresses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserCareerProgress updateManyAndReturn
+   */
+  export type UserCareerProgressUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * The data used to update UserCareerProgresses.
+     */
+    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyInput>
+    /**
+     * Filter which UserCareerProgresses to update
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * Limit how many UserCareerProgresses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserCareerProgress upsert
+   */
+  export type UserCareerProgressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserCareerProgress to update in case it exists.
+     */
+    where: UserCareerProgressWhereUniqueInput
+    /**
+     * In case the UserCareerProgress found by the `where` argument doesn't exist, create a new UserCareerProgress with this data.
+     */
+    create: XOR<UserCareerProgressCreateInput, UserCareerProgressUncheckedCreateInput>
+    /**
+     * In case the UserCareerProgress was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserCareerProgressUpdateInput, UserCareerProgressUncheckedUpdateInput>
+  }
+
+  /**
+   * UserCareerProgress delete
+   */
+  export type UserCareerProgressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
+    /**
+     * Filter which UserCareerProgress to delete.
+     */
+    where: UserCareerProgressWhereUniqueInput
+  }
+
+  /**
+   * UserCareerProgress deleteMany
+   */
+  export type UserCareerProgressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserCareerProgresses to delete
+     */
+    where?: UserCareerProgressWhereInput
+    /**
+     * Limit how many UserCareerProgresses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserCareerProgress without action
+   */
+  export type UserCareerProgressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCareerProgress
+     */
+    select?: UserCareerProgressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserCareerProgress
+     */
+    omit?: UserCareerProgressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserCareerProgressInclude<ExtArgs> | null
   }
 
 
@@ -16795,6 +18130,17 @@ export namespace Prisma {
   export type CareerScalarFieldEnum = (typeof CareerScalarFieldEnum)[keyof typeof CareerScalarFieldEnum]
 
 
+  export const UserCareerProgressScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    careerId: 'careerId',
+    completedMilestones: 'completedMilestones',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserCareerProgressScalarFieldEnum = (typeof UserCareerProgressScalarFieldEnum)[keyof typeof UserCareerProgressScalarFieldEnum]
+
+
   export const RoadmapScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -17059,6 +18405,7 @@ export namespace Prisma {
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
     roadmaps?: RoadmapListRelationFilter
+    careerProgress?: UserCareerProgressListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17070,6 +18417,7 @@ export namespace Prisma {
     profile?: ProfileOrderByWithRelationInput
     assessmentAttempts?: AssessmentAttemptOrderByRelationAggregateInput
     roadmaps?: RoadmapOrderByRelationAggregateInput
+    careerProgress?: UserCareerProgressOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17084,6 +18432,7 @@ export namespace Prisma {
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
     roadmaps?: RoadmapListRelationFilter
+    careerProgress?: UserCareerProgressListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -17305,6 +18654,7 @@ export namespace Prisma {
     milestones?: StringNullableListFilter<"Career">
     createdAt?: DateTimeFilter<"Career"> | Date | string
     updatedAt?: DateTimeFilter<"Career"> | Date | string
+    userProgress?: UserCareerProgressListRelationFilter
   }
 
   export type CareerOrderByWithRelationInput = {
@@ -17320,6 +18670,7 @@ export namespace Prisma {
     milestones?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userProgress?: UserCareerProgressOrderByRelationAggregateInput
   }
 
   export type CareerWhereUniqueInput = Prisma.AtLeast<{
@@ -17338,6 +18689,7 @@ export namespace Prisma {
     milestones?: StringNullableListFilter<"Career">
     createdAt?: DateTimeFilter<"Career"> | Date | string
     updatedAt?: DateTimeFilter<"Career"> | Date | string
+    userProgress?: UserCareerProgressListRelationFilter
   }, "id" | "slug">
 
   export type CareerOrderByWithAggregationInput = {
@@ -17374,6 +18726,67 @@ export namespace Prisma {
     milestones?: StringNullableListFilter<"Career">
     createdAt?: DateTimeWithAggregatesFilter<"Career"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Career"> | Date | string
+  }
+
+  export type UserCareerProgressWhereInput = {
+    AND?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
+    OR?: UserCareerProgressWhereInput[]
+    NOT?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
+    id?: StringFilter<"UserCareerProgress"> | string
+    userId?: StringFilter<"UserCareerProgress"> | string
+    careerId?: StringFilter<"UserCareerProgress"> | string
+    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
+    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    career?: XOR<CareerScalarRelationFilter, CareerWhereInput>
+  }
+
+  export type UserCareerProgressOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    careerId?: SortOrder
+    completedMilestones?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    career?: CareerOrderByWithRelationInput
+  }
+
+  export type UserCareerProgressWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_careerId?: UserCareerProgressUserIdCareerIdCompoundUniqueInput
+    AND?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
+    OR?: UserCareerProgressWhereInput[]
+    NOT?: UserCareerProgressWhereInput | UserCareerProgressWhereInput[]
+    userId?: StringFilter<"UserCareerProgress"> | string
+    careerId?: StringFilter<"UserCareerProgress"> | string
+    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
+    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    career?: XOR<CareerScalarRelationFilter, CareerWhereInput>
+  }, "id" | "userId_careerId">
+
+  export type UserCareerProgressOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    careerId?: SortOrder
+    completedMilestones?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserCareerProgressCountOrderByAggregateInput
+    _avg?: UserCareerProgressAvgOrderByAggregateInput
+    _max?: UserCareerProgressMaxOrderByAggregateInput
+    _min?: UserCareerProgressMinOrderByAggregateInput
+    _sum?: UserCareerProgressSumOrderByAggregateInput
+  }
+
+  export type UserCareerProgressScalarWhereWithAggregatesInput = {
+    AND?: UserCareerProgressScalarWhereWithAggregatesInput | UserCareerProgressScalarWhereWithAggregatesInput[]
+    OR?: UserCareerProgressScalarWhereWithAggregatesInput[]
+    NOT?: UserCareerProgressScalarWhereWithAggregatesInput | UserCareerProgressScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserCareerProgress"> | string
+    userId?: StringWithAggregatesFilter<"UserCareerProgress"> | string
+    careerId?: StringWithAggregatesFilter<"UserCareerProgress"> | string
+    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
+    updatedAt?: DateTimeWithAggregatesFilter<"UserCareerProgress"> | Date | string
   }
 
   export type RoadmapWhereInput = {
@@ -17880,6 +19293,7 @@ export namespace Prisma {
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17891,6 +19305,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -17902,6 +19317,7 @@ export namespace Prisma {
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17913,6 +19329,7 @@ export namespace Prisma {
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18132,6 +19549,7 @@ export namespace Prisma {
     milestones?: CareerCreatemilestonesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    userProgress?: UserCareerProgressCreateNestedManyWithoutCareerInput
   }
 
   export type CareerUncheckedCreateInput = {
@@ -18147,6 +19565,7 @@ export namespace Prisma {
     milestones?: CareerCreatemilestonesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    userProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutCareerInput
   }
 
   export type CareerUpdateInput = {
@@ -18162,6 +19581,7 @@ export namespace Prisma {
     milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userProgress?: UserCareerProgressUpdateManyWithoutCareerNestedInput
   }
 
   export type CareerUncheckedUpdateInput = {
@@ -18177,6 +19597,7 @@ export namespace Prisma {
     milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userProgress?: UserCareerProgressUncheckedUpdateManyWithoutCareerNestedInput
   }
 
   export type CareerCreateManyInput = {
@@ -18221,6 +19642,60 @@ export namespace Prisma {
     border?: NullableStringFieldUpdateOperationsInput | string | null
     milestones?: CareerUpdatemilestonesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressCreateInput = {
+    id?: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCareerProgressInput
+    career: CareerCreateNestedOneWithoutUserProgressInput
+  }
+
+  export type UserCareerProgressUncheckedCreateInput = {
+    id?: string
+    userId: string
+    careerId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
+  export type UserCareerProgressUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCareerProgressNestedInput
+    career?: CareerUpdateOneRequiredWithoutUserProgressNestedInput
+  }
+
+  export type UserCareerProgressUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    careerId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressCreateManyInput = {
+    id?: string
+    userId: string
+    careerId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
+  export type UserCareerProgressUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    careerId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -18781,6 +20256,12 @@ export namespace Prisma {
     none?: RoadmapWhereInput
   }
 
+  export type UserCareerProgressListRelationFilter = {
+    every?: UserCareerProgressWhereInput
+    some?: UserCareerProgressWhereInput
+    none?: UserCareerProgressWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -18791,6 +20272,10 @@ export namespace Prisma {
   }
 
   export type RoadmapOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCareerProgressOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19100,6 +20585,54 @@ export namespace Prisma {
     border?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type IntNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    has?: number | IntFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type CareerScalarRelationFilter = {
+    is?: CareerWhereInput
+    isNot?: CareerWhereInput
+  }
+
+  export type UserCareerProgressUserIdCareerIdCompoundUniqueInput = {
+    userId: string
+    careerId: string
+  }
+
+  export type UserCareerProgressCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    careerId?: SortOrder
+    completedMilestones?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserCareerProgressAvgOrderByAggregateInput = {
+    completedMilestones?: SortOrder
+  }
+
+  export type UserCareerProgressMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    careerId?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserCareerProgressMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    careerId?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserCareerProgressSumOrderByAggregateInput = {
+    completedMilestones?: SortOrder
   }
 
   export type RoadmapNodeListRelationFilter = {
@@ -19571,6 +21104,13 @@ export namespace Prisma {
     connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
   }
 
+  export type UserCareerProgressCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
+    createMany?: UserCareerProgressCreateManyUserInputEnvelope
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+  }
+
   export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
@@ -19589,6 +21129,13 @@ export namespace Prisma {
     connectOrCreate?: RoadmapCreateOrConnectWithoutUserInput | RoadmapCreateOrConnectWithoutUserInput[]
     createMany?: RoadmapCreateManyUserInputEnvelope
     connect?: RoadmapWhereUniqueInput | RoadmapWhereUniqueInput[]
+  }
+
+  export type UserCareerProgressUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
+    createMany?: UserCareerProgressCreateManyUserInputEnvelope
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -19645,6 +21192,20 @@ export namespace Prisma {
     deleteMany?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
   }
 
+  export type UserCareerProgressUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
+    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutUserInput | UserCareerProgressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserCareerProgressCreateManyUserInputEnvelope
+    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    update?: UserCareerProgressUpdateWithWhereUniqueWithoutUserInput | UserCareerProgressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutUserInput | UserCareerProgressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
+  }
+
   export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
@@ -19681,6 +21242,20 @@ export namespace Prisma {
     update?: RoadmapUpdateWithWhereUniqueWithoutUserInput | RoadmapUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: RoadmapUpdateManyWithWhereWithoutUserInput | RoadmapUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: RoadmapScalarWhereInput | RoadmapScalarWhereInput[]
+  }
+
+  export type UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput> | UserCareerProgressCreateWithoutUserInput[] | UserCareerProgressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutUserInput | UserCareerProgressCreateOrConnectWithoutUserInput[]
+    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutUserInput | UserCareerProgressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserCareerProgressCreateManyUserInputEnvelope
+    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    update?: UserCareerProgressUpdateWithWhereUniqueWithoutUserInput | UserCareerProgressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutUserInput | UserCareerProgressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
   }
 
   export type ProfileCreateinterestsInput = {
@@ -19838,9 +21413,88 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type UserCareerProgressCreateNestedManyWithoutCareerInput = {
+    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
+    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+  }
+
+  export type UserCareerProgressUncheckedCreateNestedManyWithoutCareerInput = {
+    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
+    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+  }
+
   export type CareerUpdatemilestonesInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type UserCareerProgressUpdateManyWithoutCareerNestedInput = {
+    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
+    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput | UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput[]
+    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
+    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    update?: UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput | UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput[]
+    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutCareerInput | UserCareerProgressUpdateManyWithWhereWithoutCareerInput[]
+    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
+  }
+
+  export type UserCareerProgressUncheckedUpdateManyWithoutCareerNestedInput = {
+    create?: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput> | UserCareerProgressCreateWithoutCareerInput[] | UserCareerProgressUncheckedCreateWithoutCareerInput[]
+    connectOrCreate?: UserCareerProgressCreateOrConnectWithoutCareerInput | UserCareerProgressCreateOrConnectWithoutCareerInput[]
+    upsert?: UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput | UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput[]
+    createMany?: UserCareerProgressCreateManyCareerInputEnvelope
+    set?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    disconnect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    delete?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    connect?: UserCareerProgressWhereUniqueInput | UserCareerProgressWhereUniqueInput[]
+    update?: UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput | UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput[]
+    updateMany?: UserCareerProgressUpdateManyWithWhereWithoutCareerInput | UserCareerProgressUpdateManyWithWhereWithoutCareerInput[]
+    deleteMany?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
+  }
+
+  export type UserCareerProgressCreatecompletedMilestonesInput = {
+    set: number[]
+  }
+
+  export type UserCreateNestedOneWithoutCareerProgressInput = {
+    create?: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCareerProgressInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CareerCreateNestedOneWithoutUserProgressInput = {
+    create?: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
+    connectOrCreate?: CareerCreateOrConnectWithoutUserProgressInput
+    connect?: CareerWhereUniqueInput
+  }
+
+  export type UserCareerProgressUpdatecompletedMilestonesInput = {
+    set?: number[]
+    push?: number | number[]
+  }
+
+  export type UserUpdateOneRequiredWithoutCareerProgressNestedInput = {
+    create?: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCareerProgressInput
+    upsert?: UserUpsertWithoutCareerProgressInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCareerProgressInput, UserUpdateWithoutCareerProgressInput>, UserUncheckedUpdateWithoutCareerProgressInput>
+  }
+
+  export type CareerUpdateOneRequiredWithoutUserProgressNestedInput = {
+    create?: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
+    connectOrCreate?: CareerCreateOrConnectWithoutUserProgressInput
+    upsert?: CareerUpsertWithoutUserProgressInput
+    connect?: CareerWhereUniqueInput
+    update?: XOR<XOR<CareerUpdateToOneWithWhereWithoutUserProgressInput, CareerUpdateWithoutUserProgressInput>, CareerUncheckedUpdateWithoutUserProgressInput>
   }
 
   export type UserCreateNestedOneWithoutRoadmapsInput = {
@@ -20666,6 +22320,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserCareerProgressCreateWithoutUserInput = {
+    id?: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+    career: CareerCreateNestedOneWithoutUserProgressInput
+  }
+
+  export type UserCareerProgressUncheckedCreateWithoutUserInput = {
+    id?: string
+    careerId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
+  export type UserCareerProgressCreateOrConnectWithoutUserInput = {
+    where: UserCareerProgressWhereUniqueInput
+    create: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserCareerProgressCreateManyUserInputEnvelope = {
+    data: UserCareerProgressCreateManyUserInput | UserCareerProgressCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProfileUpsertWithoutUserInput = {
     update: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
     create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
@@ -20755,6 +22433,33 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Roadmap"> | Date | string
   }
 
+  export type UserCareerProgressUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserCareerProgressWhereUniqueInput
+    update: XOR<UserCareerProgressUpdateWithoutUserInput, UserCareerProgressUncheckedUpdateWithoutUserInput>
+    create: XOR<UserCareerProgressCreateWithoutUserInput, UserCareerProgressUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserCareerProgressUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserCareerProgressWhereUniqueInput
+    data: XOR<UserCareerProgressUpdateWithoutUserInput, UserCareerProgressUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserCareerProgressUpdateManyWithWhereWithoutUserInput = {
+    where: UserCareerProgressScalarWhereInput
+    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserCareerProgressScalarWhereInput = {
+    AND?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
+    OR?: UserCareerProgressScalarWhereInput[]
+    NOT?: UserCareerProgressScalarWhereInput | UserCareerProgressScalarWhereInput[]
+    id?: StringFilter<"UserCareerProgress"> | string
+    userId?: StringFilter<"UserCareerProgress"> | string
+    careerId?: StringFilter<"UserCareerProgress"> | string
+    completedMilestones?: IntNullableListFilter<"UserCareerProgress">
+    updatedAt?: DateTimeFilter<"UserCareerProgress"> | Date | string
+  }
+
   export type UserCreateWithoutProfileInput = {
     id?: string
     email: string
@@ -20763,6 +22468,7 @@ export namespace Prisma {
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -20773,6 +22479,7 @@ export namespace Prisma {
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -20821,6 +22528,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -20831,6 +22539,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSkillUpsertWithWhereUniqueWithoutProfileInput = {
@@ -21001,6 +22710,182 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
   }
 
+  export type UserCareerProgressCreateWithoutCareerInput = {
+    id?: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCareerProgressInput
+  }
+
+  export type UserCareerProgressUncheckedCreateWithoutCareerInput = {
+    id?: string
+    userId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
+  export type UserCareerProgressCreateOrConnectWithoutCareerInput = {
+    where: UserCareerProgressWhereUniqueInput
+    create: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput>
+  }
+
+  export type UserCareerProgressCreateManyCareerInputEnvelope = {
+    data: UserCareerProgressCreateManyCareerInput | UserCareerProgressCreateManyCareerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCareerProgressUpsertWithWhereUniqueWithoutCareerInput = {
+    where: UserCareerProgressWhereUniqueInput
+    update: XOR<UserCareerProgressUpdateWithoutCareerInput, UserCareerProgressUncheckedUpdateWithoutCareerInput>
+    create: XOR<UserCareerProgressCreateWithoutCareerInput, UserCareerProgressUncheckedCreateWithoutCareerInput>
+  }
+
+  export type UserCareerProgressUpdateWithWhereUniqueWithoutCareerInput = {
+    where: UserCareerProgressWhereUniqueInput
+    data: XOR<UserCareerProgressUpdateWithoutCareerInput, UserCareerProgressUncheckedUpdateWithoutCareerInput>
+  }
+
+  export type UserCareerProgressUpdateManyWithWhereWithoutCareerInput = {
+    where: UserCareerProgressScalarWhereInput
+    data: XOR<UserCareerProgressUpdateManyMutationInput, UserCareerProgressUncheckedUpdateManyWithoutCareerInput>
+  }
+
+  export type UserCreateWithoutCareerProgressInput = {
+    id?: string
+    email: string
+    passwordHash?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    profile?: ProfileCreateNestedOneWithoutUserInput
+    assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCareerProgressInput = {
+    id?: string
+    email: string
+    passwordHash?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
+    roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCareerProgressInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
+  }
+
+  export type CareerCreateWithoutUserProgressInput = {
+    id?: string
+    slug: string
+    title: string
+    industry: string
+    description: string
+    icon?: string | null
+    color?: string | null
+    gradient?: string | null
+    border?: string | null
+    milestones?: CareerCreatemilestonesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CareerUncheckedCreateWithoutUserProgressInput = {
+    id?: string
+    slug: string
+    title: string
+    industry: string
+    description: string
+    icon?: string | null
+    color?: string | null
+    gradient?: string | null
+    border?: string | null
+    milestones?: CareerCreatemilestonesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CareerCreateOrConnectWithoutUserProgressInput = {
+    where: CareerWhereUniqueInput
+    create: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
+  }
+
+  export type UserUpsertWithoutCareerProgressInput = {
+    update: XOR<UserUpdateWithoutCareerProgressInput, UserUncheckedUpdateWithoutCareerProgressInput>
+    create: XOR<UserCreateWithoutCareerProgressInput, UserUncheckedCreateWithoutCareerProgressInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCareerProgressInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCareerProgressInput, UserUncheckedUpdateWithoutCareerProgressInput>
+  }
+
+  export type UserUpdateWithoutCareerProgressInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProfileUpdateOneWithoutUserNestedInput
+    assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCareerProgressInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
+    roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CareerUpsertWithoutUserProgressInput = {
+    update: XOR<CareerUpdateWithoutUserProgressInput, CareerUncheckedUpdateWithoutUserProgressInput>
+    create: XOR<CareerCreateWithoutUserProgressInput, CareerUncheckedCreateWithoutUserProgressInput>
+    where?: CareerWhereInput
+  }
+
+  export type CareerUpdateToOneWithWhereWithoutUserProgressInput = {
+    where?: CareerWhereInput
+    data: XOR<CareerUpdateWithoutUserProgressInput, CareerUncheckedUpdateWithoutUserProgressInput>
+  }
+
+  export type CareerUpdateWithoutUserProgressInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    industry?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    gradient?: NullableStringFieldUpdateOperationsInput | string | null
+    border?: NullableStringFieldUpdateOperationsInput | string | null
+    milestones?: CareerUpdatemilestonesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CareerUncheckedUpdateWithoutUserProgressInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    industry?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    gradient?: NullableStringFieldUpdateOperationsInput | string | null
+    border?: NullableStringFieldUpdateOperationsInput | string | null
+    milestones?: CareerUpdatemilestonesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutRoadmapsInput = {
     id?: string
     email: string
@@ -21009,6 +22894,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoadmapsInput = {
@@ -21019,6 +22905,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoadmapsInput = {
@@ -21071,6 +22958,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoadmapsInput = {
@@ -21081,6 +22969,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoadmapNodeUpsertWithWhereUniqueWithoutRoadmapInput = {
@@ -21668,6 +23557,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     roadmaps?: RoadmapCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssessmentAttemptsInput = {
@@ -21678,6 +23568,7 @@ export namespace Prisma {
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
+    careerProgress?: UserCareerProgressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssessmentAttemptsInput = {
@@ -21726,6 +23617,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssessmentAttemptsInput = {
@@ -21736,6 +23628,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
+    careerProgress?: UserCareerProgressUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AssessmentAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -21948,6 +23841,13 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type UserCareerProgressCreateManyUserInput = {
+    id?: string
+    careerId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
   export type AssessmentAttemptUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     scores?: JsonNullValueInput | InputJsonValue
@@ -21992,6 +23892,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    career?: CareerUpdateOneRequiredWithoutUserProgressNestedInput
+  }
+
+  export type UserCareerProgressUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    careerId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    careerId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserSkillCreateManyProfileInput = {
@@ -22040,6 +23961,34 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserCareerProgressCreateManyCareerInput = {
+    id?: string
+    userId: string
+    completedMilestones?: UserCareerProgressCreatecompletedMilestonesInput | number[]
+    updatedAt?: Date | string
+  }
+
+  export type UserCareerProgressUpdateWithoutCareerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCareerProgressNestedInput
+  }
+
+  export type UserCareerProgressUncheckedUpdateWithoutCareerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCareerProgressUncheckedUpdateManyWithoutCareerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    completedMilestones?: UserCareerProgressUpdatecompletedMilestonesInput | number[]
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RoadmapNodeCreateManyRoadmapInput = {

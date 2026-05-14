@@ -1,8 +1,7 @@
-// src/app/dashboard/layout.tsx
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
 
-export default async function DashboardLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -13,8 +12,8 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  if (auth.role === "admin") {
-    redirect("/admin");
+  if (auth.role !== "admin") {
+    redirect("/forbidden");
   }
 
   return <>{children}</>;
