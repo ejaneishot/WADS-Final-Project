@@ -52,13 +52,13 @@ export default function DashboardPage() {
       .then((data) => {
         if (data?.careers) {
           setCareerTitles(
-            (data.careers as { slug: string; title: string; tag: string }[]).map(
-              (c) => ({
-                slug: c.slug,
-                title: c.title,
-                tag: c.tag,
-              }),
-            ),
+            (
+              data.careers as { slug: string; title: string; tag: string }[]
+            ).map((c) => ({
+              slug: c.slug,
+              title: c.title,
+              tag: c.tag,
+            })),
           );
         }
       })
@@ -163,38 +163,6 @@ export default function DashboardPage() {
             Update your profile and generate AI career matches.
           </p>
         </div>
-        <button
-          onClick={async () => {
-            setMatchLoading(true);
-            const res = await fetch("/api/ai/career-match", { method: "POST" });
-            setMatchLoading(false);
-            if (!res.ok) {
-              const j = await res
-                .json()
-                .catch(() => ({ message: "AI request failed" }));
-              alert(j.message ?? "AI request failed");
-              return;
-            }
-            const j = await res.json();
-            alert("Top match: " + j.matches?.[0]?.careerTitle);
-          }}
-          disabled={matchLoading}
-          className="btn-accent flex items-center gap-2"
-        >
-          <svg
-            className="h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="3" />
-            <path d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.36-7.36l-1.41 1.41M7.05 16.95l-1.41 1.41m12.72 0l-1.41-1.41M7.05 7.05L5.64 5.64" />
-          </svg>
-          {matchLoading ? "Analyzing..." : "Generate AI Matches"}
-        </button>
       </div>
 
       {err && <div className="error-box mb-6">{err}</div>}
