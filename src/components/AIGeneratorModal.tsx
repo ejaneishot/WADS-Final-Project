@@ -11,6 +11,7 @@ interface AIGeneratorModalProps {
 export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [topic, setTopic] = useState("");
+  const [includeProfile, setIncludeProfile] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -23,12 +24,13 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
       const res = await fetch(`/api/roadmaps/${roadmapId}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic }),
+        body: JSON.stringify({ topic, includeProfile }),
       });
 
       if (res.ok) {
         setIsOpen(false);
         setTopic("");
+        setIncludeProfile(false);
         router.refresh(); // Update the canvas with new AI nodes
       } else {
         alert("AI generation failed. Please try a different topic.");
@@ -59,7 +61,10 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
             }}
           >
             <h2 className="text-xl font-bold mb-2">AI Roadmap Generator</h2>
-            <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
+            <p
+              className="text-sm mb-4"
+              style={{ color: "var(--text-secondary)" }}
+            >
               Tell Gemini what you want to learn, and it will build a branching
               roadmap for you.
             </p>
@@ -75,6 +80,29 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
                 disabled={loading}
                 required
               />
+
+              <label className="flex cursor-pointer items-start gap-3 text-sm">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border"
+                  style={{ borderColor: "var(--border)" }}
+                  checked={includeProfile}
+                  onChange={(e) => setIncludeProfile(e.target.checked)}
+                  disabled={loading}
+                />
+                <span style={{ color: "var(--text-secondary)" }}>
+                  <span
+                    className="font-medium"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    Include my profile
+                  </span>
+                  {" — "}
+                  Send major, semester, GPA range, interests, skills (with levels),
+                  and your latest assessment career matches to Gemini so the roadmap
+                  fits your context.
+                </span>
+              </label>
 
               <div className="flex justify-end gap-2">
                 <button
