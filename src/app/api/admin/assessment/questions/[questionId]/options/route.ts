@@ -7,9 +7,9 @@ import {
   getAllowedScoringTags,
 } from "@/lib/assessmentScoring";
 
-const UpdateOptionSchema = z.object({
-  label: z.string().min(1),
-  value: z.string().nullable().optional(),
+const CreateOptionSchema = z.object({
+  label: z.string().min(1).max(2000),
+  value: z.string().max(96).nullable().optional(),
   scoring: z
     .array(
       z.object({
@@ -17,18 +17,19 @@ const UpdateOptionSchema = z.object({
         weight: z.number().int().min(0).max(10),
       }),
     )
+    .optional()
     .default([]),
 });
 
-type Params = { params: Promise<{ optionId: string }> };
+type Params = { params: Promise<{ questionId: string }> };
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function POST(req: Request, { params }: Params) {
   const { error } = await requireRole(["admin"]);
   if (error) return error;
 
-  const { optionId } = await params;
+  const { questionId } = await params;
   const body = await req.json().catch(() => null);
-  const parsed = UpdateOptionSchema.safeParse(body);
+  const parsed = CreateOptionSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
       { message: "Invalid input", issues: parsed.error.issues },
@@ -36,9 +37,18 @@ export async function PATCH(req: Request, { params }: Params) {
     );
   }
 
+  const question = await prisma.quizQuestion.findUnique({
+    where: { id: questionId },
+    select: { id: true },
+  });
+  if (!question) {
+    return NextResponse.json({ message: "Question not found" }, { status: 404 });
+  }
+
   const allowedList = await getAllowedScoringTags(prisma);
   const allowed = buildAllowedScoringTagSet(allowedList);
-  const invalidTags = parsed.data.scoring
+  const scoringInput = parsed.data.scoring ?? [];
+  const invalidTags = scoringInput
     .map((s) => s.tag)
     .filter((tag) => !allowed.has(tag));
   if (invalidTags.length > 0) {
@@ -53,47 +63,36 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   const deduped = new Map<string, number>();
-  for (const item of parsed.data.scoring) {
+  for (const item of scoringInput) {
     deduped.set(item.tag, item.weight);
   }
-
   const normalized = [...deduped.entries()]
     .filter(([, weight]) => weight > 0)
     .map(([tag, weight]) => ({ tag, weight }));
 
-  const updated = await prisma.quizOption.update({
-    where: { id: optionId },
+  const agg = await prisma.quizOption.aggregate({
+    where: { questionId },
+    _max: { order: true },
+  });
+  const nextOrder = (agg._max.order ?? 0) + 1;
+
+  const option = await prisma.quizOption.create({
     data: {
-      label: parsed.data.label,
-      value: parsed.data.value ?? null,
-      scoring: normalized,
+      questionId,
+      label: parsed.data.label.trim(),
+      value: parsed.data.value?.trim() || null,
+      order: nextOrder,
+      ...(normalized.length > 0 ? { scoring: normalized } : {}),
     },
     select: {
       id: true,
+      questionId: true,
       label: true,
       value: true,
+      order: true,
       scoring: true,
     },
   });
 
-  return NextResponse.json({ ok: true, option: updated }, { status: 200 });
-}
-
-export async function DELETE(_req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { optionId } = await params;
-
-  const existing = await prisma.quizOption.findUnique({
-    where: { id: optionId },
-    select: { id: true },
-  });
-  if (!existing) {
-    return NextResponse.json({ message: "Option not found" }, { status: 404 });
-  }
-
-  await prisma.quizOption.delete({ where: { id: optionId } });
-
-  return NextResponse.json({ ok: true }, { status: 200 });
+  return NextResponse.json({ ok: true, option }, { status: 201 });
 }

@@ -78,15 +78,6 @@ export function Navbar() {
           >
             Resume Optimizer
           </Link>
-          {me?.role === "admin" && (
-            <Link
-              href="/admin"
-              className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              Admin
-            </Link>
-          )}
 
           <div className="ml-3 flex items-center gap-2.5">
             {me ? (

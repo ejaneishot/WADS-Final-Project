@@ -183,18 +183,16 @@ export default function AdminCareersPage() {
           <div>
             <p className="section-label">Admin Dashboard</p>
             <h1 className="mt-2 text-3xl font-bold">Career tracks</h1>
-            <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-              Create, edit, or remove careers stored in the database. Assessment scoring
-              uses each career’s <span className="mono">tag</span> (for example SWE, FE).
+            <p
+              className="mt-1 text-sm"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Create, edit, or remove careers stored in the database. Assessment
+              scoring uses each career’s <span className="mono">tag</span> (for
+              example SWE, FE).
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href="/admin" className="btn-ghost">
-              Admin home
-            </Link>
-            <Link href="/admin/assessment" className="btn-ghost">
-              Assessment editor
-            </Link>
             <button
               type="button"
               className="btn-accent"
@@ -345,7 +343,11 @@ export default function AdminCareersPage() {
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h2 className="text-lg font-semibold">Edit career</h2>
-                  <button type="button" className="btn-ghost" onClick={closeEdit}>
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={closeEdit}
+                  >
                     Cancel
                   </button>
                 </div>
@@ -361,7 +363,9 @@ export default function AdminCareersPage() {
                       className="input-dark"
                       value={draft.title}
                       onChange={(e) =>
-                        setDraft((d) => (d ? { ...d, title: e.target.value } : d))
+                        setDraft((d) =>
+                          d ? { ...d, title: e.target.value } : d,
+                        )
                       }
                     />
                   </div>
@@ -395,7 +399,9 @@ export default function AdminCareersPage() {
                       className="input-dark mono text-sm"
                       value={draft.slug}
                       onChange={(e) =>
-                        setDraft((d) => (d ? { ...d, slug: e.target.value } : d))
+                        setDraft((d) =>
+                          d ? { ...d, slug: e.target.value } : d,
+                        )
                       }
                     />
                   </div>
@@ -508,19 +514,34 @@ export default function AdminCareersPage() {
                       className="border-b"
                       style={{ borderColor: "var(--border)" }}
                     >
-                      <th className="p-3 font-medium" style={{ color: "var(--text-muted)" }}>
+                      <th
+                        className="p-3 font-medium"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Title
                       </th>
-                      <th className="p-3 font-medium mono" style={{ color: "var(--text-muted)" }}>
+                      <th
+                        className="p-3 font-medium mono"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Tag
                       </th>
-                      <th className="p-3 font-medium mono" style={{ color: "var(--text-muted)" }}>
+                      <th
+                        className="p-3 font-medium mono"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Slug
                       </th>
-                      <th className="p-3 font-medium" style={{ color: "var(--text-muted)" }}>
+                      <th
+                        className="p-3 font-medium"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Industry
                       </th>
-                      <th className="p-3 font-medium text-right" style={{ color: "var(--text-muted)" }}>
+                      <th
+                        className="p-3 font-medium text-right"
+                        style={{ color: "var(--text-muted)" }}
+                      >
                         Actions
                       </th>
                     </tr>
@@ -540,10 +561,16 @@ export default function AdminCareersPage() {
                       >
                         <td className="p-3 font-medium">{c.title}</td>
                         <td className="p-3 mono text-xs">{c.tag}</td>
-                        <td className="p-3 mono text-xs max-w-[180px] truncate" title={c.slug}>
+                        <td
+                          className="p-3 mono text-xs max-w-[180px] truncate"
+                          title={c.slug}
+                        >
                           {c.slug}
                         </td>
-                        <td className="p-3" style={{ color: "var(--text-secondary)" }}>
+                        <td
+                          className="p-3"
+                          style={{ color: "var(--text-secondary)" }}
+                        >
                           {c.industry}
                         </td>
                         <td className="p-3 text-right whitespace-nowrap">
@@ -569,9 +596,12 @@ export default function AdminCareersPage() {
                 </table>
               </div>
               {careers.length === 0 && (
-                <p className="p-6 text-sm" style={{ color: "var(--text-secondary)" }}>
-                  No careers yet. Add one with <strong>New career</strong> or run the seed
-                  script.
+                <p
+                  className="p-6 text-sm"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  No careers yet. Add one with <strong>New career</strong> or
+                  run the seed script.
                 </p>
               )}
             </div>

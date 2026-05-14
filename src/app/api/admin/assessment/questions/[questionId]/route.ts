@@ -42,3 +42,22 @@ export async function PATCH(req: Request, { params }: Params) {
 
   return NextResponse.json({ ok: true, question: updated }, { status: 200 });
 }
+
+export async function DELETE(_req: Request, { params }: Params) {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
+  const { questionId } = await params;
+
+  const existing = await prisma.quizQuestion.findUnique({
+    where: { id: questionId },
+    select: { id: true },
+  });
+  if (!existing) {
+    return NextResponse.json({ message: "Question not found" }, { status: 404 });
+  }
+
+  await prisma.quizQuestion.delete({ where: { id: questionId } });
+
+  return NextResponse.json({ ok: true }, { status: 200 });
+}
