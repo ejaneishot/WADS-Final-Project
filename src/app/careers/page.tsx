@@ -306,11 +306,18 @@ export default function CareersPage() {
               <span className="badge flex-shrink-0">{c.industry}</span>
             </div>
             <p
-              className="text-sm leading-relaxed"
+              className="text-sm leading-relaxed mb-4"
               style={{ color: "var(--text-secondary)" }}
             >
               {c.description}
             </p>
+            <Link
+              href={`/careers/${c.slug}`}
+              className="text-sm font-medium transition-colors hover:text-white"
+              style={{ color: "var(--accent)" }}
+            >
+              View track →
+            </Link>
           </div>
         ))}
       </div>
