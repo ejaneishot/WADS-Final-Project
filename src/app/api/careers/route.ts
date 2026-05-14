@@ -20,6 +20,7 @@ export async function GET(req: Request) {
       select: {
         id: true,
         slug: true,
+        tag: true,
         title: true,
         industry: true,
         description: true,

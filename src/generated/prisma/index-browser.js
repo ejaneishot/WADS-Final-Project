@@ -156,6 +156,7 @@ exports.Prisma.UserSkillScalarFieldEnum = {
 exports.Prisma.CareerScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
+  tag: 'tag',
   title: 'title',
   industry: 'industry',
   description: 'description',

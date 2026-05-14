@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
 import { z } from "zod";
+import { getAllowedScoringTags } from "@/lib/assessmentScoring";
 
 const SubmitSchema = z.object({
   answers: z
@@ -15,35 +16,12 @@ const SubmitSchema = z.object({
     .min(1),
 });
 
-type RoleTag = "SWE" | "FE" | "BE" | "AI" | "SEC" | "GAME" | "QA" | "PM";
-const ROLE_TAGS: RoleTag[] = [
-  "SWE",
-  "FE",
-  "BE",
-  "AI",
-  "SEC",
-  "GAME",
-  "QA",
-  "PM",
-];
-
-function emptyScores(): Record<RoleTag, number> {
-  return {
-    SWE: 0,
-    FE: 0,
-    BE: 0,
-    AI: 0,
-    SEC: 0,
-    GAME: 0,
-    QA: 0,
-    PM: 0,
-  };
-}
-
-function topTwo(scores: Record<RoleTag, number>) {
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const primary = sorted[0]?.[0] as RoleTag | undefined;
-  const secondary = sorted[1]?.[0] as RoleTag | undefined;
+function topTwo(scores: Record<string, number>) {
+  const sorted = Object.entries(scores)
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1]);
+  const primary = sorted[0]?.[0];
+  const secondary = sorted[1]?.[0];
   return { primary, secondary };
 }
 
@@ -246,19 +224,24 @@ export async function POST(req: Request) {
   }
 
   // Compute scores from option.scoring JSON
-  const scores = emptyScores();
+  const allowedList = await getAllowedScoringTags(prisma);
+  const allowed = new Set(allowedList);
+  const scores: Record<string, number> = {};
 
   for (const a of answers) {
     const opt = optById.get(a.optionId)!;
     const scoring = opt.scoring as unknown;
 
-    // scoring expected: [{ tag: "SWE", weight: 2 }, ...]
     if (Array.isArray(scoring)) {
       for (const item of scoring) {
-        const tag = (item as any)?.tag;
-        const weight = (item as any)?.weight;
-        if (ROLE_TAGS.includes(tag) && typeof weight === "number") {
-          scores[tag] += weight;
+        const tag = (item as { tag?: unknown }).tag;
+        const weight = (item as { weight?: unknown }).weight;
+        if (
+          typeof tag === "string" &&
+          allowed.has(tag) &&
+          typeof weight === "number"
+        ) {
+          scores[tag] = (scores[tag] ?? 0) + weight;
         }
       }
     }

@@ -3,17 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const TRACK_LABELS: Record<string, string> = {
-  SWE: "Software Engineering",
-  FE: "Frontend Engineering",
-  BE: "Backend Engineering",
-  AI: "Artificial Intelligence",
-  SEC: "Cybersecurity",
-  GAME: "Game Development",
-  QA: "Quality Assurance",
-  PM: "Product Management",
-};
+import { resolveQuizScoreLabel } from "@/lib/assessmentScoring";
 
 type Profile = {
   name: string | null;
@@ -35,11 +25,14 @@ export default function DashboardPage() {
   const [assessmentResult, setAssessmentResult] =
     useState<AssessmentResult | null>(null);
 
-  const [err, setErr] = useState<string | null>(null);
+  const [careerTitles, setCareerTitles] = useState<
+    { slug: string; title: string; tag: string }[]
+  >([]);
   const [matchLoading, setMatchLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   // Form fields
   const [name, setName] = useState("");
@@ -54,6 +47,23 @@ export default function DashboardPage() {
   );
 
   useEffect(() => {
+    fetch("/api/careers")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.careers) {
+          setCareerTitles(
+            (data.careers as { slug: string; title: string; tag: string }[]).map(
+              (c) => ({
+                slug: c.slug,
+                title: c.title,
+                tag: c.tag,
+              }),
+            ),
+          );
+        }
+      })
+      .catch(console.error);
+
     fetch("/api/profile")
       .then(async (r) => {
         if (!r.ok)
@@ -61,6 +71,7 @@ export default function DashboardPage() {
         return r.json();
       })
       .then((data) => {
+        setErr(null);
         setProfile(data);
         setName(data.name ?? "");
         setMajor(data.major ?? "");
@@ -301,8 +312,10 @@ export default function DashboardPage() {
                       className="text-sm font-semibold"
                       style={{ color: "var(--accent)" }}
                     >
-                      {TRACK_LABELS[assessmentResult.primary] ||
-                        assessmentResult.primary}
+                      {resolveQuizScoreLabel(
+                        assessmentResult.primary,
+                        careerTitles,
+                      )}
                     </span>
                   </div>
 
@@ -321,8 +334,10 @@ export default function DashboardPage() {
                         className="text-xs font-medium"
                         style={{ color: "var(--text-secondary)" }}
                       >
-                        {TRACK_LABELS[assessmentResult.secondary] ||
-                          assessmentResult.secondary}
+                        {resolveQuizScoreLabel(
+                          assessmentResult.secondary,
+                          careerTitles,
+                        )}
                       </span>
                     </div>
                   )}

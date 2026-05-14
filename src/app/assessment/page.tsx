@@ -4,13 +4,25 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-// 1. Align the Tracks with your Backend's RoleTags
-type RoleTag = "SWE" | "FE" | "BE" | "AI" | "SEC" | "GAME" | "QA" | "PM";
+type CareerSummary = {
+  slug: string;
+  tag: string;
+  title: string;
+  description: string;
+  icon: string | null;
+  color: string | null;
+};
 
-const TRACKS: Record<
-  RoleTag,
-  { label: string; slug: string; icon: string; color: string; desc: string }
-> = {
+type TrackDisplay = {
+  label: string;
+  slug: string;
+  icon: string;
+  color: string;
+  desc: string;
+};
+
+/** Original short codes → display + careers slug (for links). */
+const LEGACY_TRACK_META: Record<string, TrackDisplay> = {
   SWE: {
     label: "Software Engineering",
     slug: "software-engineering",
@@ -69,6 +81,28 @@ const TRACKS: Record<
   },
 };
 
+function resolveTrackDisplay(code: string, careers: CareerSummary[]): TrackDisplay {
+  const c = careers.find((x) => x.tag === code || x.slug === code);
+  if (c) {
+    return {
+      label: c.title,
+      slug: c.slug,
+      icon: c.icon ?? "💼",
+      color: c.color ?? "from-slate-500 to-slate-700",
+      desc: c.description,
+    };
+  }
+  const legacy = LEGACY_TRACK_META[code];
+  if (legacy) return legacy;
+  return {
+    label: code,
+    slug: code,
+    icon: "💼",
+    color: "from-slate-500 to-slate-700",
+    desc: "Explore this track on the careers page.",
+  };
+}
+
 export default function AssessmentPage() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [phase, setPhase] = useState<"intro" | "quiz" | "result">("intro");
@@ -85,8 +119,9 @@ export default function AssessmentPage() {
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
 
   // Results state
-  const [scores, setScores] = useState<Record<RoleTag, number> | null>(null);
-  const [primaryResult, setPrimaryResult] = useState<RoleTag | null>(null);
+  const [scores, setScores] = useState<Record<string, number> | null>(null);
+  const [primaryResult, setPrimaryResult] = useState<string | null>(null);
+  const [careers, setCareers] = useState<CareerSummary[]>([]);
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
@@ -94,9 +129,16 @@ export default function AssessmentPage() {
     Promise.all([
       fetch("/api/me"),
       fetch("/api/assessment/questions"),
-      fetch("/api/assessment/result"), // <-- ADDED THIS
-    ]).then(async ([authRes, quizRes, resultRes]) => {
+      fetch("/api/assessment/result"),
+      fetch("/api/careers"),
+    ]).then(async ([authRes, quizRes, resultRes, careersRes]) => {
       setIsLoggedIn(authRes.ok);
+
+      if (careersRes.ok) {
+        const careerPayload = await careersRes.json();
+        const list = (careerPayload.careers ?? []) as CareerSummary[];
+        setCareers(list);
+      }
 
       // 1. Load the questions
       if (quizRes.ok) {
@@ -113,7 +155,7 @@ export default function AssessmentPage() {
         if (pastResult.hasResult) {
           // If they already took it, load their scores and jump to the result phase!
           setScores(pastResult.result.scores);
-          setPrimaryResult(pastResult.result.primary as RoleTag);
+          setPrimaryResult(pastResult.result.primary as string);
           setPhase("result");
         }
       }
@@ -178,9 +220,20 @@ export default function AssessmentPage() {
             problem-solving style.
           </p>
           <div className="flex flex-wrap justify-center gap-2 pt-2">
-            {Object.values(TRACKS).map((t) => (
+            {(careers.length > 0
+              ? careers.map((c) => ({
+                  key: c.slug,
+                  icon: c.icon,
+                  text: c.title,
+                }))
+              : Object.values(LEGACY_TRACK_META).map((t) => ({
+                  key: t.slug,
+                  icon: t.icon,
+                  text: t.label,
+                }))
+            ).map((c) => (
               <span
-                key={t.slug}
+                key={c.key}
                 className="rounded-full px-3 py-1 text-xs font-medium"
                 style={{
                   background: "var(--surface-raised)",
@@ -188,7 +241,8 @@ export default function AssessmentPage() {
                   color: "var(--text-secondary)",
                 }}
               >
-                {t.icon} {t.label}
+                {c.icon ? `${c.icon} ` : ""}
+                {c.text}
               </span>
             ))}
           </div>
@@ -202,12 +256,10 @@ export default function AssessmentPage() {
 
   /* ── RESULT ── */
   if (phase === "result" && scores && primaryResult) {
-    const sorted = (Object.entries(scores) as [RoleTag, number][]).sort(
-      (a, b) => b[1] - a[1],
-    );
-    const total = sorted.reduce((s, [, v]) => s + v, 0) || 1; // prevent div by 0
-    const topTrack = TRACKS[primaryResult];
-    const topScore = scores[primaryResult];
+    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    const total = sorted.reduce((s, [, v]) => s + v, 0) || 1;
+    const topTrack = resolveTrackDisplay(primaryResult, careers);
+    const topScore = scores[primaryResult] ?? sorted[0]?.[1] ?? 0;
 
     return (
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-16">
@@ -277,8 +329,8 @@ export default function AssessmentPage() {
               Full breakdown
             </p>
             {sorted.map(([tag, score]) => {
-              if (score === 0) return null; // hide tracks with 0 score
-              const t = TRACKS[tag];
+              if (score === 0) return null;
+              const t = resolveTrackDisplay(tag, careers);
               const pct = Math.round((score / total) * 100);
               return (
                 <div key={tag} className="flex items-center gap-3">

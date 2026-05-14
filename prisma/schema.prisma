@@ -67,6 +67,8 @@ model UserSkill {
 model Career {
   id          String   @id @default(cuid())
   slug        String   @unique // Added: consistent with careersData
+  /// Short code used in assessment scoring (e.g. SWE, FE) — unique across careers.
+  tag         String   @unique
   title       String
   industry    String
   description String
@@ -188,7 +190,7 @@ model QuizOption {
   value String? // optional stable key like "A", "B", "logic_puzzles"
   order Int     @default(0)
 
-  // Optional: store scoring hints / tags per option as JSON.
+  // Optional: scoring weights per career assessment tag (see Career.tag).
   // Example JSON:
   // [{"tag":"SWE","weight":2},{"tag":"AI","weight":1}]
   scoring Json?

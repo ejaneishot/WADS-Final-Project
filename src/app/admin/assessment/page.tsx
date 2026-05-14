@@ -3,10 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-const ROLE_TAGS = ["SWE", "FE", "BE", "AI", "SEC", "GAME", "QA", "PM"] as const;
-type RoleTag = (typeof ROLE_TAGS)[number];
-
-type ScoreItem = { tag: RoleTag; weight: number };
+type ScoreItem = { tag: string; weight: number };
 
 type Option = {
   id: string;
@@ -36,37 +33,59 @@ type Section = {
 
 type EditorState = {
   sections: Section[];
+  scoringTags: string[];
   loading: boolean;
   error: string | null;
 };
 
-function toScoreMap(scoring: unknown): Record<RoleTag, number> {
-  const init = Object.fromEntries(ROLE_TAGS.map((tag) => [tag, 0])) as Record<
-    RoleTag,
+function tagsFromScoring(scoring: unknown): string[] {
+  if (!Array.isArray(scoring)) return [];
+  const tags: string[] = [];
+  for (const item of scoring) {
+    const tag = (item as { tag?: unknown }).tag;
+    if (typeof tag === "string" && tag.length > 0) tags.push(tag);
+  }
+  return tags;
+}
+
+function mergedScoringKeys(knownTags: string[], scoring: unknown): string[] {
+  const set = new Set(knownTags);
+  for (const t of tagsFromScoring(scoring)) set.add(t);
+  return [...set].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base" }),
+  );
+}
+
+function toScoreMap(
+  scoring: unknown,
+  knownTags: string[],
+): Record<string, number> {
+  const keys = mergedScoringKeys(knownTags, scoring);
+  const map = Object.fromEntries(keys.map((k) => [k, 0])) as Record<
+    string,
     number
   >;
-  if (!Array.isArray(scoring)) return init;
-
+  if (!Array.isArray(scoring)) return map;
   for (const item of scoring) {
     const tag = (item as { tag?: string }).tag;
     const weight = (item as { weight?: number }).weight;
-    if (tag && ROLE_TAGS.includes(tag as RoleTag) && typeof weight === "number") {
-      init[tag as RoleTag] = weight;
+    if (tag && typeof weight === "number" && typeof map[tag] === "number") {
+      map[tag] = weight;
     }
   }
-  return init;
+  return map;
 }
 
-function toScoringArray(scoreMap: Record<RoleTag, number>): ScoreItem[] {
-  return ROLE_TAGS.filter((tag) => scoreMap[tag] > 0).map((tag) => ({
-    tag,
-    weight: scoreMap[tag],
-  }));
+function toScoringArray(scoreMap: Record<string, number>): ScoreItem[] {
+  return Object.entries(scoreMap)
+    .filter(([, w]) => w > 0)
+    .map(([tag, weight]) => ({ tag, weight }));
 }
 
 export default function AdminAssessmentEditorPage() {
   const [state, setState] = useState<EditorState>({
     sections: [],
+    scoringTags: [],
     loading: true,
     error: null,
   });
@@ -79,9 +98,16 @@ export default function AdminAssessmentEditorPage() {
         if (!res.ok) throw new Error("Failed to load assessment editor data.");
         return res.json();
       })
-      .then((data) => setState({ sections: data.sections, loading: false, error: null }))
+      .then((data) =>
+        setState({
+          sections: data.sections,
+          scoringTags: data.scoringTags ?? [],
+          loading: false,
+          error: null,
+        }),
+      )
       .catch((err: Error) =>
-        setState({ sections: [], loading: false, error: err.message }),
+        setState({ sections: [], scoringTags: [], loading: false, error: err.message }),
       );
   }, []);
 
@@ -151,7 +177,7 @@ export default function AdminAssessmentEditorPage() {
     setMessage(null);
     setSavingId(option.id);
 
-    const scoreMap = toScoreMap(option.scoring);
+    const scoreMap = toScoreMap(option.scoring, state.scoringTags);
     const res = await fetch(`/api/admin/assessment/options/${option.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -196,7 +222,10 @@ export default function AdminAssessmentEditorPage() {
             <p className="section-label">Admin Dashboard</p>
             <h1 className="mt-2 text-3xl font-bold">Assessment Editor</h1>
             <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
-              Edit questions, options, and scoring weights used in the quiz.
+              Edit questions, options, and scoring weights. Weights use each career’s{" "}
+              <strong>assessment tag</strong> (<span className="mono">Career.tag</span>, e.g.{" "}
+              <span className="mono">SWE</span>, <span className="mono">FE</span>) — the same codes
+              stored on career rows in the database.
             </p>
           </div>
           <Link href="/admin" className="btn-ghost">
@@ -214,8 +243,8 @@ export default function AdminAssessmentEditorPage() {
             <p className="mt-1 text-xl font-semibold">{totalQuestions}</p>
           </div>
           <div className="rounded-xl p-4" style={{ background: "var(--surface-raised)", border: "1px solid var(--border)" }}>
-            <p className="text-xs mono" style={{ color: "var(--text-muted)" }}>Role Tags</p>
-            <p className="mt-1 text-xl font-semibold">{ROLE_TAGS.length}</p>
+            <p className="text-xs mono" style={{ color: "var(--text-muted)" }}>Career tags</p>
+            <p className="mt-1 text-xl font-semibold">{state.scoringTags.length}</p>
           </div>
         </div>
 
@@ -303,7 +332,7 @@ export default function AdminAssessmentEditorPage() {
 
                     <div className="space-y-3">
                       {question.options.map((option) => {
-                        const scoreMap = toScoreMap(option.scoring);
+                        const scoreMap = toScoreMap(option.scoring, state.scoringTags);
                         return (
                           <div
                             key={option.id}
@@ -351,36 +380,67 @@ export default function AdminAssessmentEditorPage() {
                               />
                             </div>
 
-                            <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
-                              {ROLE_TAGS.map((tag) => (
-                                <label key={tag} className="text-xs">
-                                  <span
-                                    className="block mb-1 mono"
-                                    style={{ color: "var(--text-muted)" }}
-                                  >
-                                    {tag}
-                                  </span>
-                                  <input
-                                    className="input-dark"
-                                    type="number"
-                                    min={0}
-                                    max={10}
-                                    value={scoreMap[tag]}
-                                    onChange={(e) => {
-                                      const nextValue = Number(e.target.value || 0);
-                                      const nextMap = {
-                                        ...scoreMap,
-                                        [tag]: Number.isNaN(nextValue) ? 0 : nextValue,
-                                      };
-                                      updateOptionField(option.id, (o) => ({
-                                        ...o,
-                                        scoring: toScoringArray(nextMap),
-                                      }));
-                                    }}
-                                  />
-                                </label>
-                              ))}
-                            </div>
+                            {(() => {
+                              const mergedKeys = mergedScoringKeys(
+                                state.scoringTags,
+                                option.scoring,
+                              );
+
+                              const renderWeightInputs = (tags: string[]) =>
+                                tags.map((tag) => {
+                                  const orphan = !state.scoringTags.includes(tag);
+                                  return (
+                                    <label key={tag} className="text-xs">
+                                      <span
+                                        className="block mb-1 mono truncate"
+                                        style={{ color: "var(--text-muted)" }}
+                                        title={
+                                          orphan
+                                            ? "Not in current Career.tag list (refresh after DB changes)"
+                                            : tag
+                                        }
+                                      >
+                                        {tag}
+                                        {orphan ? " *" : ""}
+                                      </span>
+                                      <input
+                                        className="input-dark"
+                                        type="number"
+                                        min={0}
+                                        max={10}
+                                        value={scoreMap[tag] ?? 0}
+                                        onChange={(e) => {
+                                          const nextValue = Number(e.target.value || 0);
+                                          const nextMap = {
+                                            ...scoreMap,
+                                            [tag]: Number.isNaN(nextValue) ? 0 : nextValue,
+                                          };
+                                          updateOptionField(option.id, (o) => ({
+                                            ...o,
+                                            scoring: toScoringArray(nextMap),
+                                          }));
+                                        }}
+                                      />
+                                    </label>
+                                  );
+                                });
+
+                              return (
+                                <div className="mt-3 space-y-3">
+                                  <div>
+                                    <p
+                                      className="text-[11px] uppercase tracking-wide mb-2"
+                                      style={{ color: "var(--text-muted)" }}
+                                    >
+                                      Weights by career tag
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+                                      {renderWeightInputs(mergedKeys)}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })()}
                           </div>
                         );
                       })}

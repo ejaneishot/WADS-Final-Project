@@ -18,8 +18,7 @@ const pool = new Pool({
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-type RoleTag = "SWE" | "FE" | "BE" | "AI" | "SEC" | "GAME" | "QA" | "PM";
-type ScoringItem = { tag: RoleTag; weight: number };
+type ScoringItem = { tag: string; weight: number };
 
 function scoringJson(
   scoring?: ScoringItem[],
@@ -32,6 +31,7 @@ async function seedCareers() {
   const careersData = [
     {
       slug: "software-engineering",
+      tag: "SWE",
       title: "Software Engineering",
       industry: "Technology",
       description: "Build scalable systems, APIs, and full-stack applications.",
@@ -50,6 +50,7 @@ async function seedCareers() {
     },
     {
       slug: "frontend-engineering",
+      tag: "FE",
       title: "Frontend Engineering",
       industry: "Technology",
       description:
@@ -69,6 +70,7 @@ async function seedCareers() {
     },
     {
       slug: "backend-engineering",
+      tag: "BE",
       title: "Backend Engineering",
       industry: "Technology",
       description:
@@ -88,6 +90,7 @@ async function seedCareers() {
     },
     {
       slug: "cybersecurity",
+      tag: "SEC",
       title: "Cybersecurity",
       industry: "Technology",
       description: "Protect systems, networks, and data from digital threats.",
@@ -106,6 +109,7 @@ async function seedCareers() {
     },
     {
       slug: "artificial-intelligence",
+      tag: "AI",
       title: "Artificial Intelligence",
       industry: "Technology",
       description: "Design intelligent systems, LLMs, and autonomous agents.",
@@ -124,6 +128,7 @@ async function seedCareers() {
     },
     {
       slug: "game-development",
+      tag: "GAME",
       title: "Game Development",
       industry: "Technology",
       description:
@@ -143,6 +148,7 @@ async function seedCareers() {
     },
     {
       slug: "quality-assurance",
+      tag: "QA",
       title: "Quality Assurance",
       industry: "Technology",
       description:
@@ -162,6 +168,7 @@ async function seedCareers() {
     },
     {
       slug: "product-management",
+      tag: "PM",
       title: "Product Management",
       industry: "Product",
       description:
@@ -186,6 +193,7 @@ async function seedCareers() {
       where: { slug: career.slug },
       create: career,
       update: {
+        tag: career.tag,
         title: career.title,
         industry: career.industry,
         description: career.description,

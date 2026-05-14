@@ -7,6 +7,7 @@ import Link from "next/link";
 type Career = {
   id: string;
   slug: string;
+  tag: string;
   title: string;
   industry: string;
   description: string;
@@ -15,18 +16,6 @@ type Career = {
   gradient: string;
   border: string;
   milestones: string[];
-};
-
-// Map the backend RoleTags (from the assessment) to the new DB Career Slugs
-const TAG_TO_SLUG: Record<string, string> = {
-  SWE: "software-engineering",
-  FE: "frontend-engineering",
-  BE: "backend-engineering",
-  AI: "artificial-intelligence",
-  SEC: "cybersecurity",
-  GAME: "game-development",
-  QA: "quality-assurance",
-  PM: "product-management",
 };
 
 export default function CareersPage() {
@@ -55,10 +44,8 @@ export default function CareersPage() {
         // If they took the quiz, find their matching track
         if (resultData.ok && resultData.hasResult) {
           const primaryTag = resultData.result.primary;
-          const targetSlug = TAG_TO_SLUG[primaryTag] || "software-engineering";
-
           const match = fetchedCareers.find(
-            (c: Career) => c.slug === targetSlug,
+            (c: Career) => c.tag === primaryTag || c.slug === primaryTag,
           );
           if (match) setRecommendedCareer(match);
         }

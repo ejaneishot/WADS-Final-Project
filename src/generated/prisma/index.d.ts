@@ -6905,6 +6905,7 @@ export namespace Prisma {
   export type CareerMinAggregateOutputType = {
     id: string | null
     slug: string | null
+    tag: string | null
     title: string | null
     industry: string | null
     description: string | null
@@ -6919,6 +6920,7 @@ export namespace Prisma {
   export type CareerMaxAggregateOutputType = {
     id: string | null
     slug: string | null
+    tag: string | null
     title: string | null
     industry: string | null
     description: string | null
@@ -6933,6 +6935,7 @@ export namespace Prisma {
   export type CareerCountAggregateOutputType = {
     id: number
     slug: number
+    tag: number
     title: number
     industry: number
     description: number
@@ -6950,6 +6953,7 @@ export namespace Prisma {
   export type CareerMinAggregateInputType = {
     id?: true
     slug?: true
+    tag?: true
     title?: true
     industry?: true
     description?: true
@@ -6964,6 +6968,7 @@ export namespace Prisma {
   export type CareerMaxAggregateInputType = {
     id?: true
     slug?: true
+    tag?: true
     title?: true
     industry?: true
     description?: true
@@ -6978,6 +6983,7 @@ export namespace Prisma {
   export type CareerCountAggregateInputType = {
     id?: true
     slug?: true
+    tag?: true
     title?: true
     industry?: true
     description?: true
@@ -7066,6 +7072,7 @@ export namespace Prisma {
   export type CareerGroupByOutputType = {
     id: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -7098,6 +7105,7 @@ export namespace Prisma {
   export type CareerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     slug?: boolean
+    tag?: boolean
     title?: boolean
     industry?: boolean
     description?: boolean
@@ -7115,6 +7123,7 @@ export namespace Prisma {
   export type CareerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     slug?: boolean
+    tag?: boolean
     title?: boolean
     industry?: boolean
     description?: boolean
@@ -7130,6 +7139,7 @@ export namespace Prisma {
   export type CareerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     slug?: boolean
+    tag?: boolean
     title?: boolean
     industry?: boolean
     description?: boolean
@@ -7145,6 +7155,7 @@ export namespace Prisma {
   export type CareerSelectScalar = {
     id?: boolean
     slug?: boolean
+    tag?: boolean
     title?: boolean
     industry?: boolean
     description?: boolean
@@ -7157,7 +7168,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CareerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "industry" | "description" | "icon" | "color" | "gradient" | "border" | "milestones" | "createdAt" | "updatedAt", ExtArgs["result"]["career"]>
+  export type CareerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "tag" | "title" | "industry" | "description" | "icon" | "color" | "gradient" | "border" | "milestones" | "createdAt" | "updatedAt", ExtArgs["result"]["career"]>
   export type CareerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProgress?: boolean | Career$userProgressArgs<ExtArgs>
     _count?: boolean | CareerCountOutputTypeDefaultArgs<ExtArgs>
@@ -7173,6 +7184,10 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       slug: string
+      /**
+       * Short code used in assessment scoring (e.g. SWE, FE) — unique across careers.
+       */
+      tag: string
       title: string
       industry: string
       description: string
@@ -7609,6 +7624,7 @@ export namespace Prisma {
   interface CareerFieldRefs {
     readonly id: FieldRef<"Career", 'String'>
     readonly slug: FieldRef<"Career", 'String'>
+    readonly tag: FieldRef<"Career", 'String'>
     readonly title: FieldRef<"Career", 'String'>
     readonly industry: FieldRef<"Career", 'String'>
     readonly description: FieldRef<"Career", 'String'>
@@ -18115,6 +18131,7 @@ export namespace Prisma {
   export const CareerScalarFieldEnum: {
     id: 'id',
     slug: 'slug',
+    tag: 'tag',
     title: 'title',
     industry: 'industry',
     description: 'description',
@@ -18644,6 +18661,7 @@ export namespace Prisma {
     NOT?: CareerWhereInput | CareerWhereInput[]
     id?: StringFilter<"Career"> | string
     slug?: StringFilter<"Career"> | string
+    tag?: StringFilter<"Career"> | string
     title?: StringFilter<"Career"> | string
     industry?: StringFilter<"Career"> | string
     description?: StringFilter<"Career"> | string
@@ -18660,6 +18678,7 @@ export namespace Prisma {
   export type CareerOrderByWithRelationInput = {
     id?: SortOrder
     slug?: SortOrder
+    tag?: SortOrder
     title?: SortOrder
     industry?: SortOrder
     description?: SortOrder
@@ -18676,6 +18695,7 @@ export namespace Prisma {
   export type CareerWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     slug?: string
+    tag?: string
     AND?: CareerWhereInput | CareerWhereInput[]
     OR?: CareerWhereInput[]
     NOT?: CareerWhereInput | CareerWhereInput[]
@@ -18690,11 +18710,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Career"> | Date | string
     updatedAt?: DateTimeFilter<"Career"> | Date | string
     userProgress?: UserCareerProgressListRelationFilter
-  }, "id" | "slug">
+  }, "id" | "slug" | "tag">
 
   export type CareerOrderByWithAggregationInput = {
     id?: SortOrder
     slug?: SortOrder
+    tag?: SortOrder
     title?: SortOrder
     industry?: SortOrder
     description?: SortOrder
@@ -18716,6 +18737,7 @@ export namespace Prisma {
     NOT?: CareerScalarWhereWithAggregatesInput | CareerScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Career"> | string
     slug?: StringWithAggregatesFilter<"Career"> | string
+    tag?: StringWithAggregatesFilter<"Career"> | string
     title?: StringWithAggregatesFilter<"Career"> | string
     industry?: StringWithAggregatesFilter<"Career"> | string
     description?: StringWithAggregatesFilter<"Career"> | string
@@ -19539,6 +19561,7 @@ export namespace Prisma {
   export type CareerCreateInput = {
     id?: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -19555,6 +19578,7 @@ export namespace Prisma {
   export type CareerUncheckedCreateInput = {
     id?: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -19571,6 +19595,7 @@ export namespace Prisma {
   export type CareerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -19587,6 +19612,7 @@ export namespace Prisma {
   export type CareerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -19603,6 +19629,7 @@ export namespace Prisma {
   export type CareerCreateManyInput = {
     id?: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -19618,6 +19645,7 @@ export namespace Prisma {
   export type CareerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -19633,6 +19661,7 @@ export namespace Prisma {
   export type CareerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -20547,6 +20576,7 @@ export namespace Prisma {
   export type CareerCountOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
+    tag?: SortOrder
     title?: SortOrder
     industry?: SortOrder
     description?: SortOrder
@@ -20562,6 +20592,7 @@ export namespace Prisma {
   export type CareerMaxOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
+    tag?: SortOrder
     title?: SortOrder
     industry?: SortOrder
     description?: SortOrder
@@ -20576,6 +20607,7 @@ export namespace Prisma {
   export type CareerMinOrderByAggregateInput = {
     id?: SortOrder
     slug?: SortOrder
+    tag?: SortOrder
     title?: SortOrder
     industry?: SortOrder
     description?: SortOrder
@@ -22780,6 +22812,7 @@ export namespace Prisma {
   export type CareerCreateWithoutUserProgressInput = {
     id?: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -22795,6 +22828,7 @@ export namespace Prisma {
   export type CareerUncheckedCreateWithoutUserProgressInput = {
     id?: string
     slug: string
+    tag: string
     title: string
     industry: string
     description: string
@@ -22859,6 +22893,7 @@ export namespace Prisma {
   export type CareerUpdateWithoutUserProgressInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -22874,6 +22909,7 @@ export namespace Prisma {
   export type CareerUncheckedUpdateWithoutUserProgressInput = {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    tag?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     industry?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
