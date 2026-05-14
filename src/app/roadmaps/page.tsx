@@ -2,8 +2,8 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import CreateRoadmapModal from "@/components/CreateRoadmapModal";
-import RoadmapCardActions from "@/components/RoadmapCardActions";
+import CreateRoadmapModal from "@/components/roadmap/CreateRoadmapModal";
+import RoadmapCardActions from "@/components/roadmap/RoadmapCardActions";
 import { getAuth } from "@/lib/auth";
 
 export default async function RoadmapsDashboard() {

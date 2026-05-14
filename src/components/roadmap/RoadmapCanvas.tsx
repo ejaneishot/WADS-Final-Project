@@ -1,4 +1,4 @@
-// src/components/RoadmapCanvas.tsx
+// src/components/roadmap/RoadmapCanvas.tsx
 "use client";
 
 import { useState, useMemo } from "react";
@@ -6,7 +6,7 @@ import { ReactFlow, Background, Controls, Node, Edge } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import dagre from "@dagrejs/dagre";
 import CreateNodeButton from "./CreateNodeButton";
-import RoadmapNode from "./nodes/RoadmapNode";
+import RoadmapNode from "./RoadmapNode";
 import AIGeneratorModal from "./AIGeneratorModal";
 
 interface RoadmapCanvasProps {

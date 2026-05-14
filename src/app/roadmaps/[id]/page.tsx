@@ -1,7 +1,7 @@
 // src/app/roadmaps/[id]/page.tsx
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
-import RoadmapCanvas from "@/components/RoadmapCanvas";
+import RoadmapCanvas from "@/components/roadmap/RoadmapCanvas";
 import { getAuth } from "@/lib/auth";
 
 export default async function RoadmapDetailPage({

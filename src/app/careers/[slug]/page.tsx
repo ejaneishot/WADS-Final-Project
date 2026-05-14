@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
-import { CareerMilestones } from "./career-milestones";
+import { CareerMilestones } from "@/components/careers/CareerMilestones";
 
 const DEFAULT_ICON = "💼";
 const DEFAULT_COLOR = "from-slate-500 to-slate-700";

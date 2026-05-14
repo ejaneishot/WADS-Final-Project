@@ -1,4 +1,4 @@
-// src/components/nodes/RoadmapNode.tsx
+// src/components/roadmap/RoadmapNode.tsx
 "use client";
 
 import { useState } from "react";

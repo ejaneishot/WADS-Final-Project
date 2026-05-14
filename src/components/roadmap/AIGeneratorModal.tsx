@@ -1,4 +1,4 @@
-// src/components/AIGeneratorModal.tsx
+// src/components/roadmap/AIGeneratorModal.tsx
 "use client";
 
 import { useState } from "react";

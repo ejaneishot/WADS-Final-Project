@@ -1,3 +1,4 @@
+// src/components/careers/CareerMilestones.tsx
 "use client";
 
 import Link from "next/link";
@@ -52,13 +53,20 @@ export function CareerMilestones({
   if (!isLoggedIn) {
     return (
       <div className="space-y-4">
-        <ol className="list-decimal list-inside space-y-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        <ol
+          className="list-decimal list-inside space-y-2 text-sm leading-relaxed"
+          style={{ color: "var(--text-secondary)" }}
+        >
           {milestones.map((m, i) => (
             <li key={i}>{m}</li>
           ))}
         </ol>
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          <Link href="/login" className="font-medium underline-offset-2 hover:underline" style={{ color: "var(--accent)" }}>
+          <Link
+            href="/login"
+            className="font-medium underline-offset-2 hover:underline"
+            style={{ color: "var(--accent)" }}
+          >
             Sign in
           </Link>{" "}
           to check off milestones and sync your progress across devices.
