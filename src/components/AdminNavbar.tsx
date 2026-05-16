@@ -12,6 +12,7 @@ const ADMIN_LINKS: ReadonlyArray<{
   { href: "/admin", label: "Overview" },
   { href: "/admin/assessment", label: "Assessment" },
   { href: "/admin/careers", label: "Tracks", title: "Career tracks (admin)" },
+  { href: "/docs", label: "API Docs", title: "OpenAPI documentation" },
 ];
 
 type Props = {
@@ -39,6 +40,7 @@ export function AdminNavbar({ email }: Props) {
 
   const pathActive = (href: string) => {
     if (href === "/admin") return pathname === "/admin";
+    if (href === "/docs") return pathname === "/docs";
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 

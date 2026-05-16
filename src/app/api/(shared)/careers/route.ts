@@ -6,11 +6,16 @@ import { requireAuth } from "@/lib/rbac";
 /**
  * @swagger
  * /api/careers:
- * get:
- * summary: Get all careers and user progress
- * description: Returns a list of all tech career tracks. If the user is authenticated, it also returns their saved milestone progress.
- * tags:
- * - Careers
+ *   get:
+ *     summary: Get all careers and user progress
+ *     description: Returns all tech career tracks. When authenticated, includes saved milestone progress.
+ *     tags:
+ *       - Careers
+ *     responses:
+ *       200:
+ *         description: Careers and optional progress map
+ *       500:
+ *         description: Server error
  */
 export async function GET(req: Request) {
   try {
@@ -71,13 +76,36 @@ export async function GET(req: Request) {
 /**
  * @swagger
  * /api/careers:
- * post:
- * summary: Update career milestone progress
- * description: Saves the user's checked off milestones for a specific career track.
- * tags:
- * - Careers
- * security:
- * - cookieAuth: []
+ *   post:
+ *     summary: Update career milestone progress
+ *     description: Saves the user's checked milestones for a career track.
+ *     tags:
+ *       - Careers
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - careerId
+ *               - completedMilestones
+ *             properties:
+ *               careerId:
+ *                 type: string
+ *               completedMilestones:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Progress saved
+ *       400:
+ *         description: Invalid payload
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 export async function POST(req: Request) {
   const { user, error } = await requireAuth();

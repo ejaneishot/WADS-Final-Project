@@ -308,3 +308,16 @@ select.input-dark {
   pointer-events: none;
   z-index: 0;
 }
+
+/* Swagger UI on /docs */
+.swagger-docs-shell {
+  @apply container-page py-6;
+}
+
+.swagger-docs-shell .swagger-ui {
+  font-family: 'Sora', sans-serif;
+}
+
+.swagger-docs-shell .swagger-ui .topbar {
+  display: none;
+}
