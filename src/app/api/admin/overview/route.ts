@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { requireRole } from "@/lib/rbac";
+import { withAdmin } from "@/lib/rbac";
 
-export async function GET() {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
+export const GET = withAdmin(async (_req, _auth, _ctx) => {
   const [totalUsers, totalStudents, totalAdmins, totalCareers, totalAttempts] =
     await Promise.all([
       prisma.user.count(),
@@ -28,4 +25,4 @@ export async function GET() {
     },
     { status: 200 },
   );
-}
+});

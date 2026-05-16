@@ -22,6 +22,9 @@ services:
       AI_PROVIDER: stub
       AI_API_KEY: ""
       AI_MODEL: ""
+      GEMINI_API_KEY: ""
+      JOB_BOARD_PROVIDER: remotive
+      JOB_BOARD_API_URL: https://remotive.com/api/remote-jobs
     depends_on:
       - db
     ports:

@@ -2,19 +2,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
-import { z } from "zod";
 import { getAllowedScoringTags } from "@/lib/assessmentScoring";
-
-const SubmitSchema = z.object({
-  answers: z
-    .array(
-      z.object({
-        questionId: z.string().min(1),
-        optionId: z.string().min(1),
-      }),
-    )
-    .min(1),
-});
+import { validateAssessmentSubmission } from "@/lib/services/assessmentSubmitValidation";
 
 function topTwo(scores: Record<string, number>) {
   const sorted = Object.entries(scores)
@@ -46,7 +35,6 @@ function topTwo(scores: Record<string, number>) {
  *             properties:
  *               answers:
  *                 type: array
- *                 description: List of answers selected by the user.
  *                 minItems: 1
  *                 items:
  *                   type: object
@@ -56,174 +44,42 @@ function topTwo(scores: Record<string, number>) {
  *                   properties:
  *                     questionId:
  *                       type: string
- *                       example: qst_123456
  *                     optionId:
  *                       type: string
- *                       example: opt_987654
- *           example:
- *             answers:
- *               - questionId: q1
- *                 optionId: opt1
- *               - questionId: q2
- *                 optionId: opt4
- *               - questionId: q3
- *                 optionId: opt7
  *     responses:
  *       200:
- *         description: Assessment submitted and result computed successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 ok:
- *                   type: boolean
- *                   example: true
- *                 attemptId:
- *                   type: string
- *                   example: att_123456
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                   example: 2026-03-11T10:30:00.000Z
- *                 result:
- *                   type: object
- *                   properties:
- *                     primary:
- *                       type: string
- *                       example: SWE
- *                     secondary:
- *                       type: string
- *                       nullable: true
- *                       example: AI
- *                 scores:
- *                   type: object
- *                   description: Score totals for each career role tag.
- *                   additionalProperties:
- *                     type: number
- *                   example:
- *                     SWE: 8
- *                     FE: 3
- *                     BE: 4
- *                     AI: 7
- *                     SEC: 1
- *                     GAME: 0
- *                     QA: 2
- *                     PM: 3
+ *         description: Assessment submitted successfully
  *       400:
- *         description: Invalid request payload or validation failure
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 issues:
- *                   type: array
- *                   items:
- *                     type: object
- *             examples:
- *               invalidInput:
- *                 value:
- *                   message: Invalid input
- *               duplicateQuestion:
- *                 value:
- *                   message: Duplicate questionId in answers payload
- *               optionMismatch:
- *                 value:
- *                   message: optionId does not belong to questionId
+ *         description: Invalid or manipulated payload
  *       401:
- *         description: Unauthorized – authentication required
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Unauthorized
- *       500:
- *         description: Failed to compute result
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Failed to compute result
+ *         description: Unauthorized
  */
 export async function POST(req: Request) {
   const { user, error } = await requireAuth();
   if (error) return error;
 
   const body = await req.json().catch(() => null);
-  const parsed = SubmitSchema.safeParse(body);
-  if (!parsed.success) {
+  const validation = await validateAssessmentSubmission(prisma, body);
+  if (!validation.ok) {
     return NextResponse.json(
-      { message: "Invalid input", issues: parsed.error.issues },
-      { status: 400 },
+      {
+        message: validation.message,
+        ...(validation.issues ? { issues: validation.issues } : {}),
+      },
+      { status: validation.status },
     );
   }
 
-  const answers = parsed.data.answers;
-
-  // Prevent duplicates of same question in payload
-  const qSet = new Set<string>();
-  for (const a of answers) {
-    if (qSet.has(a.questionId)) {
-      return NextResponse.json(
-        { message: "Duplicate questionId in answers payload" },
-        { status: 400 },
-      );
-    }
-    qSet.add(a.questionId);
-  }
-
-  // Fetch all selected options, and verify:
-  // - option exists
-  // - option belongs to question
+  const answers = validation.answers;
   const optionIds = answers.map((a) => a.optionId);
 
   const options = await prisma.quizOption.findMany({
     where: { id: { in: optionIds } },
-    select: {
-      id: true,
-      questionId: true,
-      scoring: true,
-      question: { select: { id: true } },
-    },
+    select: { id: true, scoring: true },
   });
 
-  if (options.length !== optionIds.length) {
-    return NextResponse.json(
-      { message: "One or more options not found" },
-      { status: 400 },
-    );
-  }
-
-  // Build lookup
   const optById = new Map(options.map((o) => [o.id, o]));
 
-  // Validate all (questionId, optionId) pairs match
-  for (const a of answers) {
-    const opt = optById.get(a.optionId);
-    if (!opt) {
-      return NextResponse.json(
-        { message: "Invalid optionId" },
-        { status: 400 },
-      );
-    }
-    if (opt.questionId !== a.questionId) {
-      return NextResponse.json(
-        { message: "optionId does not belong to questionId" },
-        { status: 400 },
-      );
-    }
-  }
-
-  // Compute scores from option.scoring JSON
   const allowedList = await getAllowedScoringTags(prisma);
   const allowed = new Set(allowedList);
   const scores: Record<string, number> = {};
@@ -239,7 +95,8 @@ export async function POST(req: Request) {
         if (
           typeof tag === "string" &&
           allowed.has(tag) &&
-          typeof weight === "number"
+          typeof weight === "number" &&
+          Number.isFinite(weight)
         ) {
           scores[tag] = (scores[tag] ?? 0) + weight;
         }
@@ -255,7 +112,6 @@ export async function POST(req: Request) {
     );
   }
 
-  // Store attempt + answers in a transaction
   const attempt = await prisma.$transaction(async (tx) => {
     const created = await tx.assessmentAttempt.create({
       data: {

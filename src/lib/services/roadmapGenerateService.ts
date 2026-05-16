@@ -1,6 +1,6 @@
 // src/lib/services/roadmapGenerateService.ts
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prisma } from "@/lib/db";
+import { getGeminiModel } from "@/lib/integrations/gemini";
 import { resolveQuizScoreLabel } from "@/lib/assessmentScoring";
 import { z } from "zod";
 
@@ -84,8 +84,8 @@ export async function generateRoadmapFromAi(params: {
 }): Promise<GenerateRoadmapAiResult> {
   const { userId, roadmapId, topic, includeProfile } = params;
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const model = getGeminiModel({ jsonResponse: true });
+  if (!model) {
     return { ok: false, status: 500, error: "AI is not configured (missing API key)." };
   }
 
@@ -101,14 +101,6 @@ export async function generateRoadmapFromAi(params: {
   if (includeProfile) {
     learnerBlock = await buildLearnerContextBlock(userId);
   }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-3-flash-preview",
-    generationConfig: {
-      responseMimeType: "application/json",
-    },
-  });
 
   const prompt = `
       Create a branching learning roadmap for: "${topic}".

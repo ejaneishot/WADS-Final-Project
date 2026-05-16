@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/rbac";
+import { withAdmin } from "@/lib/rbac";
 import {
   UpdateOptionSchema,
   updateQuizOption,
   deleteQuizOption,
 } from "@/lib/services/adminAssessmentService";
-
-type Params = { params: Promise<{ optionId: string }> };
 
 function jsonForUpdateOptionFailure(
   result: Extract<Awaited<ReturnType<typeof updateQuizOption>>, { ok: false }>,
@@ -20,11 +18,8 @@ function jsonForUpdateOptionFailure(
   return NextResponse.json({ message: result.message }, { status: result.status });
 }
 
-export async function PATCH(req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { optionId } = await params;
+export const PATCH = withAdmin(async (req, _auth, routeContext) => {
+  const { optionId } = await routeContext.params;
   const body = await req.json().catch(() => null);
   const parsed = UpdateOptionSchema.safeParse(body);
   if (!parsed.success) {
@@ -40,13 +35,10 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   return NextResponse.json({ ok: true, option: result.option }, { status: 200 });
-}
+});
 
-export async function DELETE(_req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { optionId } = await params;
+export const DELETE = withAdmin(async (_req, _auth, routeContext) => {
+  const { optionId } = await routeContext.params;
   const result = await deleteQuizOption(optionId);
   if (!result.ok) {
     return NextResponse.json(
@@ -56,4 +48,4 @@ export async function DELETE(_req: Request, { params }: Params) {
   }
 
   return NextResponse.json({ ok: true }, { status: 200 });
-}
+});

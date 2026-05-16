@@ -310,6 +310,8 @@
  *     summary: Extract text from a PDF resume
  *     tags:
  *       - Resume
+ *     security:
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -334,6 +336,8 @@
  *                   type: string
  *       400:
  *         description: Missing or invalid file
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 
 /**
@@ -344,6 +348,8 @@
  *     description: Requires GEMINI_API_KEY on the server.
  *     tags:
  *       - Resume
+ *     security:
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -362,6 +368,8 @@
  *         description: Missing text
  *       503:
  *         description: AI not configured
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 
 /**

@@ -1,6 +1,7 @@
 // src/app/api/upload/route.ts
 import { NextResponse } from "next/server";
 import { PdfReader } from "pdfreader";
+import { requireAuth } from "@/lib/rbac";
 
 export const runtime = "nodejs";
 
@@ -66,6 +67,9 @@ async function extractPdfText(file: File) {
 }
 
 export async function POST(req: Request) {
+  const { error } = await requireAuth();
+  if (error) return error;
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;

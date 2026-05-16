@@ -1,18 +1,13 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/rbac";
+import { withAdmin } from "@/lib/rbac";
 import {
   UpdateQuestionSchema,
   updateQuizQuestion,
   deleteQuizQuestion,
 } from "@/lib/services/adminAssessmentService";
 
-type Params = { params: Promise<{ questionId: string }> };
-
-export async function PATCH(req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { questionId } = await params;
+export const PATCH = withAdmin(async (req, _auth, routeContext) => {
+  const { questionId } = await routeContext.params;
   const body = await req.json().catch(() => null);
   const parsed = UpdateQuestionSchema.safeParse(body);
   if (!parsed.success) {
@@ -31,13 +26,10 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   return NextResponse.json({ ok: true, question: result.question }, { status: 200 });
-}
+});
 
-export async function DELETE(_req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { questionId } = await params;
+export const DELETE = withAdmin(async (_req, _auth, routeContext) => {
+  const { questionId } = await routeContext.params;
   const result = await deleteQuizQuestion(questionId);
   if (!result.ok) {
     return NextResponse.json(
@@ -47,4 +39,4 @@ export async function DELETE(_req: Request, { params }: Params) {
   }
 
   return NextResponse.json({ ok: true }, { status: 200 });
-}
+});

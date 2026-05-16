@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-import { requireRole } from "@/lib/rbac";
+import { withAdmin } from "@/lib/rbac";
 import {
   CreateOptionSchema,
   createQuizOption,
 } from "@/lib/services/adminAssessmentService";
-
-type Params = { params: Promise<{ questionId: string }> };
 
 function jsonForCreateOptionFailure(
   result: Extract<Awaited<ReturnType<typeof createQuizOption>>, { ok: false }>,
@@ -19,11 +17,8 @@ function jsonForCreateOptionFailure(
   return NextResponse.json({ message: result.message }, { status: result.status });
 }
 
-export async function POST(req: Request, { params }: Params) {
-  const { error } = await requireRole(["admin"]);
-  if (error) return error;
-
-  const { questionId } = await params;
+export const POST = withAdmin(async (req, _auth, routeContext) => {
+  const { questionId } = await routeContext.params;
   const body = await req.json().catch(() => null);
   const parsed = CreateOptionSchema.safeParse(body);
   if (!parsed.success) {
@@ -39,4 +34,4 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   return NextResponse.json({ ok: true, option: result.option }, { status: 201 });
-}
+});
