@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
 import { CareerMilestones } from "@/components/careers/CareerMilestones";
+import { CareerJobListings } from "@/components/careers/CareerJobListings";
 
 const DEFAULT_ICON = "💼";
 const DEFAULT_COLOR = "from-slate-500 to-slate-700";
@@ -137,6 +138,8 @@ export default async function CareerDetailPage({
           />
         </div>
       </section>
+
+      {auth?.sub ? <CareerJobListings slug={slug} /> : null}
 
       {moreTracks.length > 0 && (
         <section>
