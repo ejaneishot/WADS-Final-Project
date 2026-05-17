@@ -1,8 +1,7 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/rbac";
-import { resumeAnalyzeSchema } from "@/lib/validators";
-import { getGeminiModel } from "@/lib/integrations/gemini";
-import { publicExternalApiMessage } from "@/lib/integrations/externalApiError";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
 
 type PhraseItem = { phrase: string; reason: string };
 
@@ -73,11 +72,7 @@ function normalizeAnalysis(raw: unknown) {
 }
 
 export async function POST(req: Request) {
-  const { error } = await requireAuth();
-  if (error) return error;
-
-  const model = getGeminiModel({ jsonResponse: true });
-  if (!model) {
+  if (!process.env.GEMINI_API_KEY?.trim()) {
     return NextResponse.json(
       { error: "Server is not configured with GEMINI_API_KEY" },
       { status: 503 },
@@ -85,16 +80,32 @@ export async function POST(req: Request) {
   }
 
   try {
-    const body = await req.json().catch(() => null);
-    const validated = resumeAnalyzeSchema.safeParse(body);
-    if (!validated.success) {
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
+    const text =
+      typeof body === "object" &&
+      body !== null &&
+      "text" in body &&
+      typeof (body as { text: unknown }).text === "string"
+        ? (body as { text: string }).text
+        : "";
+
+    if (!text.trim()) {
       return NextResponse.json(
-        { error: "Invalid input", issues: validated.error.issues },
+        { error: 'Missing or empty "text" field' },
         { status: 400 },
       );
     }
 
-    const text = validated.data.text;
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3-flash-preview",
+      generationConfig: { responseMimeType: "application/json" },
+    });
 
     const prompt = `
       Analyze this resume text as an expert recruiter.
@@ -133,9 +144,6 @@ export async function POST(req: Request) {
     return NextResponse.json(analysis);
   } catch (error) {
     console.error("Analyze route:", error);
-    return NextResponse.json(
-      { error: publicExternalApiMessage(error) },
-      { status: 502 },
-    );
+    return NextResponse.json({ error: "Analysis failed" }, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { withAdmin } from "@/lib/rbac";
+import { requireRole } from "@/lib/rbac";
 import { z } from "zod";
 
 const UpdateCareerSchema = z.object({
@@ -24,8 +24,13 @@ const UpdateCareerSchema = z.object({
   milestones: z.array(z.string().max(800)).max(80),
 });
 
-export const PATCH = withAdmin(async (req, _auth, routeContext) => {
-  const { careerId } = await routeContext.params;
+type Params = { params: Promise<{ careerId: string }> };
+
+export async function PATCH(req: Request, { params }: Params) {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
+  const { careerId } = await params;
   const body = await req.json().catch(() => null);
   const parsed = UpdateCareerSchema.safeParse(body);
   if (!parsed.success) {
@@ -80,10 +85,13 @@ export const PATCH = withAdmin(async (req, _auth, routeContext) => {
   });
 
   return NextResponse.json({ ok: true, career: updated }, { status: 200 });
-});
+}
 
-export const DELETE = withAdmin(async (_req, _auth, routeContext) => {
-  const { careerId } = await routeContext.params;
+export async function DELETE(_req: Request, { params }: Params) {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
+  const { careerId } = await params;
 
   const existing = await prisma.career.findUnique({ where: { id: careerId } });
   if (!existing) {
@@ -93,4 +101,4 @@ export const DELETE = withAdmin(async (_req, _auth, routeContext) => {
   await prisma.career.delete({ where: { id: careerId } });
 
   return NextResponse.json({ ok: true }, { status: 200 });
-});
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 import { prisma } from "@/lib/db";
-import { withAdmin } from "@/lib/rbac";
+import { requireRole } from "@/lib/rbac";
 import { z } from "zod";
 
 const CreateCareerSchema = z.object({
@@ -67,15 +67,21 @@ function slugify(input: string) {
     .replace(/-+/g, "-");
 }
 
-export const GET = withAdmin(async (_req, _auth, _ctx) => {
+export async function GET() {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
   const careers = await prisma.career.findMany({
     orderBy: { title: "asc" },
   });
 
   return NextResponse.json({ ok: true, careers }, { status: 200 });
-});
+}
 
-export const POST = withAdmin(async (req, _auth, _ctx) => {
+export async function POST(req: Request) {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
   const body = await req.json().catch(() => null);
   const parsed = CreateCareerSchema.safeParse(body);
   if (!parsed.success) {
@@ -143,5 +149,5 @@ export const POST = withAdmin(async (req, _auth, _ctx) => {
   });
 
   return NextResponse.json({ ok: true, career }, { status: 201 });
-});
+}
 

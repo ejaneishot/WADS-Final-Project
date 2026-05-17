@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
-import { validateCareerProgressUpdate } from "@/lib/services/careerProgressValidation";
 
 /**
  * @swagger
@@ -113,34 +112,34 @@ export async function POST(req: Request) {
   if (error) return error;
 
   try {
-    const body = await req.json().catch(() => null);
-    const validation = await validateCareerProgressUpdate(prisma, body);
-    if (!validation.ok) {
+    const body = await req.json();
+    const { careerId, completedMilestones } = body;
+
+    if (!careerId || !Array.isArray(completedMilestones)) {
       return NextResponse.json(
         {
-          message: validation.message,
-          ...(validation.issues ? { issues: validation.issues } : {}),
+          message:
+            "Invalid payload. Expected careerId and completedMilestones array.",
         },
-        { status: validation.status },
+        { status: 400 },
       );
     }
 
-    const { careerId, completedMilestones } = validation;
-
+    // Upsert: Update if exists, Create if it doesn't
     const progress = await prisma.userCareerProgress.upsert({
       where: {
         userId_careerId: {
           userId: user!.sub,
-          careerId,
+          careerId: careerId,
         },
       },
       update: {
-        completedMilestones,
+        completedMilestones: completedMilestones,
       },
       create: {
         userId: user!.sub,
-        careerId,
-        completedMilestones,
+        careerId: careerId,
+        completedMilestones: completedMilestones,
       },
     });
 

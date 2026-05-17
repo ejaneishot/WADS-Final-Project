@@ -93,7 +93,7 @@ export async function POST(req: Request) {
       { status: 400 },
     );
 
-  const { email, password } = parsed.data;
+  const { email, password, role } = parsed.data;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing)
@@ -105,7 +105,7 @@ export async function POST(req: Request) {
   const passwordHash = await hashPassword(password);
 
   const user = await prisma.user.create({
-    data: { email, passwordHash, role: "student" },
+    data: { email, passwordHash, role },
   });
 
   // Create empty profile by default

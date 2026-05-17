@@ -3,16 +3,10 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  apiKey: "AIzaSyCg0Mwu6P6FloOItcYB97wNoqouin4spkU",
+  authDomain: "fir-auth-final-project.firebaseapp.com",
+  projectId: "fir-auth-final-project",
 };
-
-if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, or NEXT_PUBLIC_FIREBASE_PROJECT_ID",
-  );
-}
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 

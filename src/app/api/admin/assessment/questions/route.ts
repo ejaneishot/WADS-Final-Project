@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
-import { withAdmin } from "@/lib/rbac";
+import { requireRole } from "@/lib/rbac";
 import {
   CreateQuestionSchema,
   createQuizQuestion,
 } from "@/lib/services/adminAssessmentService";
 
-export const POST = withAdmin(async (req, _auth, _ctx) => {
+export async function POST(req: Request) {
+  const { error } = await requireRole(["admin"]);
+  if (error) return error;
+
   const body = await req.json().catch(() => null);
   const parsed = CreateQuestionSchema.safeParse(body);
   if (!parsed.success) {
@@ -24,4 +27,4 @@ export const POST = withAdmin(async (req, _auth, _ctx) => {
   }
 
   return NextResponse.json({ ok: true, question: result.question }, { status: 201 });
-});
+}
