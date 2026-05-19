@@ -1,4 +1,7 @@
-// src/components/careers/CareerMilestones.tsx
+/**
+ * Interactive milestone checklist for a career detail page.
+ * Guests see read-only list + sign-in prompt; logged-in users toggle with optimistic POST /api/careers.
+ */
 "use client";
 
 import Link from "next/link";
@@ -24,7 +27,7 @@ export function CareerMilestones({
 
   const toggle = async (idx: number) => {
     if (!isLoggedIn) return;
-    const prev = completed;
+    const prev = completed; // rollback target on failed save
     const next = prev.includes(idx)
       ? prev.filter((i) => i !== idx)
       : [...prev, idx];

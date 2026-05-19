@@ -1,4 +1,7 @@
-// src/app/dashboard/layout.tsx
+/**
+ * Dashboard route guard.
+ * Requires authenticated session; redirects guests to /login and admins to /admin.
+ */
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
 

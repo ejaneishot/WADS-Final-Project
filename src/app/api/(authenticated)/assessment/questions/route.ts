@@ -1,4 +1,10 @@
-//src/app/api/assessment/questions/route.ts
+/**
+ * API route: GET /api/assessment/questions
+ *
+ * Methods: GET
+ * Auth: Signed JWT cookie (`requireAuth`).
+ * Purpose: Load quiz sections, questions, and options for the career-matcher assessment UI.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
@@ -128,7 +134,6 @@ const ASSESSMENT_META = {
  *                   example: Failed to load assessment questions.
  */
 export async function GET() {
-  // Auth (JWT)
   const { error } = await requireAuth();
   if (error) return error;
 
@@ -163,6 +168,7 @@ export async function GET() {
       },
     });
 
+    // Error handling: empty quiz seed data → 404
     if (sections.length === 0) {
       return NextResponse.json(
         { error: "Assessment questions not found." },

@@ -1,3 +1,7 @@
+/**
+ * Resume optimizer UI (TipTap + PDF ingest + AI feedback panel).
+ * Duplicate of resume-optimizer/page pattern for reuse outside the app route if needed.
+ */
 "use client";
 
 import { useState } from "react";
@@ -81,7 +85,7 @@ export default function ResumeOptimizerPageClient() {
 
   const renderHighlights = () => {
     if (!analysis || !editor) return null;
-    let html = editor.getHTML();
+    let html = editor.getHTML(); // regex-wrap matched phrases for visual feedback
 
     const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 

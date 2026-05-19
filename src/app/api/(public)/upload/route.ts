@@ -1,4 +1,10 @@
-// src/app/api/upload/route.ts
+/**
+ * API route: POST /api/upload
+ *
+ * Methods: POST
+ * Auth: None (public).
+ * Purpose: Accept a PDF via multipart form field `file` and return extracted plain text.
+ */
 import { NextResponse } from "next/server";
 import { PdfReader } from "pdfreader";
 
@@ -70,6 +76,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
+    // Validation: require a file and restrict to PDF MIME/name
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
@@ -81,6 +88,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // Business logic: stream-parse PDF pages into plain text
     const text = await extractPdfText(file);
 
     return NextResponse.json({ text });

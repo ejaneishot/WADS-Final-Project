@@ -1,3 +1,7 @@
+/**
+ * OpenAPI 3 document assembly via swagger-jsdoc.
+ * Merges JSDoc from API route files and src/lib/openapi for /api/docs UI.
+ */
 import "server-only";
 import path from "path";
 import swaggerJSDoc from "swagger-jsdoc";
@@ -6,6 +10,7 @@ import { env } from "@/lib/env";
 const apiGlob = path.join(process.cwd(), "src/app/api/**/*.ts");
 const extraGlob = path.join(process.cwd(), "src/lib/openapi/**/*.ts");
 
+/** Build the full OpenAPI spec (cookie JWT auth, shared error schemas). */
 export function getApiDocs() {
   return swaggerJSDoc({
     definition: {

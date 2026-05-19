@@ -1,4 +1,10 @@
-//src/app/api/auth/login-google/route.ts
+/**
+ * API route: POST /api/auth/login-google
+ *
+ * Methods: POST
+ * Auth: None at app level; requires `Authorization: Bearer <Firebase ID token>`.
+ * Purpose: Verify Google sign-in via Firebase, upsert user/profile, issue app JWT cookie.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { admin } from "@/lib/firebaseAdmin";
@@ -85,6 +91,7 @@ import { setAuthCookie, signToken } from "@/lib/auth";
  *                   message: Invalid Firebase token
  */
 export async function POST(req: Request) {
+  // Auth: extract Bearer Firebase ID token from header
   const authHeader = req.headers.get("authorization") || "";
   const match = authHeader.match(/^Bearer (.+)$/);
 
@@ -98,9 +105,9 @@ export async function POST(req: Request) {
   const idToken = match[1];
 
   try {
-    // Verify Firebase ID token
     const decoded = await admin.auth().verifyIdToken(idToken);
 
+    // Validation: Google account must expose an email claim
     const email = decoded.email;
     if (!email) {
       return NextResponse.json(
@@ -113,7 +120,7 @@ export async function POST(req: Request) {
     const name = decoded.name ?? null;
     const picture = decoded.picture ?? null;
 
-    // Find or create user in your DB
+    // Business logic: find or create user and ensure profile row exists
     let user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
@@ -168,6 +175,7 @@ export async function POST(req: Request) {
       profile: { name, picture },
     });
   } catch (e) {
+    // Error handling: verification failures map to 401 (invalid/expired token)
     console.error(e);
     return NextResponse.json(
       { message: "Invalid Firebase token" },

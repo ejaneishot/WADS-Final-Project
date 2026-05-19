@@ -1,3 +1,7 @@
+/**
+ * Server-side Firebase Admin SDK for verifying Google ID tokens.
+ * Credentials come from env (FIREBASE_*); never expose the private key to the client.
+ */
 import admin from "firebase-admin";
 
 function getPrivateKey() {

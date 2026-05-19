@@ -1,9 +1,13 @@
+/**
+ * Tailwind theme extensions for Career Compass (dark UI).
+ * Scan paths must include every folder that uses utility classes.
+ */
 import type { Config } from "tailwindcss";
 
 export default {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}"
+    "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -12,6 +16,7 @@ export default {
         mono: ["Space Mono", "monospace"],
       },
       colors: {
+        // Layered backgrounds: base page → cards → modals/tooltips
         surface: {
           DEFAULT: "#0A0A0F",
           raised: "#12121A",
@@ -22,6 +27,7 @@ export default {
           dim: "#34D399",
         },
       },
+      // Used by landing and auth entrance animations
       animation: {
         "fade-up": "fadeUp 0.7s ease forwards",
         "fade-in": "fadeIn 0.6s ease forwards",

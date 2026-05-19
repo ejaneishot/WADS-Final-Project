@@ -1,4 +1,7 @@
-// prisma.config.ts
+/**
+ * Prisma 7 project config (replaces datasource URL in schema.prisma).
+ * DATABASE_URL is loaded from .env via dotenv.
+ */
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 

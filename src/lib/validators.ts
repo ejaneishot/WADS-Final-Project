@@ -1,3 +1,7 @@
+/**
+ * Shared Zod schemas for API request bodies (auth, profile, careers).
+ * Keeps validation rules consistent between routes and documents max lengths for abuse prevention.
+ */
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -11,6 +15,7 @@ export const loginSchema = z.object({
   password: z.string().min(8).max(72)
 });
 
+/** Student profile fields and skill levels (1–5) shown on dashboard and fed to AI roadmaps. */
 export const profileSchema = z.object({
   name: z.string().max(100).nullable().optional(),
   major: z.string().max(120).nullable().optional(),
@@ -20,6 +25,7 @@ export const profileSchema = z.object({
   skills: z.array(z.object({ name: z.string().max(60), level: z.number().int().min(1).max(5) })).max(40).default([])
 });
 
+/** Admin-created career tracks (title, industry, description). */
 export const createCareerSchema = z.object({
   title: z.string().min(2).max(120),
   industry: z.string().min(2).max(80),

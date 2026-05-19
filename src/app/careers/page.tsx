@@ -1,4 +1,8 @@
-//src/app/careers/page.tsx
+/**
+ * Career tracks browser (public listing; milestone toggles need session).
+ * Loads careers + user progress + assessment primary tag to highlight recommended track.
+ * Milestone toggles optimistically update then POST to /api/careers.
+ */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -31,7 +35,6 @@ export default function CareersPage() {
   );
 
   useEffect(() => {
-    // Fetch Careers + Progress AND the Assessment Result at the same time
     Promise.all([
       fetch("/api/careers").then((r) => r.json()),
       fetch("/api/assessment/result").then((r) => r.json()),
@@ -53,7 +56,7 @@ export default function CareersPage() {
       .catch((e) => console.error("Failed to load career data:", e));
   }, []);
 
-  // Update progress in state AND save to the database
+  /** Optimistic milestone toggle with persistence to /api/careers */
   const toggleMilestone = async (careerId: string, milestoneIdx: number) => {
     const currentCompleted = progress[careerId] || [];
     const nextCompleted = currentCompleted.includes(milestoneIdx)

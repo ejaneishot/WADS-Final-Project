@@ -1,3 +1,7 @@
+/**
+ * Hardened fetch for server-side third-party APIs.
+ * Enforces HTTPS, host allowlists, timeouts, and no caching to reduce SSRF and abuse risk.
+ */
 import { ExternalApiError } from "@/lib/integrations/externalApiError";
 
 export type SecureFetchOptions = {
@@ -8,6 +12,7 @@ export type SecureFetchOptions = {
   allowedHosts: string[];
 };
 
+/** Match exact host or subdomain of an allowlisted base domain. */
 function hostMatchesAllowlist(hostname: string, allowedHosts: string[]): boolean {
   const host = hostname.toLowerCase();
   return allowedHosts.some(
@@ -17,6 +22,10 @@ function hostMatchesAllowlist(hostname: string, allowedHosts: string[]): boolean
   );
 }
 
+/**
+ * Fetch a URL only if it is HTTPS and the hostname is on allowedHosts.
+ * Aborts after timeoutMs; surfaces 4xx/5xx as ExternalApiError with appropriate status.
+ */
 export async function secureFetch(
   url: string,
   options: SecureFetchOptions,

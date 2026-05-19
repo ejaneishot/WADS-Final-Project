@@ -1,4 +1,10 @@
-// src/app/api/assessment/result/route.ts
+/**
+ * API route: GET /api/assessment/result
+ *
+ * Methods: GET
+ * Auth: Signed JWT cookie (`requireAuth`).
+ * Purpose: Return the user's most recent assessment attempt scores and role match.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
@@ -101,6 +107,7 @@ export async function GET() {
   if (error) return error;
 
   try {
+    // Business logic: latest attempt for this user (or hasResult: false)
     const attempt = await prisma.assessmentAttempt.findFirst({
       where: { userId: user!.sub },
       orderBy: { createdAt: "desc" },

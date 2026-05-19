@@ -1,3 +1,10 @@
+/**
+ * API route: PATCH | DELETE /api/admin/careers/[careerId]
+ *
+ * Methods: PATCH, DELETE
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: Update career metadata/milestones or permanently delete a career row.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
@@ -32,6 +39,8 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const { careerId } = await params;
   const body = await req.json().catch(() => null);
+
+  // Validation: UpdateCareerSchema (full career shape including milestones)
   const parsed = UpdateCareerSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
@@ -49,6 +58,7 @@ export async function PATCH(req: Request, { params }: Params) {
   const slug = data.slug.trim();
   const tag = data.tag.trim().toUpperCase().replace(/[^A-Z0-9_]/g, "").slice(0, 12);
 
+  // Business logic: slug and assessment tag must be unique across other careers
   const conflict = await prisma.career.findFirst({
     where: {
       id: { not: careerId },

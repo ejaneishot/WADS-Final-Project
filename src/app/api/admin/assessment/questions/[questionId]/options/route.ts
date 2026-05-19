@@ -1,3 +1,10 @@
+/**
+ * API route: POST /api/admin/assessment/questions/[questionId]/options
+ *
+ * Methods: POST
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: Add an answer option with scoring weights to a question.
+ */
 import { NextResponse } from "next/server";
 import { requireRole } from "@/lib/rbac";
 import {
@@ -25,6 +32,8 @@ export async function POST(req: Request, { params }: Params) {
 
   const { questionId } = await params;
   const body = await req.json().catch(() => null);
+
+  // Validation: CreateOptionSchema (label, value, scoring tags)
   const parsed = CreateOptionSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

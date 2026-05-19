@@ -1,3 +1,7 @@
+/**
+ * Tutor directory page (public, static marketing data).
+ * Lists mentor cards with no backend fetch; booking is UI-only placeholder.
+ */
 import Link from "next/link";
 
 const allTutors = [

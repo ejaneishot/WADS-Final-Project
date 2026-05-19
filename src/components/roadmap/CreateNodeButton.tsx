@@ -1,4 +1,7 @@
-// src/components/roadmap/CreateNodeButton.tsx
+/**
+ * Two-step branch creator: select parent node(s) on canvas, then submit title/description.
+ * POST /api/roadmaps/[id]/nodes with parentIds for multi-parent edges.
+ */
 "use client";
 
 import { useState } from "react";

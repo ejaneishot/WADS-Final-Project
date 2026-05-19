@@ -1,4 +1,8 @@
-// src/app/actions/roadmap.ts
+/**
+ * Server Actions for roadmap CRUD (NextAuth session → Prisma).
+ * Used where server actions are preferred over REST; revalidates /roadmaps paths after mutations.
+ * Note: createRoadmap checks session email; update/delete do not re-verify ownership in this file.
+ */
 "use server";
 
 import { prisma } from "@/lib/db";

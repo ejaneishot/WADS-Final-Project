@@ -1,3 +1,7 @@
+/**
+ * Global styles for SmartCareer: Tailwind layers, design tokens (dark theme),
+ * and shared utility classes used across marketing and app pages.
+ */
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;

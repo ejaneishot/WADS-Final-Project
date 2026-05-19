@@ -1,4 +1,8 @@
-// src/app/careers/[slug]/page.tsx
+/**
+ * Single career track detail (public page; milestone save requires login).
+ * Server: loads career by slug, optional UserCareerProgress for auth user.
+ * Job listings and interactive milestones are client components.
+ */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
@@ -46,6 +50,7 @@ export default async function CareerDetailPage({
   const auth = await getAuth();
   let initialCompleted: number[] = [];
   if (auth?.sub) {
+    /* Hydrate milestone checkboxes for signed-in users only */
     const row = await prisma.userCareerProgress.findUnique({
       where: {
         userId_careerId: { userId: auth.sub, careerId: career.id },

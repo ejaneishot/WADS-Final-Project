@@ -1,3 +1,10 @@
+/**
+ * API route: POST /api/analyze
+ *
+ * Methods: POST
+ * Auth: None (public). Requires server-side GEMINI_API_KEY.
+ * Purpose: Send resume text to Gemini and return structured feedback (good/bad lines, skills, summary).
+ */
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
@@ -72,6 +79,7 @@ function normalizeAnalysis(raw: unknown) {
 }
 
 export async function POST(req: Request) {
+  // Auth / config: refuse when Gemini is not configured
   if (!process.env.GEMINI_API_KEY?.trim()) {
     return NextResponse.json(
       { error: "Server is not configured with GEMINI_API_KEY" },
@@ -80,6 +88,7 @@ export async function POST(req: Request) {
   }
 
   try {
+    // Validation: JSON body with non-empty `text`
     let body: unknown;
     try {
       body = await req.json();
@@ -102,6 +111,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // Business logic: prompt Gemini for JSON-shaped resume critique
     const model = genAI.getGenerativeModel({
       model: "gemini-3-flash-preview",
       generationConfig: { responseMimeType: "application/json" },
@@ -130,6 +140,7 @@ export async function POST(req: Request) {
       );
     }
 
+    // Error handling: malformed model JSON → 502
     let parsed: unknown;
     try {
       parsed = parseModelJson(rawText);

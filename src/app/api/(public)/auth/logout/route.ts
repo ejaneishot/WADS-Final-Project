@@ -1,4 +1,10 @@
-//src/app/api/auth/logout/route.ts
+/**
+ * API route: POST /api/auth/logout
+ *
+ * Methods: POST
+ * Auth: None (public). Clears the session cookie whether or not one was present.
+ * Purpose: End the current session by removing the auth cookie.
+ */
 import { NextResponse } from "next/server";
 import { clearAuthCookie } from "@/lib/auth";
 
@@ -23,6 +29,7 @@ import { clearAuthCookie } from "@/lib/auth";
  *                   example: true
  */
 export async function POST() {
+  // Business logic: clear session cookie (idempotent)
   await clearAuthCookie();
   return NextResponse.json({ ok: true }, { status: 200 });
 }

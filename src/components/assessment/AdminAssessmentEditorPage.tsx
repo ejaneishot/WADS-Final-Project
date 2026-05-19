@@ -1,4 +1,8 @@
-// src/components/assessment/AdminAssessmentEditorPage.tsx
+/**
+ * Admin assessment content editor (admin route only).
+ * Loads sections/questions/options from /api/admin/assessment; local state for scoring weights
+ * per option tag, with PATCH/POST/DELETE to admin assessment endpoints on save.
+ */
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -38,6 +42,7 @@ type EditorState = {
   error: string | null;
 };
 
+/* Helpers: map option.scoring JSON ↔ per-tag weight grid in the UI */
 function tagsFromScoring(scoring: unknown): string[] {
   if (!Array.isArray(scoring)) return [];
   const tags: string[] = [];

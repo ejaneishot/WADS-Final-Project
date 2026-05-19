@@ -1,4 +1,10 @@
-// src/app/api/auth/login/route.ts
+/**
+ * API route: POST /api/auth/login
+ *
+ * Methods: POST
+ * Auth: None (public). On success, sets an HTTP-only JWT cookie.
+ * Purpose: Email/password authentication; rejects Google-only accounts without a password hash.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { loginSchema } from "@/lib/validators";
@@ -91,11 +97,10 @@ import { setAuthCookie, signToken, verifyPassword } from "@/lib/auth";
  *                   type: string
  *                   example: Invalid credentials
  */
-// Handle POST requests for user login
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
 
-  // Validate request body using Zod schema
+  // Validation: loginSchema (email + password)
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success)
     return NextResponse.json(

@@ -1,4 +1,10 @@
-//src/app/api/assessment/submit/route.ts
+/**
+ * API route: POST /api/assessment/submit
+ *
+ * Methods: POST
+ * Auth: Signed JWT cookie (`requireAuth`).
+ * Purpose: Validate answers, aggregate option scoring weights, persist attempt, return primary/secondary roles.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
@@ -159,6 +165,8 @@ export async function POST(req: Request) {
   if (error) return error;
 
   const body = await req.json().catch(() => null);
+
+  // Validation: SubmitSchema — non-empty answers with questionId + optionId
   const parsed = SubmitSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
@@ -169,7 +177,7 @@ export async function POST(req: Request) {
 
   const answers = parsed.data.answers;
 
-  // Prevent duplicates of same question in payload
+  // Validation: each questionId may appear only once in the payload
   const qSet = new Set<string>();
   for (const a of answers) {
     if (qSet.has(a.questionId)) {
@@ -181,9 +189,7 @@ export async function POST(req: Request) {
     qSet.add(a.questionId);
   }
 
-  // Fetch all selected options, and verify:
-  // - option exists
-  // - option belongs to question
+  // Business logic: load options and verify each belongs to its question
   const optionIds = answers.map((a) => a.optionId);
 
   const options = await prisma.quizOption.findMany({
@@ -223,7 +229,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Compute scores from option.scoring JSON
+  // Business logic: sum scoring weights per career tag from option JSON
   const allowedList = await getAllowedScoringTags(prisma);
   const allowed = new Set(allowedList);
   const scores: Record<string, number> = {};
@@ -248,6 +254,7 @@ export async function POST(req: Request) {
   }
 
   const { primary, secondary } = topTwo(scores);
+  // Error handling: no positive scores means scoring data misconfigured
   if (!primary) {
     return NextResponse.json(
       { message: "Failed to compute result" },

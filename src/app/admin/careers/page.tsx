@@ -1,3 +1,8 @@
+/**
+ * Admin career track CRUD (admin only).
+ * Lists careers from /api/admin/careers; inline create/edit/delete with milestone text parsing.
+ * Assessment tag on each career links quiz scoring to track recommendations.
+ */
 "use client";
 
 import Link from "next/link";
@@ -43,6 +48,7 @@ export default function AdminCareersPage() {
   const [draft, setDraft] = useState<Career | null>(null);
   const [milestonesText, setMilestonesText] = useState("");
 
+  /** Refetch table after create, update, or delete */
   const loadCareers = useCallback(async () => {
     setListError(null);
     const res = await fetch("/api/admin/careers");

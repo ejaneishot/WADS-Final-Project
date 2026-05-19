@@ -1,9 +1,14 @@
-// src/app/api/nodes/[nodeId]/route.ts
+/**
+ * API route: PATCH | DELETE /api/nodes/[nodeId]
+ *
+ * Methods: PATCH, DELETE
+ * Auth: Signed JWT cookie (`getAuth`). Node must belong to a roadmap owned by the session user.
+ * Purpose: Update node fields or remove a node and its incident edges.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
 
-// UPDATE an individual node
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ nodeId: string }> },
@@ -17,6 +22,7 @@ export async function PATCH(
     const { nodeId } = await params;
     const { title, description } = await req.json();
 
+    // Business logic: ownership via parent roadmap before update
     const ownedNode = await prisma.roadmapNode.findFirst({
       where: { id: nodeId, roadmap: { userId: auth.sub } },
       select: { id: true },
@@ -43,7 +49,6 @@ export async function PATCH(
   }
 }
 
-// DELETE an individual node
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ nodeId: string }> },

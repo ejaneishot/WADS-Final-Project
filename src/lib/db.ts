@@ -1,4 +1,7 @@
-// Application-wide Prisma client. Import as: import { prisma } from "@/lib/db"
+/**
+ * Application-wide Prisma client with PostgreSQL driver adapter.
+ * Reuses one instance in development to avoid connection exhaustion on hot reload.
+ */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import { PrismaClient } from "../generated/prisma/client";

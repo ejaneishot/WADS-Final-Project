@@ -1,3 +1,10 @@
+/**
+ * API route: GET | POST /api/admin/careers
+ *
+ * Methods: GET, POST
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: List all careers or create one with auto-generated slug/tag when omitted.
+ */
 import { NextResponse } from "next/server";
 import { randomBytes } from "crypto";
 import { prisma } from "@/lib/db";
@@ -83,6 +90,8 @@ export async function POST(req: Request) {
   if (error) return error;
 
   const body = await req.json().catch(() => null);
+
+  // Validation: CreateCareerSchema (title, industry, description, optional styling fields)
   const parsed = CreateCareerSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
@@ -104,6 +113,7 @@ export async function POST(req: Request) {
     milestones: milestonesInput,
   } = parsed.data;
 
+  // Business logic: ensure unique assessment tag and URL slug
   const tag = await assignUniqueCareerTag(tagInput, title);
 
   let slug: string;

@@ -1,4 +1,7 @@
-// src/components/roadmap/RoadmapNode.tsx
+/**
+ * Custom React Flow node: inline edit/delete via /api/nodes/[id].
+ * Selection highlight driven by data.isSelected during parent-pick flow.
+ */
 "use client";
 
 import { useState } from "react";

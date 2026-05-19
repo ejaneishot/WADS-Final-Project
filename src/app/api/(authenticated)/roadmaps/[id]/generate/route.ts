@@ -1,4 +1,10 @@
-// src/app/api/roadmaps/[id]/generate/route.ts
+/**
+ * API route: POST /api/roadmaps/[id]/generate
+ *
+ * Methods: POST
+ * Auth: Signed JWT cookie (`getAuth`).
+ * Purpose: AI-generate roadmap nodes for a topic via `generateRoadmapFromAi` (owned roadmap only).
+ */
 import { NextResponse } from "next/server";
 import { getAuth } from "@/lib/auth";
 import {
@@ -17,6 +23,8 @@ export async function POST(
 
   const { id: roadmapId } = await params;
   const raw = await req.json().catch(() => null);
+
+  // Validation: topic + optional includeProfile flag
   const parsed = RoadmapGenerateBodySchema.safeParse(raw);
   if (!parsed.success) {
     return NextResponse.json(
@@ -33,6 +41,7 @@ export async function POST(
     includeProfile,
   });
 
+  // Error handling: service layer returns status + message (404, 502, etc.)
   if (!result.ok) {
     return NextResponse.json(
       { error: result.error },

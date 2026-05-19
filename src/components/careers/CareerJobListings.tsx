@@ -1,3 +1,7 @@
+/**
+ * Related job openings for a career slug (authenticated users only on parent page).
+ * Fetches /api/careers/[slug]/jobs with cancel-on-unmount guard.
+ */
 "use client";
 
 import { useEffect, useState } from "react";

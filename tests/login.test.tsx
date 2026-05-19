@@ -1,3 +1,6 @@
+/**
+ * Login page render tests — checks that labeled email/password fields exist.
+ */
 import { render, screen } from "@testing-library/react"
 import LoginPage from "../src/app/login/page"
 

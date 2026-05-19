@@ -1,4 +1,8 @@
-//src/app/login/page.tsx
+/**
+ * Sign-in page (public).
+ * Supports email/password (/api/auth/login) and Google (Firebase popup → /api/auth/login-google).
+ * Redirects admins to /admin and students to /dashboard based on role in the response.
+ */
 "use client";
 
 import { useState } from "react";

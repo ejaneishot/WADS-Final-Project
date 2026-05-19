@@ -1,4 +1,7 @@
-// src/components/roadmap/RoadmapCanvas.tsx
+/**
+ * React Flow canvas for a single roadmap: dagre layout, custom nodes, branching create flow.
+ * Parent selection mode wires selectedParentIds into CreateNodeButton before POSTing a new node.
+ */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -19,6 +22,7 @@ const nodeTypes = {
   roadmapNode: RoadmapNode,
 };
 
+/** Top-to-bottom dagre layout — positions derived from graph edges, not stored coords */
 const getLayoutedElements = (
   nodes: Node[],
   edges: Edge[],
@@ -62,6 +66,7 @@ export default function RoadmapCanvas({
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedParentIds, setSelectedParentIds] = useState<string[]>([]);
 
+  /* Rebuild flow graph when server nodes or parent-selection highlight changes */
   const { nodes, edges } = useMemo(() => {
     const rawNodes: Node[] = initialNodes.map((node) => ({
       id: node.id,

@@ -1,8 +1,13 @@
-// src/app/api/roadmaps/route.ts
+/**
+ * API route: POST | PATCH | DELETE /api/roadmaps/[id] (legacy public handlers)
+ *
+ * Methods: POST, PATCH, DELETE
+ * Auth: None — caller supplies `userId` in the JSON body (no session check).
+ * Purpose: Create, rename, or cascade-delete a roadmap and its nodes/edges.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-// Create a blank roadmap
 export async function POST(req: Request) {
   const { title, userId } = await req.json();
   const roadmap = await prisma.roadmap.create({
@@ -11,7 +16,6 @@ export async function POST(req: Request) {
   return NextResponse.json(roadmap);
 }
 
-// Update title or Delete
 export async function PATCH(req: Request) {
   const { id, title } = await req.json();
   const updated = await prisma.roadmap.update({
@@ -25,6 +29,7 @@ export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
 
+    // Validation: roadmap id required for destructive cascade
     if (!id) {
       return NextResponse.json(
         { error: "Roadmap ID is required" },

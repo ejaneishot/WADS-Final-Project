@@ -1,3 +1,8 @@
+/**
+ * Typed errors for outbound HTTP integrations (job board, etc.).
+ * Maps internal failures to safe client-facing messages and HTTP status codes.
+ */
+
 export class ExternalApiError extends Error {
   readonly status: number;
   readonly code: string;
@@ -10,6 +15,7 @@ export class ExternalApiError extends Error {
   }
 }
 
+/** Expose only known external API messages; hide unexpected stack details from clients. */
 export function publicExternalApiMessage(error: unknown): string {
   if (error instanceof ExternalApiError) return error.message;
   return "External service request failed";

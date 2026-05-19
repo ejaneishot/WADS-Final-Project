@@ -1,3 +1,10 @@
+/**
+ * API route: POST | PATCH | DELETE /api/roadmaps
+ *
+ * Methods: POST, PATCH, DELETE
+ * Auth: Signed JWT cookie (`getAuth`). All mutations scoped to `auth.sub`.
+ * Purpose: Create, rename, or cascade-delete the current user's roadmaps.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
@@ -8,6 +15,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Validation: title must be a non-empty string
   const { title } = await req.json();
   if (!title || typeof title !== "string") {
     return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -26,6 +34,7 @@ export async function PATCH(req: Request) {
   }
 
   const { id, title } = await req.json();
+  // Validation: both roadmap id and new title required
   if (!id || !title) {
     return NextResponse.json(
       { error: "Roadmap id and title are required" },
@@ -33,6 +42,7 @@ export async function PATCH(req: Request) {
     );
   }
 
+  // Business logic: only update roadmaps owned by the session user
   const owned = await prisma.roadmap.findFirst({
     where: { id, userId: auth.sub },
     select: { id: true },
@@ -72,6 +82,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Roadmap not found" }, { status: 404 });
     }
 
+    // Business logic: transactional delete of edges → nodes → roadmap
     await prisma.$transaction(async (tx) => {
       await tx.roadmapEdge.deleteMany({
         where: {
@@ -96,6 +107,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ deleted: true });
   } catch (error) {
+    // Error handling: unexpected DB errors → 500
     console.error("ROADMAP_DELETE_ERROR:", error);
     return NextResponse.json(
       { error: "Failed to delete roadmap and its contents" },

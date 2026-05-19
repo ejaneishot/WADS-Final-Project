@@ -1,4 +1,8 @@
-// src/components/assessment/AssessmentExperiencePage.tsx
+/**
+ * Student career assessment wizard: intro → quiz → results.
+ * Fetches questions from /api/assessment/questions; submit aggregates answers to /api/assessment/submit.
+ * Resolves result labels via careers catalog and LEGACY_TRACK_META fallbacks.
+ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -21,7 +25,7 @@ type TrackDisplay = {
   desc: string;
 };
 
-/** Original short codes → display + careers slug (for links). */
+/** Short assessment tags (SWE, FE, …) when DB career row is missing */
 const LEGACY_TRACK_META: Record<string, TrackDisplay> = {
   SWE: {
     label: "Software Engineering",
@@ -124,8 +128,8 @@ export default function AssessmentExperiencePage() {
   const [careers, setCareers] = useState<CareerSummary[]>([]);
   const [animating, setAnimating] = useState(false);
 
+  /* Bootstrap: auth gate, question bank, prior result (skip to results), career labels */
   useEffect(() => {
-    // Check auth, fetch questions, AND check for existing results simultaneously
     Promise.all([
       fetch("/api/me"),
       fetch("/api/assessment/questions"),

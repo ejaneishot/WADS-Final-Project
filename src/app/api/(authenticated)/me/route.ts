@@ -1,4 +1,10 @@
-// src/app/api/me/route.ts
+/**
+ * API route: GET /api/me
+ *
+ * Methods: GET
+ * Auth: Signed JWT cookie (`getAuth`).
+ * Purpose: Return the authenticated user's account fields and a slim profile snapshot.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
@@ -71,6 +77,7 @@ import { getAuth } from "@/lib/auth";
  */
 export async function GET() {
   const auth = await getAuth();
+  // Auth: missing or invalid session → 401
   if (!auth) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
@@ -81,8 +88,8 @@ export async function GET() {
     select: { id: true, email: true, role: true },
   });
 
+  // Error handling: stale JWT (user deleted) treated as unauthorized
   if (!user) {
-    // token valid but user doesn't exist anymore
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 

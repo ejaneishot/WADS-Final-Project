@@ -1,3 +1,6 @@
+/**
+ * Register page render tests — ensures the submit control is present.
+ */
 import { render, screen } from "@testing-library/react"
 import RegisterPage from "../src/app/register/page"
 

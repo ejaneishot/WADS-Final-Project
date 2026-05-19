@@ -1,6 +1,7 @@
 /**
  * OpenAPI path definitions for routes without inline @swagger blocks.
- * Scanned by swagger-jsdoc via src/lib/swagger.ts.
+ * Scanned by swagger-jsdoc via src/lib/swagger.ts. The empty export makes this
+ * a module so JSDoc comments are retained; swagger-jsdoc reads comments only.
  */
 
 /**
@@ -616,4 +617,5 @@
  *         $ref: '#/components/responses/Forbidden'
  */
 
+/** Placeholder export so TypeScript treats this file as a module. */
 export {};

@@ -1,4 +1,7 @@
-// src/lib/services/roadmapGenerateService.ts
+/**
+ * AI-powered roadmap generation via Google Gemini.
+ * Optionally personalizes nodes from the learner profile and latest assessment results.
+ */
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prisma } from "@/lib/db";
 import { resolveQuizScoreLabel } from "@/lib/assessmentScoring";
@@ -16,6 +19,7 @@ type AiGraph = {
   edges?: Array<{ from: unknown; to: unknown }>;
 };
 
+/** Build a prompt appendix from profile, skills, and latest assessment match codes. */
 async function buildLearnerContextBlock(userId: string): Promise<string> {
   const [profile, latestAttempt, careers] = await Promise.all([
     prisma.profile.findUnique({
@@ -76,6 +80,10 @@ export type GenerateRoadmapAiResult =
       error: string;
     };
 
+/**
+ * Call Gemini to produce nodes/edges, then persist them on the user's roadmap.
+ * Verifies roadmap ownership before writing; rolls back via transaction on DB errors.
+ */
 export async function generateRoadmapFromAi(params: {
   userId: string;
   roadmapId: string;

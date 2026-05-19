@@ -1,3 +1,6 @@
+/**
+ * Login page interaction tests — controlled inputs accept user typing.
+ */
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import LoginPage from "../src/app/login/page"

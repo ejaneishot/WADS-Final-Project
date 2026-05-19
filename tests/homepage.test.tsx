@@ -1,3 +1,7 @@
+/**
+ * Homepage smoke + render tests.
+ * Verifies the landing page mounts and exposes key marketing copy.
+ */
 /// <reference types="jest" />
 
 describe("Homepage", () => {

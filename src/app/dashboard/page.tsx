@@ -1,4 +1,8 @@
-//src/app/dashboard/page.tsx
+/**
+ * Student dashboard (requires auth via dashboard/layout — students only).
+ * Loads profile and assessment result; inline edit saves to PUT /api/profile.
+ * Career match labels resolved from /api/careers tags.
+ */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -46,6 +50,7 @@ export default function DashboardPage() {
     [],
   );
 
+  /* Initial load: career catalog (for tag labels), profile, and latest assessment */
   useEffect(() => {
     fetch("/api/careers")
       .then((r) => (r.ok ? r.json() : null))

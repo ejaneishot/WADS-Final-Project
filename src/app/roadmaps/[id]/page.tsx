@@ -1,4 +1,7 @@
-// src/app/roadmaps/[id]/page.tsx
+/**
+ * Roadmap canvas detail (authenticated; roadmap must belong to current user).
+ * Loads nodes with parent/child edges for React Flow; editing happens in RoadmapCanvas.
+ */
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import RoadmapCanvas from "@/components/roadmap/RoadmapCanvas";
@@ -10,7 +13,7 @@ export default async function RoadmapDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const auth = await getAuth();
-  if (!auth?.sub) notFound();
+  if (!auth?.sub) notFound(); // unauthenticated users get 404, not redirect
 
   const { id } = await params;
 

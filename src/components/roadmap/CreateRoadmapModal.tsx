@@ -1,4 +1,6 @@
-// src/components/roadmap/CreateRoadmapModal.tsx
+/**
+ * Modal to create a roadmap via POST /api/roadmaps; refreshes server list on success.
+ */
 "use client";
 
 import { useState } from "react";

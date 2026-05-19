@@ -1,3 +1,8 @@
+/**
+ * Registration page (public).
+ * Creates account via /api/auth/register; role selectable (student | admin).
+ * On success redirects to /dashboard (no role-based split on register).
+ */
 "use client";
 
 import { useState } from "react";

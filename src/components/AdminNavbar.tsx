@@ -1,3 +1,7 @@
+/**
+ * Admin navigation bar (root layout when role === admin).
+ * Receives email from server layout; highlights active admin/docs routes via pathname.
+ */
 "use client";
 
 import Link from "next/link";

@@ -1,4 +1,7 @@
-// src/components/roadmap/AIGeneratorModal.tsx
+/**
+ * AI roadmap generator modal — POST /api/roadmaps/[id]/generate (Gemini).
+ * Optional includeProfile sends student context for personalized node trees.
+ */
 "use client";
 
 import { useState } from "react";

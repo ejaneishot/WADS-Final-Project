@@ -1,9 +1,14 @@
-// src/declarations.d.ts
+/**
+ * Ambient module declarations for imports TypeScript does not ship types for.
+ */
+
+/** CSS modules / side-effect CSS imports in components. */
 declare module "*.css" {
   const content: { [className: string]: string };
   export default content;
 }
 
+/** Minimal props for the OpenAPI docs page at /api-docs. */
 declare module "swagger-ui-react" {
   import type { ComponentType } from "react";
 

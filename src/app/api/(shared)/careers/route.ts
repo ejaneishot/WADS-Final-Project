@@ -1,4 +1,10 @@
-// src/app/api/careers/route.ts
+/**
+ * API route: GET | POST /api/careers
+ *
+ * Methods: GET, POST
+ * Auth: GET is public (optional session enriches response). POST requires signed JWT (`requireAuth`).
+ * Purpose: List career tracks with optional milestone progress; save progress when authenticated.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
@@ -37,7 +43,7 @@ export async function GET(req: Request) {
       },
     });
 
-    // 2. Try to get the user session (fail gracefully if they are just browsing as a guest)
+    // Auth: optional — guests receive careers only; logged-in users also get progress map
     const { user, error } = await requireAuth().catch(() => ({
       user: null,
       error: true,
@@ -115,6 +121,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { careerId, completedMilestones } = body;
 
+    // Validation: careerId + completedMilestones array
     if (!careerId || !Array.isArray(completedMilestones)) {
       return NextResponse.json(
         {

@@ -1,4 +1,10 @@
-// src/app/api/roadmaps/[id]/nodes/route.ts
+/**
+ * API route: POST /api/roadmaps/[id]/nodes
+ *
+ * Methods: POST
+ * Auth: Signed JWT cookie (`getAuth`). Roadmap must belong to the session user.
+ * Purpose: Create a roadmap node and optional parent edges in one transaction.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
@@ -16,6 +22,7 @@ export async function POST(
     const { id } = await params; // 1. Unwrap params
     const { title, description, parentIds } = await req.json();
 
+    // Business logic: ownership check before mutating graph
     const ownedRoadmap = await prisma.roadmap.findFirst({
       where: { id, userId: auth.sub },
       select: { id: true },

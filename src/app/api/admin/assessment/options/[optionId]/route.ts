@@ -1,3 +1,10 @@
+/**
+ * API route: PATCH | DELETE /api/admin/assessment/options/[optionId]
+ *
+ * Methods: PATCH, DELETE
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: Update or delete a quiz answer option (including scoring JSON).
+ */
 import { NextResponse } from "next/server";
 import { requireRole } from "@/lib/rbac";
 import {
@@ -26,6 +33,8 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const { optionId } = await params;
   const body = await req.json().catch(() => null);
+
+  // Validation: UpdateOptionSchema
   const parsed = UpdateOptionSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

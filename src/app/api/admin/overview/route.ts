@@ -1,3 +1,10 @@
+/**
+ * API route: GET /api/admin/overview
+ *
+ * Methods: GET
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: Dashboard aggregate counts (users, careers, assessment attempts).
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireRole } from "@/lib/rbac";
@@ -6,6 +13,7 @@ export async function GET() {
   const { error } = await requireRole(["admin"]);
   if (error) return error;
 
+  // Business logic: parallel counts for admin dashboard cards
   const [totalUsers, totalStudents, totalAdmins, totalCareers, totalAttempts] =
     await Promise.all([
       prisma.user.count(),

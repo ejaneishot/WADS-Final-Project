@@ -1,3 +1,7 @@
+/**
+ * Extended student dashboard client (profile + assessment + AI career-match CTA).
+ * Same data model as dashboard/page but adds POST /api/ai/career-match from the header.
+ */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -45,6 +49,7 @@ export default function DashboardPageClient() {
   );
 
   useEffect(() => {
+    /* Parallel fetch: careers (tag labels), profile, assessment result */
     fetch("/api/careers")
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {

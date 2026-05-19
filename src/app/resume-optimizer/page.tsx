@@ -1,4 +1,7 @@
-// src/app/resume-optimizer/page.tsx
+/**
+ * Resume optimizer tool (authenticated via resume-optimizer/layout).
+ * TipTap editor + PDF upload (/api/upload) + AI analysis (/api/analyze) with phrase highlighting.
+ */
 "use client";
 import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -79,6 +82,7 @@ export default function ResumeOptimizer() {
     }
   };
 
+  /** Injects good/bad phrase spans into editor HTML for the results panel */
   const renderHighlights = () => {
     if (!analysis || !editor) return null;
     let html = editor.getHTML();

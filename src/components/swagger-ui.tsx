@@ -1,3 +1,6 @@
+/**
+ * Swagger UI wrapper for /docs — enables cookie credentials on try-it-out requests.
+ */
 "use client";
 
 import SwaggerUI from "swagger-ui-react";

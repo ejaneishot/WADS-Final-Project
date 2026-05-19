@@ -1,4 +1,6 @@
-//prisma/schema.prisma
+// Career Compass — PostgreSQL schema (Prisma 7).
+// Auth users, profiles/skills, career catalog, learning roadmaps, and the built-in career matcher quiz.
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -13,6 +15,7 @@ enum Role {
   admin
 }
 
+/// Application account; optional password when using OAuth-only flows.
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -29,12 +32,14 @@ model User {
   careerProgress UserCareerProgress[]
 }
 
+/// Extended student info and skill ratings (1:1 with User).
 model Profile {
   id        String   @id @default(cuid())
   userId    String   @unique
   name      String?
   major     String?
   semester  Int?
+  /// Display bucket, e.g. "3.5–3.75", not a computed GPA.
   gpaRange  String?
   interests String[] @default([])
   createdAt DateTime @default(now())
@@ -44,6 +49,7 @@ model Profile {
   skills UserSkill[]
 }
 
+/// Canonical skill catalog referenced by profiles.
 model Skill {
   id       String @id @default(cuid())
   name     String @unique
@@ -52,6 +58,7 @@ model Skill {
   users UserSkill[]
 }
 
+/// Self-reported proficiency for a skill on a profile (unique per profile + skill).
 model UserSkill {
   id        String @id @default(cuid())
   profileId String
@@ -64,21 +71,22 @@ model UserSkill {
   @@unique([profileId, skillId])
 }
 
+/// Career path shown in the UI; slug matches seed/API routes, tag drives quiz scoring.
 model Career {
   id          String   @id @default(cuid())
-  slug        String   @unique // Added: consistent with careersData
+  slug        String   @unique
   /// Short code used in assessment scoring (e.g. SWE, FE) — unique across careers.
   tag         String   @unique
   title       String
   industry    String
   description String
-  
-  // Added fields from seed.ts
-  icon        String?  // e.g., "💻"
-  color       String?  // e.g., "from-blue-500 to-cyan-500"
-  gradient    String?  // e.g., "from-blue-500/20 to-cyan-500/20"
-  border      String?  // e.g., "rgba(59,130,246,0.2)"
-  milestones  String[] @default([]) // Array of roadmap steps
+
+  /// Tailwind-oriented presentation tokens (see prisma/seed.ts).
+  icon       String?
+  color      String?
+  gradient   String?
+  border     String?
+  milestones String[] @default([])
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -102,12 +110,13 @@ model UserCareerProgress {
   @@index([careerId])
 }
 
+/// User-owned learning path graph (nodes linked via RoadmapEdge).
 model Roadmap {
   id        String        @id @default(cuid())
   title     String
   userId    String
   user      User          @relation(fields: [userId], references: [id])
-  nodes     RoadmapNode[] 
+  nodes     RoadmapNode[]
   createdAt DateTime      @default(now())
 }
 
@@ -118,23 +127,24 @@ model RoadmapNode {
   roadmapId   String
   roadmap     Roadmap  @relation(fields: [roadmapId], references: [id])
 
-  parents     RoadmapEdge[] @relation("ChildToParent")
-  children    RoadmapEdge[] @relation("ParentToChild")
+  parents  RoadmapEdge[] @relation("ChildToParent")
+  children RoadmapEdge[] @relation("ParentToChild")
 }
 
+/// Directed prerequisite edge: parent must precede child in the roadmap DAG.
 model RoadmapEdge {
   parentId String
   childId  String
 
-  parent   RoadmapNode @relation("ParentToChild", fields: [parentId], references: [id])
-  child    RoadmapNode @relation("ChildToParent", fields: [childId], references: [id])
+  parent RoadmapNode @relation("ParentToChild", fields: [parentId], references: [id])
+  child  RoadmapNode @relation("ChildToParent", fields: [childId], references: [id])
 
   @@id([parentId, childId])
 }
 
-// Core assessment content only: sections -> questions -> options.
-// Single built-in assessment definition (no quiz catalog table).
+// --- Career matcher quiz (single assessment; no quiz catalog table) ---
 
+/// Grouped block of questions in the matcher (order is unique across sections).
 model QuizSection {
   id          String  @id @default(cuid())
   title       String
@@ -151,22 +161,19 @@ model QuizSection {
 
 enum QuestionType {
   SINGLE_CHOICE
-  // You can add later:
-  // MULTI_CHOICE
-  // SCALE
-  // TEXT
+  // MULTI_CHOICE | SCALE | TEXT — reserved for future question types
 }
 
 model QuizQuestion {
   id        String  @id @default(cuid())
+  /// Null only for legacy/unsectioned items; seed always sets sectionId.
   sectionId String?
 
   prompt     String
   helperText String?
   type       QuestionType @default(SINGLE_CHOICE)
 
-  // order within section if sectionId is set,
-  // otherwise order within the single assessment (for unsectioned questions)
+  /// Sort key within section (or global order when sectionId is null).
   order Int @default(0)
 
   isRequired Boolean @default(true)
@@ -186,13 +193,12 @@ model QuizOption {
   id         String @id @default(cuid())
   questionId String
 
-  label String // e.g. "Solving logic puzzles..."
-  value String? // optional stable key like "A", "B", "logic_puzzles"
+  label String
+  /// Stable answer key for analytics/API (e.g. "A", "logic_puzzles").
+  value String?
   order Int     @default(0)
 
-  // Optional: scoring weights per career assessment tag (see Career.tag).
-  // Example JSON:
-  // [{"tag":"SWE","weight":2},{"tag":"AI","weight":1}]
+  /// Per-tag weights summed on submit, e.g. [{"tag":"SWE","weight":2}].
   scoring Json?
 
   createdAt DateTime @default(now())
@@ -205,16 +211,18 @@ model QuizOption {
   @@index([questionId])
 }
 
-// User answers to questions
+// --- Submitted assessment runs and per-question answers ---
 
+/// One completed (or in-progress) quiz submission with denormalized match results.
 model AssessmentAttempt {
   id     String @id @default(cuid())
   userId String
 
-  // computed result snapshot
-  scores    Json // { "SWE": 5, "FE": 2, ... }
-  primary   String // e.g. "BE"
-  secondary String? // e.g. "SWE"
+  /// Tag → total weight after scoring all answers, e.g. { "SWE": 5, "FE": 2 }.
+  scores    Json
+  /// Top Career.tag from scores.
+  primary   String
+  secondary String?
 
   createdAt DateTime @default(now())
 
@@ -225,6 +233,7 @@ model AssessmentAttempt {
   @@index([userId])
 }
 
+/// One selected option per question per attempt (enforced by @@unique below).
 model AssessmentAnswer {
   id         String @id @default(cuid())
   attemptId  String
@@ -235,7 +244,6 @@ model AssessmentAnswer {
   question QuizQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
   option   QuizOption        @relation(fields: [optionId], references: [id], onDelete: Cascade)
 
-  // Prevent duplicate answers for the same question in the same attempt
   @@unique([attemptId, questionId])
   @@index([questionId])
   @@index([optionId])

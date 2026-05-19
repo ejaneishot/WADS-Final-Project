@@ -1,3 +1,7 @@
+/**
+ * Admin home / overview (admin role required via admin/layout).
+ * Fetches aggregate platform stats from /api/admin/overview on mount.
+ */
 "use client";
 
 import { useEffect, useState } from "react";

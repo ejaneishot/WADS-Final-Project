@@ -1,3 +1,8 @@
+/**
+ * Interactive API documentation page (public).
+ * Server-rendered OpenAPI spec via getApiDocs(); Swagger UI client handles try-it-out
+ * with credentials so session cookies apply to authenticated endpoints.
+ */
 import Link from "next/link";
 import { createElement } from "react";
 import { getApiDocs } from "@/lib/swagger";

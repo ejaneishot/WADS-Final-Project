@@ -1,4 +1,9 @@
-//src/app/page.tsx
+/**
+ * Marketing landing page (public).
+ * Client-side: probes /api/me for session, loads profile + assessment for the journey
+ * monitor, career track count, and localStorage streak/assessment fallbacks.
+ * CTAs route guests to /login and signed-in users to /assessment or /careers.
+ */
 "use client";
 
 import Link from "next/link";
@@ -192,6 +197,7 @@ export default function HomePage() {
   const [streak, setStreak] = useState(1);
   const [careerTrackCount, setCareerTrackCount] = useState<number | null>(null);
 
+  /* Public stat for hero — no auth required */
   useEffect(() => {
     fetch("/api/careers/count")
       .then((r) => (r.ok ? r.json() : null))
@@ -203,6 +209,7 @@ export default function HomePage() {
       .catch(() => setCareerTrackCount(null));
   }, []);
 
+  /* Signed-in journey: profile, assessment result, and daily streak (localStorage) */
   useEffect(() => {
     fetch("/api/me").then((r) => {
       if (r.ok) {
@@ -387,6 +394,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Steps */}
+                {/* Journey steps: login → profile fields → assessment; all done shows streak */}
                 {(() => {
                   const hasProfile =
                     (profile?.interests?.length ?? 0) > 0 ||

@@ -1,4 +1,7 @@
-// src/components/roadmap/RoadmapCardActions.tsx
+/**
+ * Per-card rename/delete controls on the roadmaps index (PATCH/DELETE /api/roadmaps).
+ * stopPropagation prevents navigation when clicking actions inside the card Link.
+ */
 "use client";
 
 import { useState } from "react";

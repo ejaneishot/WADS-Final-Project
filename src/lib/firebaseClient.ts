@@ -1,4 +1,7 @@
-//src/lib/firebaseClient.ts
+/**
+ * Browser-side Firebase Auth (Google sign-in).
+ * Public config only; server verifies ID tokens via firebaseAdmin.
+ */
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 

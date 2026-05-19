@@ -1,4 +1,10 @@
-//src/app/api/profile/route.ts
+/**
+ * API route: GET | PUT /api/profile
+ *
+ * Methods: GET, PUT
+ * Auth: Signed JWT cookie (`requireAuth`).
+ * Purpose: Read or upsert the current user's profile and replace linked skill rows.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/rbac";
@@ -8,6 +14,7 @@ export async function GET() {
   const { user, error } = await requireAuth();
   if (error) return error;
 
+  // Business logic: load profile with nested skills for the dashboard form
   const profile = await prisma.profile.findUnique({
     where: { userId: user!.sub },
     include: { skills: { include: { skill: true } } },
@@ -31,6 +38,8 @@ export async function PUT(req: Request) {
   if (error) return error;
 
   const body = await req.json().catch(() => null);
+
+  // Validation: profileSchema (demographics, interests, skills array)
   const parsed = profileSchema.safeParse(body);
   if (!parsed.success)
     return NextResponse.json(
@@ -60,7 +69,7 @@ export async function PUT(req: Request) {
     },
   });
 
-  // Replace skills (simple approach)
+  // Business logic: full replace of user skills (delete-all then recreate)
   await prisma.userSkill.deleteMany({ where: { profileId: prof.id } });
 
   for (const s of data.skills ?? []) {

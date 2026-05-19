@@ -1,3 +1,10 @@
+/**
+ * API route: PATCH | DELETE /api/admin/assessment/questions/[questionId]
+ *
+ * Methods: PATCH, DELETE
+ * Auth: Admin role only (`requireRole(["admin"])`).
+ * Purpose: Update or delete a quiz question by id.
+ */
 import { NextResponse } from "next/server";
 import { requireRole } from "@/lib/rbac";
 import {
@@ -14,6 +21,8 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const { questionId } = await params;
   const body = await req.json().catch(() => null);
+
+  // Validation: UpdateQuestionSchema
   const parsed = UpdateQuestionSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

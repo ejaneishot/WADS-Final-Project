@@ -1,4 +1,7 @@
-// src/lib/services/adminAssessmentService.ts
+/**
+ * Admin assessment editor: CRUD for quiz sections, questions, and options.
+ * Option scoring weights must reference existing Career.tag values in the database.
+ */
 import { prisma } from "@/lib/db";
 import {
   buildAllowedScoringTagSet,
@@ -54,6 +57,9 @@ export type UpdateOptionInput = z.infer<typeof UpdateOptionSchema>;
 
 type ScoringItem = { tag: string; weight: number };
 
+/**
+ * Ensure scoring tags exist on careers; dedupe by tag and drop zero weights.
+ */
 async function validateScoringTags(
   scoring: ScoringItem[],
 ): Promise<
@@ -78,6 +84,7 @@ async function validateScoringTags(
   return { ok: true, normalized };
 }
 
+/** Full quiz structure for the admin editor UI, plus valid scoring tag list. */
 export async function getAssessmentEditorPayload() {
   const [sections, scoringTags] = await Promise.all([
     prisma.quizSection.findMany({

@@ -1,3 +1,7 @@
+/**
+ * Primary site navigation for non-admin users (rendered from root layout).
+ * Client: loads /api/me for session email and logout; sticky header reacts to scroll.
+ */
 "use client";
 
 import Link from "next/link";

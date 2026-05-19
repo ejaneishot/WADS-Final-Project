@@ -1,4 +1,7 @@
-// src/app/roadmaps/page.tsx
+/**
+ * User roadmaps list (authenticated students; redirects guests to /login).
+ * Server component: loads roadmaps for current user; CreateRoadmapModal + card actions are client.
+ */
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { redirect } from "next/navigation";

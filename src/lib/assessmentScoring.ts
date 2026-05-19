@@ -1,4 +1,7 @@
-// src/lib/assessmentScoring.ts
+/**
+ * Tech career assessment scoring: career tags, quiz result labels, and allowed tag sets.
+ * Quiz option weights reference Career.tag values (e.g. SWE, FE) stored in the database.
+ */
 import type { PrismaClient } from "@/generated/prisma/client";
 
 /** Careers returned to the client for resolving assessment codes to titles. */
@@ -8,6 +11,7 @@ export type CareerScoreLabel = {
   tag: string;
 };
 
+/** Map a stored primary/secondary code to a human-readable career title when possible. */
 export function resolveQuizScoreLabel(
   code: string,
   careers?: ReadonlyArray<CareerScoreLabel>,
@@ -19,7 +23,7 @@ export function resolveQuizScoreLabel(
   return code;
 }
 
-/** Assessment scoring keys: each career's `tag` (e.g. SWE, FE). */
+/** Load all valid scoring tags from careers (admin quiz editor validates against these). */
 export async function getAllowedScoringTags(
   prisma: PrismaClient,
 ): Promise<string[]> {

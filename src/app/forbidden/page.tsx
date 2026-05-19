@@ -1,3 +1,7 @@
+/**
+ * 403 access-denied page (public).
+ * Shown when a signed-in user lacks permission (e.g. non-admin hitting admin routes).
+ */
 "use client";
 
 import Link from "next/link";

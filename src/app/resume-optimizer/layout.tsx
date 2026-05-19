@@ -1,4 +1,7 @@
-// src/app/resume-optimizer/layout.tsx
+/**
+ * Resume optimizer route guard.
+ * Requires authenticated session; guests redirect to /login.
+ */
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
 

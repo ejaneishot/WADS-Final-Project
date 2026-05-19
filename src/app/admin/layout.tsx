@@ -1,3 +1,7 @@
+/**
+ * Admin section route guard.
+ * Requires authenticated admin; guests → /login, non-admins → /forbidden.
+ */
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
 

@@ -1,5 +1,10 @@
+/**
+ * Typed, validated environment configuration loaded once at startup.
+ * Fails fast on missing secrets (e.g. JWT_SECRET) or invalid URLs.
+ */
 import { z } from "zod";
 
+/** Parse common truthy/falsy env string forms; empty values use default. */
 function envBoolean(defaultValue = false) {
   return z.preprocess((val) => {
     if (val === undefined || val === null || val === "") return defaultValue;
@@ -11,6 +16,7 @@ function envBoolean(defaultValue = false) {
   }, z.boolean());
 }
 
+/** Parse integer env vars with clamping to a safe min/max range. */
 function envInt(defaultValue: number, min: number, max: number) {
   return z.preprocess((val) => {
     if (val === undefined || val === null || val === "") return defaultValue;
@@ -41,6 +47,7 @@ const schema = z.object({
   EXTERNAL_API_TIMEOUT_MS: envInt(15_000, 1_000, 60_000),
 });
 
+/** Validated process.env snapshot; import this instead of reading process.env directly. */
 export const env = schema.parse({
   NODE_ENV: process.env.NODE_ENV,
   APP_URL: process.env.APP_URL,

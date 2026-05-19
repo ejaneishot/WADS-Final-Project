@@ -1,4 +1,10 @@
-//src/app/api/auth/register/route.ts
+/**
+ * API route: POST /api/auth/register
+ *
+ * Methods: POST
+ * Auth: None (public). On success, sets an HTTP-only JWT cookie.
+ * Purpose: Create a user with hashed password, seed an empty profile, and sign the user in.
+ */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { registerSchema } from "@/lib/validators";
@@ -86,6 +92,8 @@ import { hashPassword, setAuthCookie, signToken } from "@/lib/auth";
  */
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
+
+  // Validation: registerSchema (email, password, role)
   const parsed = registerSchema.safeParse(body);
   if (!parsed.success)
     return NextResponse.json(
@@ -95,6 +103,7 @@ export async function POST(req: Request) {
 
   const { email, password, role } = parsed.data;
 
+  // Business logic: reject duplicate email before write
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing)
     return NextResponse.json(
@@ -104,6 +113,7 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(password);
 
+  // Business logic: user + default profile, then issue session cookie
   const user = await prisma.user.create({
     data: { email, passwordHash, role },
   });

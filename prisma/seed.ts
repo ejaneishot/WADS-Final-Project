@@ -1,5 +1,10 @@
-// prisma/seed.ts
-// Prisma 7
+/**
+ * Database seed for Career Compass (Prisma 7 + pg adapter).
+ * Run via `npx prisma db seed` — configured in prisma.config.ts.
+ *
+ * Idempotent career upserts; quiz content is wiped and recreated each run
+ * so prompt/scoring changes in this file always reach the database.
+ */
 import "dotenv/config";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -20,6 +25,7 @@ const prisma = new PrismaClient({ adapter });
 
 type ScoringItem = { tag: string; weight: number };
 
+/** Maps seed scoring arrays to Prisma JSON input (omits empty weights). */
 function scoringJson(
   scoring?: ScoringItem[],
 ): Prisma.InputJsonValue | undefined {
@@ -27,6 +33,7 @@ function scoringJson(
   return scoring as unknown as Prisma.InputJsonValue;
 }
 
+/** Upserts career catalog from slug; removes careers no longer in the list. */
 async function seedCareers() {
   const careersData = [
     {
@@ -212,8 +219,8 @@ async function seedCareers() {
   });
 }
 
+/** Rebuilds the single built-in career matcher quiz (sections → questions → options). */
 async function seedQuizTechCareerMatcher() {
-  // Always reseed assessment content so updates to prompts/scoring are applied.
   await prisma.$transaction(async (tx) => {
     await tx.assessmentAnswer.deleteMany();
     await tx.assessmentAttempt.deleteMany();
@@ -222,7 +229,6 @@ async function seedQuizTechCareerMatcher() {
     await tx.quizSection.deleteMany();
   });
 
-  // Sections + questions + options
   const sections = [
     {
       title: "Interest & Enjoyment",

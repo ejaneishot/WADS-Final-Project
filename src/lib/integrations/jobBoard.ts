@@ -1,3 +1,7 @@
+/**
+ * Server-only job board integration (Remotive API or stub).
+ * Fetches and validates remote job listings for career detail pages; never called from the browser.
+ */
 import { z } from "zod";
 import { env } from "@/lib/env";
 import { ExternalApiError } from "@/lib/integrations/externalApiError";
@@ -28,6 +32,7 @@ export type PublicJobListing = {
   source: string;
 };
 
+/** Derive allowlist host from configured JOB_BOARD_API_URL (fallback: remotive.com). */
 function allowedJobBoardHosts(): string[] {
   try {
     return [new URL(env.JOB_BOARD_API_URL).hostname];
@@ -85,7 +90,10 @@ async function fetchFromRemotive(
   return mapRemotiveJobs(parsed.data.jobs, limit);
 }
 
-/** Server-only job listings (never call third-party APIs from the browser). */
+/**
+ * Return job listings for a career title (search query).
+ * stub provider returns []; remotive calls the external API via secureFetch.
+ */
 export async function fetchCareerJobListings(
   careerTitle: string,
   options?: { limit?: number },
