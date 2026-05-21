@@ -36,7 +36,13 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
         setIncludeProfile(false);
         router.refresh(); // Update the canvas with new AI nodes
       } else {
-        alert("AI generation failed. Please try a different topic.");
+        const body = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        alert(
+          body?.error ??
+            "AI generation failed. Please try a different topic.",
+        );
       }
     } catch (err) {
       console.error("AI Generation Error:", err);
@@ -68,8 +74,8 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
               className="text-sm mb-4"
               style={{ color: "var(--text-secondary)" }}
             >
-              Tell Gemini what you want to learn, and it will build a branching
-              roadmap for you.
+              Describe a tech skill or career topic you want to learn (for example,
+              Master Unity or Learn Kubernetes). Off-topic prompts are rejected.
             </p>
 
             <form onSubmit={handleGenerate} className="flex flex-col gap-4">

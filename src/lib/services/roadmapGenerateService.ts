@@ -14,6 +14,14 @@ export const RoadmapGenerateBodySchema = z.object({
 
 export type RoadmapGenerateBody = z.infer<typeof RoadmapGenerateBodySchema>;
 
+/** Returned when the topic is not a tech career learning goal. */
+export const ROADMAP_TOPIC_NOT_CAREER_ERROR =
+  "Your input isn't about your career. Please describe a tech skill or career topic you want to learn (for example: Master Unity, Learn React, or cloud engineering fundamentals).";
+
+const TopicClassificationSchema = z.object({
+  isTechCareerTopic: z.boolean(),
+});
+
 type AiGraph = {
   nodes: Array<{ id: unknown; title: unknown; description: unknown }>;
   edges?: Array<{ from: unknown; to: unknown }>;
@@ -72,11 +80,47 @@ The learner has shared the following profile. Use it only to personalize the roa
 `;
 }
 
+/** Gemini classifier: accept only tech career / professional skill learning topics. */
+async function isTechCareerRoadmapTopic(
+  apiKey: string,
+  topic: string,
+): Promise<boolean | null> {
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    model: process.env.GEMINI_MODEL ?? "gemini-3-flash-preview",
+    generationConfig: {
+      responseMimeType: "application/json",
+    },
+  });
+
+  const prompt = `You classify user input for a tech career learning roadmap generator.
+
+VALID (isTechCareerTopic: true): topics about learning tech skills, software, IT, data, design, game development, cybersecurity, cloud, DevOps, programming languages, frameworks, tools (e.g. Unity, React, Kubernetes), technical certifications, or professional tech career paths.
+
+INVALID (isTechCareerTopic: false): unrelated questions (weather, news), cooking or recipes, dangerous or illegal content, general chit-chat, non-technical hobbies, medical/legal advice, or anything that is not a tech career learning goal.
+
+User input: "${topic.replace(/"/g, '\\"')}"
+
+Reply with JSON only: { "isTechCareerTopic": true } or { "isTechCareerTopic": false }`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const parsed = TopicClassificationSchema.safeParse(
+      JSON.parse(result.response.text()),
+    );
+    if (!parsed.success) return null;
+    return parsed.data.isTechCareerTopic;
+  } catch (error) {
+    console.error("AI_TOPIC_CLASSIFY_ERROR:", error);
+    return null;
+  }
+}
+
 export type GenerateRoadmapAiResult =
   | { ok: true }
   | {
       ok: false;
-      status: 404 | 500;
+      status: 400 | 404 | 500;
       error: string;
     };
 
@@ -103,6 +147,22 @@ export async function generateRoadmapFromAi(params: {
   });
   if (!ownedRoadmap) {
     return { ok: false, status: 404, error: "Roadmap not found" };
+  }
+
+  const isCareerTopic = await isTechCareerRoadmapTopic(apiKey, topic);
+  if (isCareerTopic === false) {
+    return {
+      ok: false,
+      status: 400,
+      error: ROADMAP_TOPIC_NOT_CAREER_ERROR,
+    };
+  }
+  if (isCareerTopic === null) {
+    return {
+      ok: false,
+      status: 500,
+      error: "Could not validate your topic. Please try again.",
+    };
   }
 
   let learnerBlock = "";

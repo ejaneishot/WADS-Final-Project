@@ -216,7 +216,7 @@
  * @swagger
  * /api/roadmaps/{id}/generate:
  *   post:
- *     summary: Generate roadmap content with AI
+ *     summary: Generate roadmap content with AI (tech career topics only)
  *     tags:
  *       - Roadmaps
  *     security:
@@ -246,7 +246,7 @@
  *       200:
  *         description: Nodes generated
  *       400:
- *         description: Invalid body
+ *         description: Invalid body or topic not related to tech career learning
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */

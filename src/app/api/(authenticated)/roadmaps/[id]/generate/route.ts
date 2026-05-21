@@ -3,7 +3,8 @@
  *
  * Methods: POST
  * Auth: Signed JWT cookie (`getAuth`).
- * Purpose: AI-generate roadmap nodes for a topic via `generateRoadmapFromAi` (owned roadmap only).
+ * Purpose: AI-generate roadmap nodes for a tech career topic via `generateRoadmapFromAi` (owned roadmap only).
+ * Rejects off-topic prompts (non-career, dangerous, or unrelated) with 400.
  */
 import { NextResponse } from "next/server";
 import { getAuth } from "@/lib/auth";
