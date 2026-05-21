@@ -341,8 +341,8 @@
  * @swagger
  * /api/analyze:
  *   post:
- *     summary: Analyze resume text with Gemini
- *     description: Requires GEMINI_API_KEY on the server.
+ *     summary: Analyze resume text with Gemini (resume or draft only)
+ *     description: Requires GEMINI_API_KEY on the server. Rejects non-resume pasted text.
  *     tags:
  *       - Resume
  *     requestBody:
@@ -360,7 +360,7 @@
  *       200:
  *         description: Analysis result
  *       400:
- *         description: Missing text
+ *         description: Missing text or input is not resume or resume-draft content
  *       503:
  *         description: AI not configured
  */

@@ -4,9 +4,14 @@
  * Methods: POST
  * Auth: None (public). Requires server-side GEMINI_API_KEY.
  * Purpose: Send resume text to Gemini and return structured feedback (good/bad lines, skills, summary).
+ * Rejects non-resume content (off-topic, dangerous, unrelated) with 400 before analysis.
  */
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+import {
+  RESUME_NOT_RESUME_ERROR,
+  isResumeOrDraft,
+} from "@/lib/services/resumeAnalyzeService";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
 
@@ -108,6 +113,21 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { error: 'Missing or empty "text" field' },
         { status: 400 },
+      );
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY.trim();
+    const looksLikeResume = await isResumeOrDraft(apiKey, text);
+    if (looksLikeResume === false) {
+      return NextResponse.json(
+        { error: RESUME_NOT_RESUME_ERROR },
+        { status: 400 },
+      );
+    }
+    if (looksLikeResume === null) {
+      return NextResponse.json(
+        { error: "Could not validate your resume text. Please try again." },
+        { status: 500 },
       );
     }
 
