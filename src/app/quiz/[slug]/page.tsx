@@ -1,8 +1,5 @@
 "use client";
 /**
- * Coding Quiz Page — NeetCode-style one-question-at-a-time coding challenge.
- * Route: /quiz/[slug]
- *
  * Features:
  * - One question per view with full-screen split layout (instructions | editor)
  * - Must pass all test cases before advancing
@@ -12,6 +9,7 @@
 
 import { useState, useEffect, useCallback, useRef, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { TRACK_QUIZZES, type QuizQuestion, type TrackQuiz } from "@/lib/quiz-data";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -213,8 +211,10 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
   const [runStatus, setRunStatus] = useState<RunStatus>("idle");
   const [showHint, setShowHint] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showProModal, setShowProModal] = useState(false);
   const [careerId, setCareerId] = useState<string | null>(null);
   const careerIdRef = useRef<string | null>(null);
+  const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const question: QuizQuestion = track.questions[questionIdx];
@@ -311,9 +311,12 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
   // POST completed milestone indices to /api/careers so the career page reflects quiz progress
   const syncToCareer = useCallback(async (completedQuestionIndices: Set<number>) => {
     const id = careerIdRef.current;
-    if (!id) return;
+    if (!id) {
+      console.warn("[Quiz] syncToCareer called but careerId is null — user may not be logged in");
+      return;
+    }
     try {
-      await fetch("/api/careers", {
+      const res = await fetch("/api/careers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -321,8 +324,14 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
           completedMilestones: Array.from(completedQuestionIndices),
         }),
       });
-    } catch {
-      // Silently fail — localStorage still tracks progress
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("[Quiz] POST /api/careers failed:", res.status, text);
+      } else {
+        console.log("[Quiz] Synced milestones:", Array.from(completedQuestionIndices));
+      }
+    } catch (e) {
+      console.error("[Quiz] syncToCareer network error:", e);
     }
   }, []);
 
@@ -343,21 +352,24 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
     if (runStatus !== "passed") return;
 
     const newCompleted = new Set(completedIds);
-    // Use questionIdx as the milestone index (0-9) so it maps 1-to-1 with careers milestones
     newCompleted.add(questionIdx);
 
-    if (questionIdx < totalQuestions - 1) {
-      const nextIdx = questionIdx + 1;
-      setCompletedIds(newCompleted);
+    // Save progress and sync regardless
+    setCompletedIds(newCompleted);
+    saveProgress(newCompleted, questionIdx);
+    syncToCareer(newCompleted);
+
+    const nextIdx = questionIdx + 1;
+
+    if (questionIdx === totalQuestions - 1) {
+      // Last question done
+      setShowCelebration(true);
+    } else if (nextIdx >= 5) {
+      // Trying to go to question 6+ — show Pro modal
+      setShowProModal(true);
+    } else {
       setQuestionIdx(nextIdx);
       saveProgress(newCompleted, nextIdx);
-      syncToCareer(newCompleted);
-    } else {
-      // Last question done
-      setCompletedIds(newCompleted);
-      saveProgress(newCompleted, questionIdx);
-      syncToCareer(newCompleted);
-      setShowCelebration(true);
     }
   };
 
@@ -562,36 +574,41 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
                 {track.questions.map((q, i) => {
                   const isDone = completedIds.has(i);
                   const isCurrent = i === questionIdx;
-                  // Locked = not done AND not the immediate next question after all completed ones
+                  const isProLocked = i >= 5;
                   const maxCompleted = completedIds.size > 0 ? Math.max(...Array.from(completedIds)) : -1;
                   const isLocked = !isDone && i > maxCompleted + 1;
                   return (
                     <button
                       key={q.id}
-                      disabled={isLocked}
+                      disabled={isLocked || isProLocked}
                       onClick={() => {
+                        if (isProLocked) { setShowProModal(true); return; }
                         if (!isLocked) setQuestionIdx(i);
                       }}
                       className="w-8 h-8 rounded-lg text-xs font-mono font-bold transition-all"
                       style={{
-                        background: isCurrent
+                        background: isProLocked
+                          ? "var(--surface-overlay)"
+                          : isCurrent
                           ? track.color
                           : isDone
                           ? "rgba(110,231,183,0.15)"
                           : "var(--surface-overlay)",
-                        color: isCurrent
+                        color: isProLocked
+                          ? "var(--text-muted)"
+                          : isCurrent
                           ? "var(--surface)"
                           : isDone
                           ? "#6EE7B7"
                           : isLocked
                           ? "var(--text-muted)"
                           : "var(--text-secondary)",
-                        opacity: isLocked ? 0.4 : 1,
-                        cursor: isLocked ? "not-allowed" : "pointer",
+                        opacity: isLocked || isProLocked ? 0.4 : 1,
+                        cursor: isProLocked ? "pointer" : isLocked ? "not-allowed" : "pointer",
                       }}
-                      title={isLocked ? "Complete previous question first" : q.title}
+                      title={isProLocked ? "Upgrade to Pro to unlock" : isLocked ? "Complete previous question first" : q.title}
                     >
-                      {isDone ? "✓" : i + 1}
+                      {isProLocked ? "🔒" : isDone ? "✓" : i + 1}
                     </button>
                   );
                 })}
@@ -769,6 +786,100 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
           </div>
         </div>
       </div>
+      {/* ── Pro Modal ── */}
+      {showProModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}
+        >
+          <div
+            className="relative w-full max-w-md rounded-2xl p-8 text-center"
+            style={{
+              background: "var(--surface-raised)",
+              border: "1px solid var(--border-accent)",
+              boxShadow: "0 0 60px rgba(110,231,183,0.1)",
+            }}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setShowProModal(false)}
+              className="absolute top-4 right-4 text-sm transition-colors hover:text-white"
+              style={{ color: "var(--text-muted)" }}
+            >
+              ✕
+            </button>
+
+            <div className="text-5xl mb-4">🔒</div>
+
+            <p
+              className="text-xs font-mono font-bold uppercase tracking-widest mb-2"
+              style={{ color: "var(--accent)" }}
+            >
+              Pro Feature
+            </p>
+
+            <h2 className="text-2xl font-bold mb-3">
+              Questions 6–10 require Pro
+            </h2>
+
+            <p className="text-sm mb-6 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              You&apos;ve completed the free tier for{" "}
+              <span style={{ color: "var(--accent)" }}>{track.title}</span>.
+              Upgrade to Pro to unlock all 10 challenges and sync your full milestone progress.
+            </p>
+
+            {/* Plan comparison */}
+            <div className="grid grid-cols-2 gap-3 mb-6 text-left">
+              <div
+                className="rounded-xl p-4"
+                style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+              >
+                <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--text-muted)" }}>Free</p>
+                {["Questions 1–5", "Basic milestones"].map(f => (
+                  <p key={f} className="flex items-center gap-1.5 text-xs mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                    <span style={{ color: "var(--accent)" }}>✓</span> {f}
+                  </p>
+                ))}
+                {["Questions 6–10", "Full milestones"].map(f => (
+                  <p key={f} className="flex items-center gap-1.5 text-xs mb-1.5" style={{ color: "var(--text-muted)" }}>
+                    <span>✕</span> {f}
+                  </p>
+                ))}
+              </div>
+              <div
+                className="rounded-xl p-4"
+                style={{
+                  background: "var(--accent-glow)",
+                  border: "1px solid var(--border-accent)",
+                }}
+              >
+                <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--accent)" }}>Pro</p>
+                {["Questions 1–5", "Questions 6–10", "Full milestones", "All tracks"].map(f => (
+                  <p key={f} className="flex items-center gap-1.5 text-xs mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                    <span style={{ color: "var(--accent)" }}>✓</span> {f}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => router.push("/pricing")}
+                className="btn-accent w-full text-sm py-3 rounded-xl text-center block"
+              >
+                Upgrade to Pro — $12/mo
+              </button>
+              <button
+                onClick={() => setShowProModal(false)}
+                className="w-full text-sm py-2.5 rounded-xl transition-colors"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Maybe later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

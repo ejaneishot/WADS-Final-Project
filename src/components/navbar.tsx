@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { href: "/careers", label: "Careers" },
   { href: "/roadmaps", label: "Roadmaps" },
   { href: "/resume-optimizer", label: "Resume Optimizer" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 export function Navbar() {

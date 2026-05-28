@@ -123,6 +123,7 @@ export function CareerMilestones({
       <div className="grid gap-2 sm:grid-cols-1">
         {milestones.map((m, i) => {
           const checked = completed.includes(i);
+          const isProLocked = i >= 5 && !completed.includes(4);
           const locked = !checked;
 
           return (
@@ -131,11 +132,11 @@ export function CareerMilestones({
               className="flex items-center gap-3 rounded-xl px-4 py-3"
               style={{
                 background: checked ? "var(--accent-glow)" : "var(--surface)",
-                border: `1px solid ${checked ? "var(--border-accent)" : "var(--border)"}`,
-                opacity: locked ? 0.5 : 1,
+                border: `1px solid ${checked ? "var(--border-accent)" : isProLocked ? "rgba(251,191,36,0.15)" : "var(--border)"}`,
+                opacity: locked ? 0.55 : 1,
                 cursor: "default",
               }}
-              title={locked ? "Complete this question in the quiz to unlock" : undefined}
+              title={isProLocked ? "Upgrade to Pro to unlock" : locked ? "Complete this question in the quiz to unlock" : undefined}
             >
               <span
                 className="flex-shrink-0 h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold"
@@ -156,11 +157,23 @@ export function CareerMilestones({
               >
                 {m}
               </span>
-              {locked && (
+              {isProLocked ? (
+                <a
+                  href="/pricing"
+                  className="flex-shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full"
+                  style={{
+                    background: "rgba(251,191,36,0.12)",
+                    color: "#FCD34D",
+                    border: "1px solid rgba(251,191,36,0.25)",
+                  }}
+                >
+                  Pro
+                </a>
+              ) : locked ? (
                 <span className="text-xs flex-shrink-0" style={{ color: "var(--text-muted)" }}>
                   🔒
                 </span>
-              )}
+              ) : null}
             </div>
           );
         })}

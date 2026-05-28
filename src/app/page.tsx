@@ -1,3 +1,9 @@
+/**
+ * Marketing landing page (public).
+ * Client-side: probes /api/me for session, loads profile + assessment for the journey
+ * monitor, career track count, and localStorage streak/assessment fallbacks.
+ * CTAs route guests to /login and signed-in users to /assessment or /careers.
+ */
 "use client";
 
 import Link from "next/link";
@@ -162,14 +168,13 @@ const tracks = [
     slug: "game-development",
     icon: "🎮",
     color: "from-fuchsia-500/10 to-indigo-500/10",
-  },
+  }
 ];
 
 export default function HomePage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // ✅ ONLY ONE VERSION EXISTS NOW
   const handleTrackClick = (slug: string) => {
     if (!isLoggedIn) {
       router.push("/login");
@@ -177,7 +182,6 @@ export default function HomePage() {
     }
     router.push(`/careers/${slug}`);
   };
-
   const [profile, setProfile] = useState<{
     interests?: string[];
     skills?: { name: string }[];
@@ -187,7 +191,6 @@ export default function HomePage() {
     hasResult: boolean;
     result?: { primary: string };
   } | null>(null);
-
   const [streak, setStreak] = useState(1);
   const [careerTrackCount, setCareerTrackCount] = useState<number | null>(null);
 
