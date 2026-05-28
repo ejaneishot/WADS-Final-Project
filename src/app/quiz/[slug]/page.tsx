@@ -203,7 +203,8 @@ function TestResultRow({ result }: { result: TestResult }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function QuizExperience({ track }: { track: TrackQuiz }) {
-  const storageKey = `quiz-progress-${track.slug}`;
+  const [userId, setUserId] = useState<string | null>(null);
+  const storageKey = userId ? `quiz-progress-${userId}-${track.slug}` : `quiz-progress-${track.slug}`;
   const [questionIdx, setQuestionIdx] = useState(0);
   const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
   const [code, setCode] = useState("");
@@ -285,10 +286,14 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
           }
         } catch { /* ignore */ }
       });
-  }, [storageKey, track.slug, totalQuestions]);
+  }, [storageKey, track.slug, totalQuestions, userId]);
 
-  // Fetch subscription plan independently on mount
+  // Fetch userId and subscription plan independently on mount
   useEffect(() => {
+    fetch("/api/me")
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data?.user?.id) setUserId(data.user.id); })
+      .catch(() => {});
     fetch("/api/subscription")
       .then((r) => r.ok ? r.json() : null)
       .then((data) => { if (data?.plan === "pro") setIsPro(true); })
