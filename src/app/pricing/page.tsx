@@ -31,6 +31,7 @@ export default function PricingPage() {
   const [currentPlan, setCurrentPlan] = useState<"free" | "pro" | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState(false);
+  const [downgrading, setDowngrading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -61,6 +62,24 @@ export default function PricingPage() {
       setError("Network error. Please try again.");
     } finally {
       setUpgrading(false);
+    }
+  };
+
+  const handleDowngrade = async () => {
+    setDowngrading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/subscription/downgrade", { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.message || "Something went wrong.");
+        return;
+      }
+      setCurrentPlan("free");
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setDowngrading(false);
     }
   };
 
@@ -161,12 +180,23 @@ export default function PricingPage() {
             ))}
           </ul>
 
-          <div
-            className="block text-center rounded-xl py-2.5 text-sm font-semibold"
-            style={{ border: "1px solid var(--border)", color: "var(--text-muted)" }}
-          >
-            {currentPlan === "free" ? "Your current plan" : "Downgraded"}
-          </div>
+          {currentPlan === "free" ? (
+            <div
+              className="block text-center rounded-xl py-2.5 text-sm font-semibold"
+              style={{ border: "1px solid var(--border-accent)", color: "var(--accent)" }}
+            >
+              ✓ Current plan
+            </div>
+          ) : (
+            <button
+              onClick={handleDowngrade}
+              disabled={downgrading || loading}
+              className="w-full text-center rounded-xl py-2.5 text-sm font-semibold transition-all"
+              style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}
+            >
+              {downgrading ? "Switching..." : "Switch to Free"}
+            </button>
+          )}
         </div>
 
         {/* Pro Plan */}
