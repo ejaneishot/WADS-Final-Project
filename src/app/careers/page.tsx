@@ -2,9 +2,6 @@
  * Career tracks browser (public listing; milestone toggles need session).
  * Loads careers + user progress + assessment primary tag to highlight recommended track.
  * Milestone toggles optimistically update then POST to /api/careers.
- *
- * ONLY CHANGE from original: "Explore track →" links now go to /quiz/[slug]
- * instead of /careers/[slug], so clicking it opens the coding quiz directly.
  */
 "use client";
 
@@ -98,6 +95,33 @@ export default function CareersPage() {
           Find your domain and start building expertise.
         </p>
       </div>
+
+      {!recommendedCareer && (
+      <div
+        className="mb-10 flex items-center gap-4 p-5 rounded-2xl flex-wrap"
+        style={{
+          background: "linear-gradient(135deg, var(--surface-raised), var(--surface-overlay))",
+          border: "1px solid var(--border-accent)",
+        }}
+      >
+    <div className="flex items-center gap-3 flex-1 min-w-0">
+      <span className="text-2xl flex-shrink-0">🎯</span>
+      <div>
+        <p className="font-semibold text-sm">Not sure which track suits you?</p>
+        <p className="text-sm mt-0.5" style={{ color: "var(--text-secondary)" }}>
+          Take the assessment to get a personalized recommendation based on your strengths and interests.
+        </p>
+      </div>
+    </div>
+    <Link
+      href="/assessment"
+      className="btn-accent flex-shrink-0 text-sm"
+      style={{ padding: "0.5rem 1.25rem" }}
+    >
+      Take Assessment →
+    </Link>
+  </div>
+)}
 
       {/* Track cards (Dynamically rendered from DB) */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-16">
