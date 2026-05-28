@@ -21,6 +21,7 @@ model User {
   email        String   @unique
   passwordHash String?
   role         Role     @default(student)
+  plan         String   @default("free")
   createdAt    DateTime @default(now())
 
   profile Profile?

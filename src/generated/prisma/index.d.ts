@@ -2437,6 +2437,7 @@ export namespace Prisma {
     email: string | null
     passwordHash: string | null
     role: $Enums.Role | null
+    plan: string | null
     createdAt: Date | null
   }
 
@@ -2445,6 +2446,7 @@ export namespace Prisma {
     email: string | null
     passwordHash: string | null
     role: $Enums.Role | null
+    plan: string | null
     createdAt: Date | null
   }
 
@@ -2453,6 +2455,7 @@ export namespace Prisma {
     email: number
     passwordHash: number
     role: number
+    plan: number
     createdAt: number
     _all: number
   }
@@ -2463,6 +2466,7 @@ export namespace Prisma {
     email?: true
     passwordHash?: true
     role?: true
+    plan?: true
     createdAt?: true
   }
 
@@ -2471,6 +2475,7 @@ export namespace Prisma {
     email?: true
     passwordHash?: true
     role?: true
+    plan?: true
     createdAt?: true
   }
 
@@ -2479,6 +2484,7 @@ export namespace Prisma {
     email?: true
     passwordHash?: true
     role?: true
+    plan?: true
     createdAt?: true
     _all?: true
   }
@@ -2560,6 +2566,7 @@ export namespace Prisma {
     email: string
     passwordHash: string | null
     role: $Enums.Role
+    plan: string
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -2585,6 +2592,7 @@ export namespace Prisma {
     email?: boolean
     passwordHash?: boolean
     role?: boolean
+    plan?: boolean
     createdAt?: boolean
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
@@ -2598,6 +2606,7 @@ export namespace Prisma {
     email?: boolean
     passwordHash?: boolean
     role?: boolean
+    plan?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2606,6 +2615,7 @@ export namespace Prisma {
     email?: boolean
     passwordHash?: boolean
     role?: boolean
+    plan?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2614,10 +2624,11 @@ export namespace Prisma {
     email?: boolean
     passwordHash?: boolean
     role?: boolean
+    plan?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "plan" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | User$profileArgs<ExtArgs>
     assessmentAttempts?: boolean | User$assessmentAttemptsArgs<ExtArgs>
@@ -2641,6 +2652,7 @@ export namespace Prisma {
       email: string
       passwordHash: string | null
       role: $Enums.Role
+      plan: string
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -3073,6 +3085,7 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
+    readonly plan: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -18112,6 +18125,7 @@ export namespace Prisma {
     email: 'email',
     passwordHash: 'passwordHash',
     role: 'role',
+    plan: 'plan',
     createdAt: 'createdAt'
   };
 
@@ -18442,6 +18456,7 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     passwordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    plan?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
@@ -18454,6 +18469,7 @@ export namespace Prisma {
     email?: SortOrder
     passwordHash?: SortOrderInput | SortOrder
     role?: SortOrder
+    plan?: SortOrder
     createdAt?: SortOrder
     profile?: ProfileOrderByWithRelationInput
     assessmentAttempts?: AssessmentAttemptOrderByRelationAggregateInput
@@ -18469,6 +18485,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     passwordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    plan?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     assessmentAttempts?: AssessmentAttemptListRelationFilter
@@ -18481,6 +18498,7 @@ export namespace Prisma {
     email?: SortOrder
     passwordHash?: SortOrderInput | SortOrder
     role?: SortOrder
+    plan?: SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -18495,6 +18513,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    plan?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -19335,6 +19354,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
@@ -19347,6 +19367,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
@@ -19359,6 +19380,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
@@ -19371,6 +19393,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
@@ -19383,6 +19406,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
   }
 
@@ -19391,6 +19415,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -19399,6 +19424,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -20337,6 +20363,7 @@ export namespace Prisma {
     email?: SortOrder
     passwordHash?: SortOrder
     role?: SortOrder
+    plan?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -20345,6 +20372,7 @@ export namespace Prisma {
     email?: SortOrder
     passwordHash?: SortOrder
     role?: SortOrder
+    plan?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -20353,6 +20381,7 @@ export namespace Prisma {
     email?: SortOrder
     passwordHash?: SortOrder
     role?: SortOrder
+    plan?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -22521,6 +22550,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapCreateNestedManyWithoutUserInput
@@ -22532,6 +22562,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
     roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
@@ -22581,6 +22612,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
@@ -22592,6 +22624,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
     roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput
@@ -22811,6 +22844,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
@@ -22822,6 +22856,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
@@ -22886,6 +22921,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
@@ -22897,6 +22933,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
@@ -22951,6 +22988,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptCreateNestedManyWithoutUserInput
@@ -22962,6 +23000,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     assessmentAttempts?: AssessmentAttemptUncheckedCreateNestedManyWithoutUserInput
@@ -23015,6 +23054,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUpdateManyWithoutUserNestedInput
@@ -23026,6 +23066,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     assessmentAttempts?: AssessmentAttemptUncheckedUpdateManyWithoutUserNestedInput
@@ -23614,6 +23655,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileCreateNestedOneWithoutUserInput
     roadmaps?: RoadmapCreateNestedManyWithoutUserInput
@@ -23625,6 +23667,7 @@ export namespace Prisma {
     email: string
     passwordHash?: string | null
     role?: $Enums.Role
+    plan?: string
     createdAt?: Date | string
     profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
     roadmaps?: RoadmapUncheckedCreateNestedManyWithoutUserInput
@@ -23674,6 +23717,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUpdateOneWithoutUserNestedInput
     roadmaps?: RoadmapUpdateManyWithoutUserNestedInput
@@ -23685,6 +23729,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    plan?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
     roadmaps?: RoadmapUncheckedUpdateManyWithoutUserNestedInput

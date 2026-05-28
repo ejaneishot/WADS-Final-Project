@@ -17,6 +17,7 @@ type Props = {
   colorClass: string;
   /** The career slug — used to link to the quiz */
   slug: string;
+  isPro?: boolean;
 };
 
 export function CareerMilestones({
@@ -26,6 +27,7 @@ export function CareerMilestones({
   isLoggedIn,
   colorClass,
   slug,
+  isPro = false,
 }: Props) {
   const [completed, setCompleted] = useState<number[]>(initialCompleted);
 
@@ -123,7 +125,7 @@ export function CareerMilestones({
       <div className="grid gap-2 sm:grid-cols-1">
         {milestones.map((m, i) => {
           const checked = completed.includes(i);
-          const isProLocked = i >= 5 && !completed.includes(4);
+          const isProLocked = i >= 5 && !isPro;
           const locked = !checked;
 
           return (

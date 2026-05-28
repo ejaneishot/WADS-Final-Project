@@ -212,6 +212,7 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
   const [showHint, setShowHint] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [showProModal, setShowProModal] = useState(false);
+  const [isPro, setIsPro] = useState(false);
   const [careerId, setCareerId] = useState<string | null>(null);
   const careerIdRef = useRef<string | null>(null);
   const router = useRouter();
@@ -285,6 +286,14 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
         } catch { /* ignore */ }
       });
   }, [storageKey, track.slug, totalQuestions]);
+
+  // Fetch subscription plan independently on mount
+  useEffect(() => {
+    fetch("/api/subscription")
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => { if (data?.plan === "pro") setIsPro(true); })
+      .catch(() => {});
+  }, []);
 
   // Reset code editor when question changes
   useEffect(() => {
@@ -364,8 +373,8 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
     if (questionIdx === totalQuestions - 1) {
       // Last question done
       setShowCelebration(true);
-    } else if (nextIdx >= 5) {
-      // Trying to go to question 6+ — show Pro modal
+    } else if (nextIdx >= 5 && !isPro) {
+      // Trying to go to question 6+ without Pro — show modal
       setShowProModal(true);
     } else {
       setQuestionIdx(nextIdx);
@@ -574,7 +583,7 @@ function QuizExperience({ track }: { track: TrackQuiz }) {
                 {track.questions.map((q, i) => {
                   const isDone = completedIds.has(i);
                   const isCurrent = i === questionIdx;
-                  const isProLocked = i >= 5;
+                  const isProLocked = i >= 5 && !isPro;
                   const maxCompleted = completedIds.size > 0 ? Math.max(...Array.from(completedIds)) : -1;
                   const isLocked = !isDone && i > maxCompleted + 1;
                   return (

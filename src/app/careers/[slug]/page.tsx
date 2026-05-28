@@ -52,15 +52,23 @@ export default async function CareerDetailPage({
 
   const auth = await getAuth();
   let initialCompleted: number[] = [];
+  let isPro = false;
   if (auth?.sub) {
-    /* Hydrate milestone checkboxes for signed-in users only */
-    const row = await prisma.userCareerProgress.findUnique({
-      where: {
-        userId_careerId: { userId: auth.sub, careerId: career.id },
-      },
-      select: { completedMilestones: true },
-    });
+    /* Hydrate milestone checkboxes and plan for signed-in users only */
+    const [row, user] = await Promise.all([
+      prisma.userCareerProgress.findUnique({
+        where: {
+          userId_careerId: { userId: auth.sub, careerId: career.id },
+        },
+        select: { completedMilestones: true },
+      }),
+      prisma.user.findUnique({
+        where: { id: auth.sub },
+        select: { plan: true },
+      }),
+    ]);
     initialCompleted = row?.completedMilestones ?? [];
+    isPro = user?.plan === "pro";
   }
 
   const icon = career.icon ?? DEFAULT_ICON;
@@ -157,6 +165,7 @@ export default async function CareerDetailPage({
             isLoggedIn={Boolean(auth?.sub)}
             colorClass={color}
             slug={slug}
+            isPro={isPro}
           />
         </div>
       </section>
