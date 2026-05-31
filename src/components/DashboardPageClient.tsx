@@ -1,3 +1,4 @@
+// src/components/DashboardPageClient.tsx
 /**
  * Extended student dashboard client (profile + assessment + AI career-match CTA).
  * Same data model as dashboard/page but adds POST /api/ai/career-match from the header.
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { resolveQuizScoreLabel } from "@/lib/assessmentScoring";
 
+/** Strict payload contract modeling client-side structural profile schema */
 type Profile = {
   name: string | null;
   major: string | null;
@@ -17,6 +19,7 @@ type Profile = {
   skills: Array<{ name: string; level: number }>;
 };
 
+/** Data schema representing analytical cluster allocations from the scoring runtime */
 type AssessmentResult = {
   primary: string;
   secondary: string | null;
@@ -24,19 +27,24 @@ type AssessmentResult = {
 };
 
 export default function DashboardPageClient() {
+  // ── SERVER RECONCILIATION STATE READS ──
   const [profile, setProfile] = useState<Profile | null>(null);
   const [assessmentResult, setAssessmentResult] =
     useState<AssessmentResult | null>(null);
 
+  /** Active baseline catalog used for downstream lookup text translations */
   const [careerTitles, setCareerTitles] = useState<
     { slug: string; title: string; tag: string }[]
   >([]);
+
+  // ── FORM INTERACTION & LOADING GATES ──
   const [matchLoading, setMatchLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
+  // ── ISOLATED FIELD ELEMENT STORES (BUFFERED FORM STATE) ──
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
   const [semester, setSemester] = useState("");
@@ -48,6 +56,11 @@ export default function DashboardPageClient() {
     [],
   );
 
+  /**
+   * LIFECYCLE INITIALIZATION HANDSHAKE
+   * Fires parallel asynchronous queries on component frame mount to populate view dependencies.
+   * Pulls base career titles, student profiles, and recent assessment heuristics concurrently.
+   */
   useEffect(() => {
     /* Parallel fetch: careers (tag labels), profile, assessment result */
     fetch("/api/careers")
@@ -55,13 +68,13 @@ export default function DashboardPageClient() {
       .then((data) => {
         if (data?.careers) {
           setCareerTitles(
-            (data.careers as { slug: string; title: string; tag: string }[]).map(
-              (c) => ({
-                slug: c.slug,
-                title: c.title,
-                tag: c.tag,
-              }),
-            ),
+            (
+              data.careers as { slug: string; title: string; tag: string }[]
+            ).map((c) => ({
+              slug: c.slug,
+              title: c.title,
+              tag: c.tag,
+            })),
           );
         }
       })
@@ -76,6 +89,7 @@ export default function DashboardPageClient() {
       .then((data) => {
         setErr(null);
         setProfile(data);
+        // Hydrate localized field variables to separate layout rendering from form mutations
         setName(data.name ?? "");
         setMajor(data.major ?? "");
         setSemester(data.semester?.toString() ?? "");
@@ -95,6 +109,11 @@ export default function DashboardPageClient() {
       .catch(console.error);
   }, []);
 
+  /**
+   * SERIALIZATION & RE-MUTATION DISPATCHER
+   * Packages buffered field data states and pushes a PUT query to modify database state.
+   * Re-fetches current structural references upon successful mutations to achieve single-source-of-truth parity.
+   */
   const handleSave = async () => {
     setSaving(true);
     setSaveMsg(null);
@@ -107,6 +126,7 @@ export default function DashboardPageClient() {
           major: major || null,
           semester: semester ? parseInt(semester) : null,
           gpaRange: gpaRange || null,
+          // Unpacks CSV string data into a clean sanitized string literal array array
           interests: interests
             .split(",")
             .map((s) => s.trim())
@@ -118,6 +138,7 @@ export default function DashboardPageClient() {
         const j = await res.json().catch(() => ({ message: "Save failed" }));
         setSaveMsg(j.message ?? "Save failed");
       } else {
+        // Re-hydrate application states with raw normalized values returned from our backend
         const fresh = await fetch("/api/profile").then((r) => r.json());
         setProfile(fresh);
         setName(fresh.name ?? "");
@@ -127,7 +148,7 @@ export default function DashboardPageClient() {
         setInterests(fresh.interests?.join(", ") ?? "");
         setSkills(fresh.skills ?? []);
         setSaveMsg("Profile saved!");
-        setEditing(false);
+        setEditing(false); // Disengage layout modifications panel
       }
     } catch {
       setSaveMsg("Save failed");
@@ -136,24 +157,34 @@ export default function DashboardPageClient() {
     }
   };
 
+  /**
+   * IN-MEMORY CAPABILITY MODIFIER
+   * Enqueues freshly declared tech items into the local un-saved state buffer map.
+   */
   const addSkill = () => {
     if (!skillName.trim()) return;
     setSkills([
       ...skills,
       { name: skillName.trim(), level: parseInt(skillLevel) },
     ]);
-    setSkillName("");
-    setSkillLevel("3");
+    setSkillName(""); // Clear form item descriptor input element
+    setSkillLevel("3"); // Reset baseline qualification parameter to default median value
   };
 
+  /**
+   * IN-MEMORY SKILL STRIPPER
+   * Filters targeted capability array parameters out of the temporary buffer mapping based on positional array index keys.
+   */
   const removeSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
   return (
     <div className="container-page relative z-10 py-12">
+      {/* Background radial atmosphere enhancement layer */}
       <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-emerald-500/5 blur-[100px] pointer-events-none will-change-transform" />
 
+      {/* ── MODULE HEADER & INFERENCE INTERACTION ENGINE ── */}
       <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
           <p className="section-label">Overview</p>
@@ -165,6 +196,8 @@ export default function DashboardPageClient() {
             Update your profile and generate AI career matches.
           </p>
         </div>
+
+        {/* Dispatches structured analytical vector tasks directly via explicit POST endpoints */}
         <button
           onClick={async () => {
             setMatchLoading(true);
@@ -202,6 +235,7 @@ export default function DashboardPageClient() {
       {err && <div className="error-box mb-6">{err}</div>}
 
       <div className="grid gap-5 md:grid-cols-2">
+        {/* ── DATA DISCOVERY LEFT RAIL: THE PROFILE PROFILE CARD ── */}
         <div className="card-dark glow-ring">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Your Profile</h2>
@@ -220,6 +254,7 @@ export default function DashboardPageClient() {
             </button>
           </div>
 
+          {/* ── CASE 1: READ ONLY LAYOUT LAYER ── */}
           {!editing ? (
             <div className="space-y-4">
               <div className="space-y-3">
@@ -260,6 +295,7 @@ export default function DashboardPageClient() {
                 ))}
               </div>
 
+              {/* Read Only Tagged Capability Chips */}
               <div
                 className="rounded-lg p-3"
                 style={{
@@ -291,6 +327,7 @@ export default function DashboardPageClient() {
                 )}
               </div>
 
+              {/* Real-time Dynamic Assessment Cluster Resolvers */}
               {assessmentResult ? (
                 <div
                   className="rounded-xl p-4 flex flex-col gap-2"
@@ -310,6 +347,7 @@ export default function DashboardPageClient() {
                       className="text-sm font-semibold"
                       style={{ color: "var(--accent)" }}
                     >
+                      {/* Resolves relational string slug hashes over into human readable track text literals */}
                       {resolveQuizScoreLabel(
                         assessmentResult.primary,
                         careerTitles,
@@ -348,6 +386,7 @@ export default function DashboardPageClient() {
                   </Link>
                 </div>
               ) : (
+                /* Prompt funnel view shown to students with clear diagnostic history gaps */
                 <div
                   className="rounded-xl p-6 mt-2 text-center"
                   style={{
@@ -376,6 +415,7 @@ export default function DashboardPageClient() {
               )}
             </div>
           ) : (
+            /* ── CASE 2: LIVE ACTION EDIT PANEL CONTROLS ── */
             <div className="space-y-4">
               <div>
                 <label
@@ -459,6 +499,7 @@ export default function DashboardPageClient() {
                 />
               </div>
 
+              {/* Dynamic capability buffer creation sub-form layout */}
               <div>
                 <label
                   className="block text-xs font-medium mb-1.5"
@@ -494,6 +535,8 @@ export default function DashboardPageClient() {
                     Add
                   </button>
                 </div>
+
+                {/* Dynamic state buffer badge arrays featuring interactive deletion triggers */}
                 {skills.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {skills.map((s, i) => (
@@ -533,6 +576,7 @@ export default function DashboardPageClient() {
           )}
         </div>
 
+        {/* ── MILESTONE TRACKING RIGHT RAIL: PROJECT ROADMAP VIEW ── */}
         <div className="card-dark glow-ring">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Next Steps</h2>

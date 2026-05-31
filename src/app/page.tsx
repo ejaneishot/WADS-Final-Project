@@ -1,3 +1,4 @@
+// src/app/page.tsx
 /**
  * Marketing landing page (public).
  * Client-side: probes /api/me for session, loads profile + assessment for the journey
@@ -10,6 +11,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+/** Onboarding funnel stage definition used in the conditional layout engine */
 const steps = [
   {
     num: "01",
@@ -33,6 +35,7 @@ const steps = [
   },
 ];
 
+/** Mock marketplace data providing immediate context for mentorship booking */
 const tutors = [
   {
     name: "Dr. Sarah Chen",
@@ -81,6 +84,7 @@ const tutors = [
   },
 ];
 
+/** Social proof catalog featuring high-signal tech placements */
 const testimonials = [
   {
     quote:
@@ -132,6 +136,7 @@ const testimonials = [
   },
 ];
 
+/** Supported computer science paths mapped tightly to dynamic application slug routing */
 const tracks = [
   {
     name: "Software Engineering",
@@ -168,13 +173,14 @@ const tracks = [
     slug: "game-development",
     icon: "🎮",
     color: "from-fuchsia-500/10 to-indigo-500/10",
-  }
+  },
 ];
 
 export default function HomePage() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  /** Intercepts navigation to private career sub-paths based on state status */
   const handleTrackClick = (slug: string) => {
     if (!isLoggedIn) {
       router.push("/login");
@@ -182,11 +188,13 @@ export default function HomePage() {
     }
     router.push(`/careers/${slug}`);
   };
+  /** User profile buffer containing qualitative attributes used to evaluate flow completeness */
   const [profile, setProfile] = useState<{
     interests?: string[];
     skills?: { name: string }[];
   } | null>(null);
 
+  /** Active diagnostic test output state */
   const [assessmentResult, setAssessmentResult] = useState<{
     hasResult: boolean;
     result?: { primary: string };
@@ -194,7 +202,7 @@ export default function HomePage() {
   const [streak, setStreak] = useState(1);
   const [careerTrackCount, setCareerTrackCount] = useState<number | null>(null);
 
-  /* Public stat for hero — no auth required */
+  /* Public stat for hero - no auth required */
   useEffect(() => {
     fetch("/api/careers/count")
       .then((r) => (r.ok ? r.json() : null))
@@ -232,7 +240,9 @@ export default function HomePage() {
             setAssessmentResult(result);
           }
         });
+        // ── STREAK TRACKING ENGINE ──
         // Streak tracking via localStorage
+        // Reads raw local timestamps to calculate consecutive check-in parameters
         const today = new Date().toDateString();
         const stored = JSON.parse(localStorage.getItem("sc_streak") ?? "{}");
         if (stored.lastDate === today) {
@@ -328,9 +338,7 @@ export default function HomePage() {
                 {[
                   {
                     value:
-                      careerTrackCount != null
-                        ? String(careerTrackCount)
-                        : "—",
+                      careerTrackCount != null ? String(careerTrackCount) : "—",
                     label: "career tracks",
                   },
                   { value: "100+", label: "question signals" },

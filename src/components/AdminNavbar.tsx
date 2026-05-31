@@ -1,6 +1,10 @@
+// src/components/AdminNavbar.tsx
 /**
  * Admin navigation bar (root layout when role === admin).
  * Receives email from server layout; highlights active admin/docs routes via pathname.
+ * Unlike the public navbar that fetches its own session data client-side,
+ *  this component accepts session injection directly from a Next.js Server Component layout via props,
+ *  ensuring zero client-side layout shift for admin tools.
  */
 "use client";
 
@@ -20,14 +24,17 @@ const ADMIN_LINKS: ReadonlyArray<{
 ];
 
 type Props = {
+  // Defines a strict TypeScript type definition requiring an email string. This enforces that whichever parent layout renders this navigation must supply the administrator's email address.
   email: string;
 };
 
 export function AdminNavbar({ email }: Props) {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  // Declares and exports the functional component AdminNavbar, destructuring the required email property out of incoming arguments.
+  const pathname = usePathname(); // Initializes the Next.js App Router client routing observer. It captures the window's live sub-path location string, triggering minor visual updates when the administrator jumps between panels.
+  const [scrolled, setScrolled] = useState(false); // Provisions a state variable to hold a simple binary indicator (true/false). This tells the header when to shift between a transparent state and an elevated frosted-glass backdrop.
 
   useEffect(() => {
+    // Comments are same as navbar.tsx since scroll handling is identical
     let ticking = false;
     const handler = () => {
       if (!ticking) {
@@ -43,9 +50,10 @@ export function AdminNavbar({ email }: Props) {
   }, []);
 
   const pathActive = (href: string) => {
-    if (href === "/admin") return pathname === "/admin";
+    // Declares a deterministic link evaluation arrow function that takes a target link route destination configuration parameter and returns a boolean state assessment.
+    if (href === "/admin") return pathname === "/admin"; // Implements strict identity matching rules for the root administrator URL base path. This guards against false-positives (so the "Overview" tab doesn't stay lit up when you drill down into lower subsections like /admin/careers).
     if (href === "/docs") return pathname === "/docs";
-    return pathname === href || pathname.startsWith(`${href}/`);
+    return pathname === href || pathname.startsWith(`${href}/`); // A comprehensive fallback rule structure for hierarchical management routes. It marks nested dashboard tools active if the current browser route is identical to the target section or down its dynamic child hierarchies (e.g., matching both /admin/careers and /admin/careers/[id]).
   };
 
   return (
