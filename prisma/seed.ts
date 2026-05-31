@@ -236,10 +236,7 @@ async function seedQuizTechCareerMatcher() {
               order: 2,
               value: "B",
               label: "Designing beautiful interfaces",
-              scoring: [
-                { tag: "FE", weight: 2 },
-                { tag: "PM", weight: 1 },
-              ],
+              scoring: [{ tag: "FE", weight: 3 }],
             },
             {
               order: 3,
@@ -260,10 +257,7 @@ async function seedQuizTechCareerMatcher() {
               order: 5,
               value: "E",
               label: "Breaking systems to see how they fail",
-              scoring: [
-                { tag: "SEC", weight: 2 },
-                { tag: "QA", weight: 1 },
-              ],
+              scoring: [{ tag: "SEC", weight: 3 }],
             },
             {
               order: 6,
@@ -314,10 +308,7 @@ async function seedQuizTechCareerMatcher() {
               order: 5,
               value: "E",
               label: "Finding edge cases and bugs",
-              scoring: [
-                { tag: "QA", weight: 2 },
-                { tag: "SEC", weight: 1 },
-              ],
+              scoring: [{ tag: "SEC", weight: 3 }],
             },
             {
               order: 6,
@@ -393,10 +384,7 @@ async function seedQuizTechCareerMatcher() {
               order: 2,
               value: "B",
               label: "Think about user experience first",
-              scoring: [
-                { tag: "FE", weight: 2 },
-                { tag: "PM", weight: 1 },
-              ],
+              scoring: [{ tag: "FE", weight: 3 }],
             },
             {
               order: 3,
@@ -441,10 +429,7 @@ async function seedQuizTechCareerMatcher() {
               order: 2,
               value: "B",
               label: "“I care how users feel.”",
-              scoring: [
-                { tag: "FE", weight: 2 },
-                { tag: "PM", weight: 1 },
-              ],
+              scoring: [{ tag: "FE", weight: 3 }],
             },
             {
               order: 3,
@@ -519,12 +504,6 @@ async function seedQuizTechCareerMatcher() {
               label: "Unity / Unreal",
               scoring: [{ tag: "GAME", weight: 3 }],
             },
-            {
-              order: 7,
-              value: "G",
-              label: "Selenium / Postman testing",
-              scoring: [{ tag: "QA", weight: 3 }],
-            },
           ],
         },
         {
@@ -569,12 +548,6 @@ async function seedQuizTechCareerMatcher() {
               value: "F",
               label: "Game Development",
               scoring: [{ tag: "GAME", weight: 3 }],
-            },
-            {
-              order: 7,
-              value: "G",
-              label: "Software Testing",
-              scoring: [{ tag: "QA", weight: 3 }],
             },
           ],
         },
@@ -625,12 +598,6 @@ async function seedQuizTechCareerMatcher() {
               label: "Gameplay systems",
               scoring: [{ tag: "GAME", weight: 3 }],
             },
-            {
-              order: 7,
-              value: "G",
-              label: "Ensuring product quality",
-              scoring: [{ tag: "QA", weight: 3 }],
-            },
           ],
         },
         {
@@ -676,18 +643,6 @@ async function seedQuizTechCareerMatcher() {
               label: "Creative interactive work",
               scoring: [{ tag: "GAME", weight: 3 }],
             },
-            {
-              order: 7,
-              value: "G",
-              label: "Test planning and validation",
-              scoring: [{ tag: "QA", weight: 3 }],
-            },
-            {
-              order: 8,
-              value: "H",
-              label: "Coordinating teams and features",
-              scoring: [{ tag: "PM", weight: 3 }],
-            },
           ],
         },
       ],
@@ -714,10 +669,7 @@ async function seedQuizTechCareerMatcher() {
               order: 2,
               value: "B",
               label: "“I want to build things people love to use.”",
-              scoring: [
-                { tag: "FE", weight: 2 },
-                { tag: "PM", weight: 1 },
-              ],
+              scoring: [{ tag: "FE", weight: 3 }],
             },
             {
               order: 3,
@@ -736,12 +688,6 @@ async function seedQuizTechCareerMatcher() {
               value: "E",
               label: "“I want to build immersive worlds.”",
               scoring: [{ tag: "GAME", weight: 3 }],
-            },
-            {
-              order: 6,
-              value: "F",
-              label: "“I want to guarantee quality.”",
-              scoring: [{ tag: "QA", weight: 3 }],
             },
           ],
         },
