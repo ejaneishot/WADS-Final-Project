@@ -172,7 +172,7 @@ export default function DashboardPage() {
 
       {err && <div className="error-box mb-6">{err}</div>}
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="max-w-2xl">
         {/* Profile card */}
         <div className="card-dark glow-ring">
           <div className="flex items-center justify-between mb-4">
@@ -508,50 +508,6 @@ export default function DashboardPage() {
               </button>
             </div>
           )}
-        </div>
-
-        {/* Next steps card */}
-        <div className="card-dark glow-ring">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Next Steps</h2>
-            <span className="badge">Roadmap</span>
-          </div>
-          <div className="space-y-3">
-            {[
-              {
-                num: "01",
-                text: "Add a Profile edit form (major, semester, GPA range, interests, skills).",
-              },
-              {
-                num: "02",
-                text: "Build an assessment quiz (store answers, compute interest clusters).",
-              },
-              {
-                num: "03",
-                text: "Replace AI stub with real provider + fallback + test cases.",
-              },
-              {
-                num: "04",
-                text: "Add skill-gap chart + learning plan generator.",
-              },
-            ].map((step) => (
-              <div
-                key={step.num}
-                className="flex gap-3 rounded-xl p-3 transition-colors hover:bg-white/[0.02]"
-                style={{ border: "1px solid var(--border)" }}
-              >
-                <span className="mono text-xs font-bold text-gradient mt-0.5">
-                  {step.num}
-                </span>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {step.text}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
