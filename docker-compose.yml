@@ -24,6 +24,7 @@ services:
       # Overrides for container runtime (see .env for all other secrets/config)
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:postgres@db:5432/smartcareer?schema=public
+      RUN_DB_SEED: "true"
     depends_on:
       db:
         condition: service_healthy
