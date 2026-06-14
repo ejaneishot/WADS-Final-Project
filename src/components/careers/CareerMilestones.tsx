@@ -117,9 +117,9 @@ export function CareerMilestones({
               className="font-semibold hover:underline"
               style={{ color: "var(--accent)" }}
             >
-              coding quiz
+              challenge
             </Link>{" "}
-            to unlock milestones.
+            to unlock the next one.
           </span>
         </div>
       )}

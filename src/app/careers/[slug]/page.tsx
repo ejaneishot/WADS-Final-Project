@@ -152,27 +152,6 @@ export default async function CareerDetailPage({
         </p>
       </header>
 
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Roadmap milestones</h2>
-        <div
-          className="rounded-2xl p-6 md:p-8"
-          style={{
-            background: "var(--surface-raised)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          <CareerMilestones
-            careerId={career.id}
-            milestones={career.milestones}
-            initialCompleted={initialCompleted}
-            isLoggedIn={Boolean(auth?.sub)}
-            colorClass={color}
-            slug={slug}
-            isPro={isPro}
-          />
-        </div>
-      </section>
-
       {roadmap.length > 0 && (
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-1">Learning roadmap</h2>
@@ -209,6 +188,27 @@ export default async function CareerDetailPage({
           </ol>
         </section>
       )}
+
+      <section className="mb-12">
+        <h2 className="text-xl font-semibold mb-4">Tricky challenges</h2>
+        <div
+          className="rounded-2xl p-6 md:p-8"
+          style={{
+            background: "var(--surface-raised)",
+            border: "1px solid var(--border)",
+          }}
+        >
+          <CareerMilestones
+            careerId={career.id}
+            milestones={career.milestones}
+            initialCompleted={initialCompleted}
+            isLoggedIn={Boolean(auth?.sub)}
+            colorClass={color}
+            slug={slug}
+            isPro={isPro}
+          />
+        </div>
+      </section>
 
       {auth?.sub ? <CareerJobListings slug={slug} /> : null}
 

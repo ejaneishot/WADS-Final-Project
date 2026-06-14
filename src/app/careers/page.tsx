@@ -24,7 +24,6 @@ type Career = {
 
 export default function CareersPage() {
   const [careers, setCareers] = useState<Career[]>([]);
-  const [q, setQ] = useState("");
 
   // Track progress mapping: { "career-id": [0, 2, 3] }
   const [progress, setProgress] = useState<Record<string, number[]>>({});
@@ -78,10 +77,6 @@ export default function CareersPage() {
       // Optional: Revert optimistic update here if the request fails
     }
   };
-
-  const filtered = careers.filter((c) =>
-    (c.title + " " + c.industry).toLowerCase().includes(q.toLowerCase()),
-  );
 
   return (
     <div className="container-page relative z-10 py-12">
@@ -149,9 +144,8 @@ export default function CareersPage() {
               </p>
             </div>
             <div className="flex justify-end mt-6">
-              {/* CHANGED: href points to /quiz/[slug] instead of /careers/[slug] */}
               <Link
-                href={`/quiz/${track.slug}`}
+                href={`/careers/${track.slug}`}
                 className="flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-white"
                 style={{ color: "var(--accent)" }}
               >
@@ -286,73 +280,6 @@ export default function CareersPage() {
         </div>
       )}
 
-      {/* All careers Search */}
-      <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-        <div>
-          <p className="section-label">Browse</p>
-          <h2 className="mt-2 text-2xl font-bold">Career Dictionary</h2>
-        </div>
-        <div className="relative w-full max-w-sm">
-          <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--text-muted)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <input
-            className="input-dark !pl-10"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search careers..."
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {filtered.map((c) => (
-          <div key={c.id} className="card-dark glow-ring group">
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <h2 className="text-lg font-semibold group-hover:text-gradient">
-                {c.title}
-              </h2>
-              <span className="badge flex-shrink-0">{c.industry}</span>
-            </div>
-            <p
-              className="text-sm leading-relaxed mb-4"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              {c.description}
-            </p>
-            <Link
-              href={`/careers/${c.slug}`}
-              className="text-sm font-medium transition-colors hover:text-white"
-              style={{ color: "var(--accent)" }}
-            >
-              View track →
-            </Link>
-          </div>
-        ))}
-      </div>
-
-      {q && filtered.length === 0 && (
-        <div className="mt-16 text-center">
-          <p
-            className="text-lg font-medium"
-            style={{ color: "var(--text-muted)" }}
-          >
-            No careers found
-          </p>
-          <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-            Try a different search term
-          </p>
-        </div>
-      )}
     </div>
   );
 }
