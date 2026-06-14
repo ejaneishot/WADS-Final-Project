@@ -1,3 +1,4 @@
+// src/components/roadmap/AIGeneratorModal.tsx
 /**
  * AI roadmap generator modal — POST /api/roadmaps/[id]/generate (Gemini).
  * Optional includeProfile sends student context for personalized node trees.
@@ -40,8 +41,7 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
           error?: string;
         } | null;
         alert(
-          body?.error ??
-            "AI generation failed. Please try a different topic.",
+          body?.error ?? "AI generation failed. Please try a different topic.",
         );
       }
     } catch (err) {
@@ -74,8 +74,9 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
               className="text-sm mb-4"
               style={{ color: "var(--text-secondary)" }}
             >
-              Describe a tech skill or career topic you want to learn (for example,
-              Master Unity or Learn Kubernetes). Off-topic prompts are rejected.
+              Describe a tech skill or career topic you want to learn (for
+              example, Master Unity or Learn Kubernetes). Off-topic prompts are
+              rejected.
             </p>
 
             <form onSubmit={handleGenerate} className="flex flex-col gap-4">
@@ -107,9 +108,9 @@ export default function AIGeneratorModal({ roadmapId }: AIGeneratorModalProps) {
                     Include my profile
                   </span>
                   {" — "}
-                  Send major, semester, GPA range, interests, skills (with levels),
-                  and your latest assessment career matches to Gemini so the roadmap
-                  fits your context.
+                  Send major, semester, GPA range, interests, skills (with
+                  levels), and your latest assessment career matches to Gemini
+                  so the roadmap fits your context.
                 </span>
               </label>
 

@@ -1,3 +1,4 @@
+// src/components/assessment/AssessmentExperiencePage.tsx
 /**
  * Student career assessment wizard: intro → quiz → results.
  * Fetches questions from /api/assessment/questions; submit aggregates answers to /api/assessment/submit.
@@ -71,7 +72,10 @@ const LEGACY_TRACK_META: Record<string, TrackDisplay> = {
   },
 };
 
-function resolveTrackDisplay(code: string, careers: CareerSummary[]): TrackDisplay {
+function resolveTrackDisplay(
+  code: string,
+  careers: CareerSummary[],
+): TrackDisplay {
   const c = careers.find((x) => x.tag === code || x.slug === code);
   if (c) {
     return {

@@ -1,3 +1,4 @@
+// src/components/careers/CareerMilestones.tsx
 /**
  * Interactive milestone checklist for a career detail page.
  * Guests see read-only list + sign-in prompt; logged-in users can only check off
@@ -81,7 +82,9 @@ export function CareerMilestones({
           className="flex justify-between text-xs mb-1.5"
           style={{ color: "var(--text-muted)" }}
         >
-          <span>{done} of {total} milestones completed</span>
+          <span>
+            {done} of {total} milestones completed
+          </span>
           <span className="font-semibold" style={{ color: "var(--accent)" }}>
             {pct}%
           </span>
@@ -138,7 +141,13 @@ export function CareerMilestones({
                 opacity: locked ? 0.55 : 1,
                 cursor: "default",
               }}
-              title={isProLocked ? "Upgrade to Pro to unlock" : locked ? "Complete this question in the quiz to unlock" : undefined}
+              title={
+                isProLocked
+                  ? "Upgrade to Pro to unlock"
+                  : locked
+                    ? "Complete this question in the quiz to unlock"
+                    : undefined
+              }
             >
               <span
                 className="flex-shrink-0 h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold"
@@ -172,7 +181,10 @@ export function CareerMilestones({
                   Pro
                 </a>
               ) : locked ? (
-                <span className="text-xs flex-shrink-0" style={{ color: "var(--text-muted)" }}>
+                <span
+                  className="text-xs flex-shrink-0"
+                  style={{ color: "var(--text-muted)" }}
+                >
                   🔒
                 </span>
               ) : null}
@@ -182,7 +194,10 @@ export function CareerMilestones({
       </div>
 
       {done > 0 && done < total && (
-        <p className="mt-4 text-xs text-center" style={{ color: "var(--text-muted)" }}>
+        <p
+          className="mt-4 text-xs text-center"
+          style={{ color: "var(--text-muted)" }}
+        >
           <Link
             href={`/quiz/${slug}`}
             className="hover:underline"

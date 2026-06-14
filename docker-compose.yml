@@ -9,25 +9,27 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smartcareer"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   app:
     build: .
+    env_file:
+      - .env
     environment:
+      # Overrides for container runtime (see .env for all other secrets/config)
       NODE_ENV: production
-      APP_URL: http://localhost:3000
-      JWT_SECRET: replace_me_with_long_random_secret
-      COOKIE_NAME: smartcareer_token
-      COOKIE_SECURE: "false"
       DATABASE_URL: postgresql://postgres:postgres@db:5432/smartcareer?schema=public
-      AI_PROVIDER: stub
-      AI_API_KEY: ""
-      AI_MODEL: ""
-      JOB_BOARD_PROVIDER: remotive
-      JOB_BOARD_API_URL: https://remotive.com/api/remote-jobs
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "3000:3000"
+    restart: unless-stopped
 
 volumes:
   pgdata:

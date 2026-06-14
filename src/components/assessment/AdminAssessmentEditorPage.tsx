@@ -1,3 +1,4 @@
+// src/components/assessment/AdminAssessmentEditorPage.tsx
 /**
  * Admin assessment content editor (admin route only).
  * Loads sections/questions/options from /api/admin/assessment; local state for scoring weights
@@ -7,16 +8,19 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+/** Score mapping signature representing individual classification properties inside option scoring blocks */
 type ScoreItem = { tag: string; weight: number };
 
+/** Interface mapping an option element nested inside an evaluation parameter question block */
 type Option = {
   id: string;
   label: string;
   value: string | null;
   order: number;
-  scoring: unknown;
+  scoring: unknown; // Parsed database schema payload layout (Array of ScoreItem objects)
 };
 
+/** Structural parameters modeling explicit assessment prompts */
 type Question = {
   id: string;
   prompt: string;
@@ -27,6 +31,7 @@ type Question = {
   options: Option[];
 };
 
+/** Explicit database configuration structure wrapping structural catalog categories */
 type Section = {
   id: string;
   title: string;
@@ -35,14 +40,21 @@ type Section = {
   questions: Question[];
 };
 
+/** Unified state engine configuration tracking full data collection requirements */
 type EditorState = {
   sections: Section[];
-  scoringTags: string[];
+  scoringTags: string[]; // Active classification metrics pulled straight from the global career model list
   loading: boolean;
   error: string | null;
 };
 
-/* Helpers: map option.scoring JSON ↔ per-tag weight grid in the UI */
+/* ── SCORING TRANSFORMATION TRANSFORMERS & TRANSLATION HELPERS ── */
+
+/**
+ * Extracts distinct text tags out of raw optional configuration payloads.
+ * @param {unknown} scoring - Incoming raw scoring payload array.
+ * @returns {string[]} String array consisting of parsed validation elements.
+ */
 function tagsFromScoring(scoring: unknown): string[] {
   if (!Array.isArray(scoring)) return [];
   const tags: string[] = [];
@@ -53,6 +65,10 @@ function tagsFromScoring(scoring: unknown): string[] {
   return tags;
 }
 
+/**
+ * Merges explicitly declared career elements with dynamic values found in standard choice properties.
+ * Eliminates replication using native set mappings to catch "orphan tags" safely.
+ */
 function mergedScoringKeys(knownTags: string[], scoring: unknown): string[] {
   const set = new Set(knownTags);
   for (const t of tagsFromScoring(scoring)) set.add(t);
@@ -61,6 +77,10 @@ function mergedScoringKeys(knownTags: string[], scoring: unknown): string[] {
   );
 }
 
+/**
+ * Flattens an abstraction payload down into flat lookup key mappings for instantaneous input field synchronization.
+ * @returns {Record<string, number>} Object blueprint mapping category strings directly to numerical values.
+ */
 function toScoreMap(
   scoring: unknown,
   knownTags: string[],
@@ -81,6 +101,10 @@ function toScoreMap(
   return map;
 }
 
+/**
+ * Condenses structural front-end state records back into lightweight, production-ready storage shapes.
+ * Drops keys containing zero weight to minimize data payload serialization footprint overhead.
+ */
 function toScoringArray(scoreMap: Record<string, number>): ScoreItem[] {
   return Object.entries(scoreMap)
     .filter(([, w]) => w > 0)
@@ -88,17 +112,24 @@ function toScoringArray(scoreMap: Record<string, number>): ScoreItem[] {
 }
 
 export default function AdminAssessmentEditorPage() {
+  // ── ARCHITECTURAL STATE WRAPPERS ──
   const [state, setState] = useState<EditorState>({
     sections: [],
     scoringTags: [],
     loading: true,
     error: null,
   });
+
+  // Tracks active element target keys to enforce UI micro-loaders during intensive network transactions
   const [savingId, setSavingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(
     null,
   );
 
+  /**
+   * RE-MUTATION RECONCILER
+   * Pushes fresh calls downstream to restore state consistency without forcing full app refresh cycles.
+   */
   const reloadAssessment = useCallback(async () => {
     const res = await fetch("/api/admin/assessment");
     if (!res.ok) return;
@@ -111,6 +142,7 @@ export default function AdminAssessmentEditorPage() {
     }));
   }, []);
 
+  /** Initial layout hydration pass on structural frame component execution */
   useEffect(() => {
     fetch("/api/admin/assessment")
       .then(async (res) => {
@@ -135,6 +167,7 @@ export default function AdminAssessmentEditorPage() {
       );
   }, []);
 
+  /** Derived state calculating the global problem scale across all parent data blocks */
   const totalQuestions = useMemo(
     () =>
       state.sections.reduce(
@@ -144,6 +177,11 @@ export default function AdminAssessmentEditorPage() {
     [state.sections],
   );
 
+  // ── FRONT-END MUTATOR INTERCEPTORS (IMMUTABLE STATE TREE PIPELINES) ──
+
+  /**
+   * Implements functional immutable tree updates targeting a specific question node block.
+   */
   const updateQuestionField = (
     questionId: string,
     updater: (question: Question) => Question,
@@ -159,6 +197,9 @@ export default function AdminAssessmentEditorPage() {
     }));
   };
 
+  /**
+   * Drills deep down standard matrix collections to transform explicit option nodes immutably.
+   */
   const updateOptionField = (
     optionId: string,
     updater: (option: Option) => Option,
@@ -177,6 +218,9 @@ export default function AdminAssessmentEditorPage() {
     }));
   };
 
+  // ── BACKEND PERSISTENCE DISPATCH ENGINE (REST HANDSHAKES) ──
+
+  /** Dispatches standalone textual metric changes over to targeted validation paths via PATCH requests */
   const saveQuestion = async (question: Question) => {
     setMessage(null);
     setSavingId(question.id);
@@ -201,6 +245,7 @@ export default function AdminAssessmentEditorPage() {
     });
   };
 
+  /** Packages current local tag modifications and saves configuration elements down database matrices */
   const saveOption = async (option: Option) => {
     setMessage(null);
     setSavingId(option.id);
@@ -212,7 +257,7 @@ export default function AdminAssessmentEditorPage() {
       body: JSON.stringify({
         label: option.label,
         value: option.value,
-        scoring: toScoringArray(scoreMap),
+        scoring: toScoringArray(scoreMap), // Packs local state objects cleanly back into an operational serialization shape
       }),
     });
 
@@ -226,6 +271,7 @@ export default function AdminAssessmentEditorPage() {
     });
   };
 
+  /** Seeds placeholder item rows into target sections via infrastructure POST handles */
   const addQuestionToSection = async (sectionId: string) => {
     setMessage(null);
     setSavingId(`new-q-${sectionId}`);
@@ -251,6 +297,7 @@ export default function AdminAssessmentEditorPage() {
     await reloadAssessment();
   };
 
+  /** Purges targeted metric entities entirely out of relational schemas, enforcing cascading alert fallbacks */
   const deleteQuestion = async (question: Question) => {
     if (
       !window.confirm(
@@ -277,6 +324,7 @@ export default function AdminAssessmentEditorPage() {
     await reloadAssessment();
   };
 
+  /** Links fresh optional response parameters to parent diagnostic components */
   const addOptionToQuestion = async (questionId: string) => {
     setMessage(null);
     setSavingId(`new-o-${questionId}`);
@@ -305,6 +353,7 @@ export default function AdminAssessmentEditorPage() {
     await reloadAssessment();
   };
 
+  /** Clears selection choices off active database layers completely */
   const deleteOption = async (option: Option) => {
     if (
       !window.confirm(
@@ -354,6 +403,7 @@ export default function AdminAssessmentEditorPage() {
       <div className="absolute top-0 right-1/3 w-[350px] h-[350px] rounded-full bg-cyan-500/5 blur-[110px] pointer-events-none" />
 
       <div className="mx-auto max-w-5xl">
+        {/* HEADER INFORMATION RAMP */}
         <div className="mb-6 flex items-end justify-between gap-3">
           <div>
             <p className="section-label">Admin Dashboard</p>
@@ -372,6 +422,7 @@ export default function AdminAssessmentEditorPage() {
           </div>
         </div>
 
+        {/* ECOSYSTEM GLOBAL INSIGHT INDEX METRICS */}
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
           <div
             className="rounded-xl p-4"
@@ -421,6 +472,7 @@ export default function AdminAssessmentEditorPage() {
           </div>
         )}
 
+        {/* ── SECTIONS LOOP CONTAINER ── */}
         <div className="space-y-5">
           {state.sections.map((section) => (
             <div
@@ -442,6 +494,7 @@ export default function AdminAssessmentEditorPage() {
                 )}
               </div>
 
+              {/* ── NESTED QUESTIONS EDITOR BLOCKS ── */}
               <div className="space-y-4">
                 {section.questions.map((question) => (
                   <div
@@ -534,6 +587,7 @@ export default function AdminAssessmentEditorPage() {
                       Required
                     </label>
 
+                    {/* ── NESTED OPTION RESPONSES / WEIGHT MATRIX SCORING GRID ── */}
                     <div className="space-y-3">
                       {question.options.map((option) => {
                         const scoreMap = toScoreMap(
@@ -603,6 +657,7 @@ export default function AdminAssessmentEditorPage() {
                               />
                             </div>
 
+                            {/* ── LOCAL SUB-CONTROLLER: DYNAMIC MULTI-VARIABLE INPUT INPUT MATRIX ── */}
                             {(() => {
                               const mergedKeys = mergedScoringKeys(
                                 state.scoringTags,
@@ -611,6 +666,7 @@ export default function AdminAssessmentEditorPage() {
 
                               const renderWeightInputs = (tags: string[]) =>
                                 tags.map((tag) => {
+                                  // Flags tags configured inside choices that don't match active database careers
                                   const orphan =
                                     !state.scoringTags.includes(tag);
                                   return (
@@ -643,6 +699,7 @@ export default function AdminAssessmentEditorPage() {
                                               ? 0
                                               : nextValue,
                                           };
+                                          // Flattens the working grid state adjustments back up into mutable arrays
                                           updateOptionField(option.id, (o) => ({
                                             ...o,
                                             scoring: toScoringArray(nextMap),

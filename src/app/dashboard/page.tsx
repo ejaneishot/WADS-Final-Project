@@ -32,7 +32,6 @@ export default function DashboardPage() {
   const [careerTitles, setCareerTitles] = useState<
     { slug: string; title: string; tag: string }[]
   >([]);
-  const [matchLoading, setMatchLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);

@@ -1,3 +1,4 @@
+// src/components/roadmap/CreateNodeButton.tsx
 /**
  * Two-step branch creator: select parent node(s) on canvas, then submit title/description.
  * POST /api/roadmaps/[id]/nodes with parentIds for multi-parent edges.
@@ -8,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface CreateNodeButtonProps {
+  // Configures the strict TypeScript typing contract for props passed down from a parent visual interactive roadmap canvas. It handles lifting state up so that clicking standard nodes on the background canvas can stream selected ID keys straight back into this control instance.
   roadmapId: string;
   isSelecting: boolean;
   setIsSelecting: (val: boolean) => void;
@@ -16,23 +18,25 @@ interface CreateNodeButtonProps {
 }
 
 export default function CreateNodeButton({
+  // Declares and default-exports the functional button view, mapping hoisted canvas state hook actions out of its destruction layout structure.
   roadmapId,
   isSelecting,
   setIsSelecting,
   selectedParentIds,
   setSelectedParentIds,
 }: CreateNodeButtonProps) {
-  const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false); // Standard network transaction lock flag. Blocks duplicate form execution requests while an ongoing node injection is running.
+  const [title, setTitle] = useState(""); // Local string value state containers to store string literals from the node details form input elements.
   const [description, setDescription] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const router = useRouter();
+  const [showForm, setShowForm] = useState(false); // Step state index mapping variable. Tracks whether the current interface step is gathering parental node references on the background canvas (false) or gathering text identifiers (true).
+  const router = useRouter(); // Configures Next.js Client Component navigation control instances to enable server-side frame data refreshes later.
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title) return;
+    // (3 lines above this) Handles form form data execution, instantly calling preventDefault to break standard browser layout transitions while checking for basic string presence validation constraints.
 
-    setLoading(true);
+    setLoading(true); // Engages the local asset load locking state variable and safely drops execution parameters inside a structured exception try-catch block wrapper.
     try {
       const res = await fetch(`/api/roadmaps/${roadmapId}/nodes`, {
         method: "POST",
@@ -107,7 +111,9 @@ export default function CreateNodeButton({
             </>
           ) : (
             <form onSubmit={handleCreate} className="flex flex-col gap-3">
-              <p className="text-sm font-bold text-emerald-300">Step 2: Node Details</p>
+              <p className="text-sm font-bold text-emerald-300">
+                Step 2: Node Details
+              </p>
               <input
                 autoFocus
                 type="text"

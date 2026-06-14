@@ -1,3 +1,4 @@
+// src/components/careers/CareerJobListings.tsx
 /**
  * Related job openings for a career slug (authenticated users only on parent page).
  * Fetches /api/careers/[slug]/jobs with cancel-on-unmount guard.
