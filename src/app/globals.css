@@ -293,6 +293,20 @@ select.input-dark {
   background-clip: text;
 }
 
+/* ── Code block (learning guides) ── */
+.code-block {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
 /* ── Section label ── */
 .section-label {
   font-family: 'Space Mono', monospace;

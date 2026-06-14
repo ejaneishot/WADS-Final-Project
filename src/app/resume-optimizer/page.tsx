@@ -107,9 +107,8 @@ export default function ResumeOptimizer() {
 
     return (
       <div className="space-y-6 animate-in fade-in duration-700">
-        <h3 className="text-lg font-bold">Visual Feedback</h3>
         <div
-          className="max-w-none p-6 rounded-xl text-sm leading-relaxed"
+          className="max-w-none p-6 rounded-xl text-sm leading-relaxed break-words"
           style={{
             background: "var(--surface-raised)",
             border: "1px solid var(--border)",
@@ -117,51 +116,58 @@ export default function ResumeOptimizer() {
           }}
           dangerouslySetInnerHTML={{ __html: html }}
         />
+      </div>
+    );
+  };
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            className="p-4 rounded-lg"
-            style={{
-              background: "rgba(52,211,153,0.08)",
-              border: "1px solid var(--border-accent)",
-            }}
-          >
-            <h4 className="font-bold text-emerald-200 mb-2">
-              Skills to Add (ATS)
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {(Array.isArray(analysis.suggestedSkills)
-                ? analysis.suggestedSkills
-                : []
-              ).map((s, i) => (
-                <span
-                  key={i}
-                  className="px-2 py-1 rounded text-xs border"
-                  style={{
-                    background: "var(--surface-raised)",
-                    borderColor: "var(--border-accent)",
-                    color: "var(--accent)",
-                  }}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
+  /** Full-width skills/improvements panels shown below the editor + results grid */
+  const renderSummary = () => {
+    if (!analysis) return null;
+
+    return (
+      <div className="flex flex-col gap-4 animate-in fade-in duration-700">
+        <div
+          className="p-4 rounded-lg"
+          style={{
+            background: "rgba(52,211,153,0.08)",
+            border: "1px solid var(--border-accent)",
+          }}
+        >
+          <h4 className="font-bold text-emerald-200 mb-2">
+            Skills to Add (ATS)
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {(Array.isArray(analysis.suggestedSkills)
+              ? analysis.suggestedSkills
+              : []
+            ).map((s, i) => (
+              <span
+                key={i}
+                className="px-2 py-1 rounded text-xs border"
+                style={{
+                  background: "var(--surface-raised)",
+                  borderColor: "var(--border-accent)",
+                  color: "var(--accent)",
+                }}
+              >
+                {s}
+              </span>
+            ))}
           </div>
-          <div
-            className="p-4 rounded-lg"
-            style={{
-              background: "rgba(245,158,11,0.08)",
-              border: "1px solid rgba(245,158,11,0.25)",
-            }}
-          >
-            <h4 className="font-bold text-amber-200 mb-2">
-              Critical Improvements
-            </h4>
-            <p className="text-sm leading-relaxed text-amber-100">
-              {analysis.criticalImprovements}
-            </p>
-          </div>
+        </div>
+        <div
+          className="p-4 rounded-lg"
+          style={{
+            background: "rgba(245,158,11,0.08)",
+            border: "1px solid rgba(245,158,11,0.25)",
+          }}
+        >
+          <h4 className="font-bold text-amber-200 mb-2">
+            Critical Improvements
+          </h4>
+          <p className="text-sm leading-relaxed text-amber-100">
+            {analysis.criticalImprovements}
+          </p>
         </div>
       </div>
     );
@@ -243,6 +249,8 @@ export default function ResumeOptimizer() {
           )}
         </div>
       </div>
+
+      {analysis && renderSummary()}
     </div>
   );
 }

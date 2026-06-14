@@ -12,6 +12,7 @@ import { prisma } from "@/lib/db";
 import { getAuth } from "@/lib/auth";
 import { CareerMilestones } from "@/components/careers/CareerMilestones";
 import { CareerJobListings } from "@/components/careers/CareerJobListings";
+import { getRoadmap } from "@/lib/roadmaps";
 
 const DEFAULT_ICON = "💼";
 const DEFAULT_COLOR = "from-slate-500 to-slate-700";
@@ -75,6 +76,8 @@ export default async function CareerDetailPage({
   const color = career.color ?? DEFAULT_COLOR;
   const gradient = career.gradient ?? DEFAULT_GRADIENT;
   const border = career.border ?? DEFAULT_BORDER;
+
+  const roadmap = getRoadmap(slug);
 
   const moreTracks = await prisma.career.findMany({
     where: { id: { not: career.id } },
@@ -169,6 +172,43 @@ export default async function CareerDetailPage({
           />
         </div>
       </section>
+
+      {roadmap.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold mb-1">Learning roadmap</h2>
+          <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
+            Work through these guides in order to build the skills this track needs, from the ground up.
+          </p>
+          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {roadmap.map((topic, i) => (
+              <li key={topic.slug}>
+                <Link
+                  href={`/careers/${slug}/learn/${topic.slug}`}
+                  className="card-dark glow-ring flex h-full flex-col gap-2 p-4 transition-opacity hover:opacity-95"
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                      style={{
+                        background: "var(--accent-glow)",
+                        color: "var(--accent)",
+                        border: "1px solid var(--border-accent)",
+                      }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="text-xl">{topic.icon}</span>
+                  </div>
+                  <span className="font-semibold">{topic.title}</span>
+                  <span className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                    {topic.summary}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       {auth?.sub ? <CareerJobListings slug={slug} /> : null}
 
