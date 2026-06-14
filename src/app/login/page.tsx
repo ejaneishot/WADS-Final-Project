@@ -47,27 +47,50 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative z-10 flex min-h-[calc(100vh-4rem)] items-center justify-center px-5 py-16">
-      {/* Ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/8 blur-[120px] pointer-events-none" />
-
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-blue-500 text-sm font-bold text-[#0A0A0F] mb-4">
-            SC
-          </div>
-          <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p
-            className="mt-1 text-sm"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            Sign in to access your dashboard
+    <div className="relative z-10 min-h-[calc(100vh-4rem)] grid lg:grid-cols-2">
+      {/* Left panel — branding */}
+      <div className="hidden lg:flex relative flex-col justify-between border-r p-12 bg-dots" style={{ borderColor: "var(--border)" }}>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0F] via-transparent to-[#0A0A0F] pointer-events-none" />
+        <Link href="/" className="relative font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
+          SmartCareer AI
+        </Link>
+        <div className="relative">
+          <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
+            // student access
+          </p>
+          <h1 className="text-4xl font-bold leading-tight mb-4">
+            Pick up where you left off.
+          </h1>
+          <p className="text-sm max-w-sm" style={{ color: "var(--text-secondary)" }}>
+            Your assessments, tutor matches, and career roadmap are saved to your account.
           </p>
         </div>
+        <p className="relative text-xs" style={{ color: "var(--text-muted)" }}>
+          New here?{" "}
+          <Link href="/register" className="font-medium text-gradient hover:underline">
+            Create an account
+          </Link>
+        </p>
+      </div>
 
-        {/* Card */}
-        <div className="card-dark">
+      {/* Right panel — form */}
+      <div className="flex items-center justify-center px-5 py-16">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 lg:hidden">
+            <Link href="/" className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
+              SmartCareer AI
+            </Link>
+          </div>
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold">Sign in</h1>
+            <p
+              className="mt-1 text-sm"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Enter your credentials to continue
+            </p>
+          </div>
+
           <form
             className="space-y-4"
             onSubmit={async (e) => {
@@ -173,9 +196,9 @@ export default function LoginPage() {
             Continue with Google
           </button>
 
-          {/* Register link */}
+          {/* Register link (desktop has it in left panel) */}
           <p
-            className="mt-5 text-center text-sm"
+            className="mt-5 text-center text-sm lg:hidden"
             style={{ color: "var(--text-secondary)" }}
           >
             No account?{" "}
