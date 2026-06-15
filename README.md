@@ -1,5 +1,3 @@
-# Career Compass — AI-Powered Career Counseling & Guidance Web Application
-
 Final Project – Web Application Development and Security
 
 Course Code: COMP6703001
@@ -42,9 +40,9 @@ GitHub: `Juwono136`
 
 | Resource | URL |
 |----------|-----|
-| Live Application | `https://[your-cloudflare-domain].com` |
-| API Documentation (Swagger UI) | `https://[your-cloudflare-domain].com/docs` |
-| Repository | `https://github.com/[your-org]/[your-repo]` |
+| Live Application | `https://smartcareer.academy/` |
+| API Documentation (Swagger UI) | `will be uploaded` |
+
 
 ---
 
@@ -515,7 +513,7 @@ npm test
 
 ### 11.1 Docker Architecture
 
-The `Dockerfile` uses a **three-stage multi-stage build** to minimize the production image size:
+The `Dockerfile` uses a three-stage multi-stage build to minimize the production image size:
 
 | Stage | Base | Purpose |
 |-------|------|---------|
@@ -632,8 +630,8 @@ We declare that:
 
 **1. Clone the repository:**
 ```bash
-git clone https://github.com/[your-org]/[your-repo].git
-cd [your-repo]
+git clone https://github.com/ejaneishot/WADS-Final-Project.git
+cd WADS-Final-Project
 ```
 
 **2. Install dependencies:**
