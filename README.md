@@ -551,7 +551,7 @@ On every container start, `docker-entrypoint.sh` runs:
 
 ### Anastasia Larasati (`sashalrsti`)
 
-> 2 commits made under the local machine identity `anastasialarasati@Anastasias-MacBook-Pro.local` (commits `345b9c1`, `a886185`) are not linked to the `sashalrsti` GitHub profile but represent Anastasia's work.
+> There were 2 commits made (~60,000 lines) under the identity `anastasialarasati@Anastasias-MacBook-Pro.local` (commits `345b9c1`, `a886185`) and were not linked to the `sashalrsti` GitHub profile due to an unspecified error but represent Anastasia Larasati's work.
 
 - **Features:** Quiz system — `/quiz`, `/quiz/[slug]` per-track quiz pages, `src/lib/quiz-data.ts` (1,772-line quiz content file covering all 6 career tracks); career track milestone component (`src/components/careers/CareerMilestones.tsx`) synced with quiz track data; subscription pricing page (`/pricing`); subscription plan management UI (free ↔ pro switching)
 - **API endpoints:** `GET /api/subscription`, `POST /api/subscription/upgrade`, `POST /api/subscription/downgrade`
