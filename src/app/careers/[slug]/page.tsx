@@ -122,18 +122,7 @@ export default async function CareerDetailPage({
               </p>
             </div>
           </div>
-          {/* ADDED: quiz link alongside the back link */}
           <div className="flex items-center gap-4 md:mt-2 flex-shrink-0">
-            <Link
-              href={`/quiz/${slug}`}
-              className="text-sm font-semibold px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: "linear-gradient(135deg, var(--gradient-start), var(--gradient-end))",
-                color: "var(--surface)",
-              }}
-            >
-              🧩 Practice challenges
-            </Link>
             <Link
               href="/careers"
               className="text-sm font-medium transition-colors hover:text-white"
