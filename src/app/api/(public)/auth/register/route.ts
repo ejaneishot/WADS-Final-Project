@@ -15,7 +15,7 @@ import { hashPassword, setAuthCookie, signToken } from "@/lib/auth";
  * /api/auth/register:
  *   post:
  *     summary: Register a new user
- *     description: Creates a new account using email and password, generates a default profile, issues a JWT token, and stores it in a secure authentication cookie.
+ *     description: Creates a new account using email and password, generates a default profile, issues a JWT token, and stores it in a secure authentication cookie. New accounts are always created with the "student" role — admin accounts cannot be self-registered.
  *     tags:
  *       - Auth
  *     requestBody:
@@ -27,7 +27,6 @@ import { hashPassword, setAuthCookie, signToken } from "@/lib/auth";
  *             required:
  *               - email
  *               - password
- *               - role
  *             properties:
  *               email:
  *                 type: string
@@ -37,10 +36,6 @@ import { hashPassword, setAuthCookie, signToken } from "@/lib/auth";
  *                 type: string
  *                 format: password
  *                 example: MySecurePassword123
- *               role:
- *                 type: string
- *                 example: student
- *                 description: Role assigned to the new user (must match your Prisma enum).
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -101,7 +96,7 @@ export async function POST(req: Request) {
       { status: 400 },
     );
 
-  const { email, password, role } = parsed.data;
+  const { email, password } = parsed.data;
 
   // Business logic: reject duplicate email before write
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -113,9 +108,10 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(password);
 
-  // Business logic: user + default profile, then issue session cookie
+  // Business logic: user + default profile, then issue session cookie.
+  // Public registration is always "student" — admin accounts cannot be self-served.
   const user = await prisma.user.create({
-    data: { email, passwordHash, role },
+    data: { email, passwordHash, role: "student" },
   });
 
   // Create empty profile by default

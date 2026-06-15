@@ -81,7 +81,7 @@ export default function LoginPage() {
               SmartCareer Academy
             </Link>
           </div>
-          <div className="mb-8">
+          <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold">Sign in</h1>
             <p
               className="mt-1 text-sm"
@@ -153,7 +153,7 @@ export default function LoginPage() {
 
             <button
               disabled={loading}
-              className="btn-accent w-full !rounded-xl !py-2.5"
+              className="btn-accent w-full !rounded-xl !py-2.5 justify-center"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
