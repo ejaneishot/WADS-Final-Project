@@ -3,10 +3,8 @@ services:
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: "this_password_is_very_long_you_know_cause_no_guessing"
       POSTGRES_DB: smartcareer
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +21,7 @@ services:
     environment:
       # Overrides for container runtime (see .env for all other secrets/config)
       NODE_ENV: production
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/smartcareer?schema=public
+      DATABASE_URL: postgresql://postgres:this_password_is_very_long_you_know_cause_no_guessing@db:5432/smartcareer?schema=public
       RUN_DB_SEED: "true"
     depends_on:
       db:
