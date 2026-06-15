@@ -4,8 +4,10 @@
  *
  * Idempotent career upserts; quiz content is wiped and recreated each run
  * so prompt/scoring changes in this file always reach the database.
+ * Also upserts a local admin account (admin@admin.com).
  */
 import "dotenv/config";
+import bcrypt from "bcryptjs";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, Prisma } from "../src/generated/prisma";
@@ -729,9 +731,22 @@ async function seedQuizTechCareerMatcher() {
   }
 }
 
+/** Local admin account (bcrypt cost 10, same as hashPassword in auth.ts). */
+async function seedAdminUser() {
+  const email = "admin@admin.com";
+  const passwordHash = await bcrypt.hash("1324513245", 10);
+
+  await prisma.user.upsert({
+    where: { email },
+    create: { email, passwordHash, role: "admin" },
+    update: { passwordHash, role: "admin" },
+  });
+}
+
 async function main() {
   await seedCareers();
   await seedQuizTechCareerMatcher();
+  await seedAdminUser();
 }
 
 main()
