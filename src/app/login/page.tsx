@@ -47,9 +47,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative z-10 min-h-[calc(100vh-4rem)] grid lg:grid-cols-2">
+    <div className="container-page relative z-10 min-h-[calc(100vh-4rem)] grid lg:grid-cols-2">
       {/* Left panel — branding */}
-      <div className="hidden lg:flex relative flex-col justify-between border-r p-12 bg-dots" style={{ borderColor: "var(--border)" }}>
+      <div className="hidden lg:flex relative flex-col justify-between border-r py-12 pr-12 bg-dots" style={{ borderColor: "var(--border)" }}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0F] via-transparent to-[#0A0A0F] pointer-events-none" />
         <Link href="/" className="relative font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
           SmartCareer Academy
