@@ -8,6 +8,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { resolveQuizScoreLabel } from "@/lib/assessmentScoring";
+import ActivityHeatmap from "@/components/dashboard/ActivityHeatmap";
 
 type Profile = {
   name: string | null;
@@ -171,9 +172,10 @@ export default function DashboardPage() {
 
       {err && <div className="error-box mb-6">{err}</div>}
 
-      <div className="max-w-2xl">
-        {/* Profile card */}
-        <div className="card-dark glow-ring">
+      <div className="grid gap-6 lg:grid-cols-2 items-stretch">
+        <div>
+          {/* Profile card */}
+          <div className="card-dark glow-ring h-full">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Your Profile</h2>
             <button
@@ -507,6 +509,11 @@ export default function DashboardPage() {
               </button>
             </div>
           )}
+        </div>
+        </div>
+
+        <div className="h-full">
+          <ActivityHeatmap />
         </div>
       </div>
     </div>

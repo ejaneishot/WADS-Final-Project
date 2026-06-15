@@ -16,7 +16,7 @@ export function getApiDocs() {
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "SmartCareer.AI API",
+        title: "SmartCareer.Academy API",
         version: "1.0.0",
         description:
           "REST API for the WADS final project (Next.js, Prisma, PostgreSQL). Authenticated routes use the `smartcareer_token` HTTP-only cookie set by login endpoints.",

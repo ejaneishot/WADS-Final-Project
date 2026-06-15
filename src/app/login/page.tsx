@@ -52,7 +52,7 @@ export default function LoginPage() {
       <div className="hidden lg:flex relative flex-col justify-between border-r p-12 bg-dots" style={{ borderColor: "var(--border)" }}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0F] via-transparent to-[#0A0A0F] pointer-events-none" />
         <Link href="/" className="relative font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-          SmartCareer AI
+          SmartCareer Academy
         </Link>
         <div className="relative">
           <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
@@ -78,7 +78,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           <div className="mb-8 lg:hidden">
             <Link href="/" className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-              SmartCareer AI
+              SmartCareer Academy
             </Link>
           </div>
           <div className="mb-8">

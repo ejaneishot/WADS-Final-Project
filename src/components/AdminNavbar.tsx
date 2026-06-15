@@ -68,7 +68,7 @@ export function AdminNavbar({ email }: Props) {
       <div className="container-page flex h-16 flex-wrap items-center justify-between gap-y-2">
         <Link href="/" className="flex items-center group">
           <span className="text-2xl font-bold tracking-tight">
-            SmartCareer<span className="text-gradient">.AI</span>
+            SmartCareer<span className="text-gradient">.Academy</span>
           </span>
         </Link>
 

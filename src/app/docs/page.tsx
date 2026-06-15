@@ -9,8 +9,8 @@ import { getApiDocs } from "@/lib/swagger";
 import Swagger from "@/components/swagger-ui";
 
 export const metadata = {
-  title: "API Docs | SmartCareer.AI",
-  description: "Interactive OpenAPI documentation for SmartCareer.AI",
+  title: "API Docs | SmartCareer.Academy",
+  description: "Interactive OpenAPI documentation for SmartCareer.Academy",
 };
 
 const el = createElement;

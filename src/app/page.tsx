@@ -38,45 +38,45 @@ const steps = [
 /** Mock marketplace data providing immediate context for mentorship booking */
 const tutors = [
   {
-    name: "Dr. Sarah Chen",
+    name: "Lewis Hamilton",
     role: "AI & Machine Learning",
-    initials: "SC",
+    initials: "LH",
     color: "from-emerald-400 to-teal-500",
     rating: 4.9,
     sessions: 128,
     tag: "Top Rated",
   },
   {
-    name: "Marcus Rivera",
-    role: "Backend Engineering",
-    initials: "MR",
+    name: "Charles Leclerc",
+    role: "Cloud & DevOps",
+    initials: "CL",
     color: "from-sky-400 to-blue-600",
     rating: 4.8,
     sessions: 95,
     tag: "Popular",
   },
   {
-    name: "Priya Nair",
+    name: "Kimi Antonelli",
     role: "Cybersecurity",
-    initials: "PN",
+    initials: "KA",
     color: "from-red-400 to-orange-500",
     rating: 5.0,
     sessions: 74,
     tag: "Expert",
   },
   {
-    name: "James Park",
+    name: "Lando Norris",
     role: "Software Engineering",
-    initials: "JP",
+    initials: "LN",
     color: "from-blue-400 to-cyan-500",
     rating: 4.7,
     sessions: 212,
     tag: "High Skill",
   },
   {
-    name: "Aisha Okonkwo",
-    role: "Quality Assurance",
-    initials: "AO",
+    name: "Sebastian Vettel",
+    role: "UX & Product",
+    initials: "SV",
     color: "from-yellow-400 to-orange-500",
     rating: 4.9,
     sessions: 156,
@@ -296,7 +296,7 @@ export default function HomePage() {
                   className="inline-block h-2 w-2 rounded-full bg-emerald-400"
                   style={{ animation: "pulse-glow 2s infinite" }}
                 />
-                SmartCareer AI · Talent Discovery Platform
+                SmartCareer Academy · Talent Discovery Platform
               </div>
 
               {/* Headline */}
@@ -770,12 +770,15 @@ export default function HomePage() {
                   <span>{tutor.sessions} sessions</span>
                 </div>
                 <div className="flex justify-center w-full mt-1">
-                  <button
+                  <a
+                    href="https://forms.gle/vDcuWzc6h8AfSWcV8"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn-accent"
                     style={{ padding: "0.4rem 1.25rem", fontSize: "0.75rem" }}
                   >
                     Book Session
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
@@ -893,19 +896,27 @@ export default function HomePage() {
       >
         <div className="container-page flex flex-wrap items-center justify-between gap-4">
           <span className="mono text-xs" style={{ color: "var(--text-muted)" }}>
-            © SmartCareer.AI 2025
+            © SmartCareer.Academy 2026
           </span>
           <div className="flex gap-5">
-            {["Dashboard", "Careers", "Docs"].map((l) => (
-              <Link
-                key={l}
-                href={`/${l.toLowerCase()}`}
-                className="text-xs transition-colors hover:text-white"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {l}
-              </Link>
-            ))}
+            <a
+              href="https://www.linkedin.com/in/ejanestjd/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs transition-colors hover:text-white"
+              style={{ color: "var(--text-muted)" }}
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=ejanesut1901@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs transition-colors hover:text-white"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Email
+            </a>
           </div>
         </div>
       </footer>

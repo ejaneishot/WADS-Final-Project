@@ -10,7 +10,7 @@ import { Navbar } from "@/components/navbar";
 import { AdminNavbar } from "@/components/AdminNavbar";
 
 export const metadata: Metadata = {
-  title: "SmartCareer AI",
+  title: "SmartCareer Academy",
   description: "AI-powered career counseling & guidance for CS students."
 };
 
