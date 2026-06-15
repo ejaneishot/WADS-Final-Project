@@ -21,8 +21,8 @@ L4CC
 
 | Name | Student ID | Role | GitHub |
 |------|-----------|------|--------|
-| Anastasia Larasati | 2802547692 | Full-Stack Developer | sashalrsti |
-| Evelyn Jane Sutjiadi | 2802501054 | Frontend Developer | ejaneishot |
+| Anastasia Larasati | 2802547692 | Content Developer | sashalrsti |
+| Evelyn Jane Sutjiadi | 2802501054 | Full-Stack Developer | ejaneishot |
 | Tiffany Widjaja | 2802503791 | Backend / AI Developer | frostdrago |
 
 ---
