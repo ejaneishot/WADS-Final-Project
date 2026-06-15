@@ -583,13 +583,7 @@ On every container start, `docker-entrypoint.sh` runs:
 
 ## 13. AI Usage Disclosure
 
-| Tool | Purpose | Parts Assisted |
-|------|---------|----------------|
-| Claude (Anthropic) | Code suggestions, debugging, reviewing JWT/bcrypt patterns, Zod schema design, Docker configuration review | `middleware.ts`, `auth.ts`, `rbac.ts`, Docker setup, Prisma schema design |
-| Google Gemini API | Core AI feature (not development assistant) — resume classification and analysis; roadmap topic classification and generation | `POST /api/analyze`, `POST /api/roadmaps/[id]/generate`, classifier guards |
-| GitHub Copilot | Autocompletion for repetitive API route boilerplate and Swagger JSDoc comments | Admin CRUD routes, OpenAPI path definitions |
-
-> "Claude (Anthropic) was used to assist with understanding security patterns (JWT, bcrypt, RBAC), reviewing Zod validation schemas, and debugging Prisma query issues. Google Gemini is integrated as a production AI service within the application — not a development tool. GitHub Copilot provided autocompletion for repetitive route structures. All generated code was reviewed, understood, tested, and modified by the team before being committed."
+During development, three different AI tools were used by our team in separate roles. Claude assisted with the coding aspects of the project, such as reviewing security components like JWT, bcrypt, and RBAC systems, Zod schemas, Prisma schema elements, and Docker configuration. Claude assisted with creating and reviewing the code components including files like middleware.ts, auth.ts, rbac.ts, the Prisma schema file, and the Docker configuration file. Claude also helped the developers to determine the logic behind styling the quiz to look like NeetCode’s website, as well as the logic behind the pricing and subscription model for the application. Google Gemini, while also an AI model, was not used during development, but instead became a tool that was embedded into the production website to classify resumes and categorize roadmap content. GitHub Copilot assisted with generating autocomplete suggestions for tasks like creating admin routes and OpenAPI documentation. However, in each of the cases in which AI tools generated code for the application, our team reviewed, understood, tested, and modified the code before it was committed to the project.
 
 ---
 
@@ -613,7 +607,7 @@ We declare that:
 
 | Name | Student ID | 
 |------|-----------|
-| Anastasia Larasati | [Student ID] |
+| Anastasia Larasati | 2802547692 |
 | Evelyn Jane Sutjiadi | 2802501054 |
 | Tiffany Widjaja | 2802503791 |
 
