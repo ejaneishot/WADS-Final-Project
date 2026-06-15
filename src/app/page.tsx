@@ -909,7 +909,7 @@ export default function HomePage() {
               LinkedIn
             </a>
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=ejanesut1901@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=ejanesut1901@gmail.com,anastasialrsti@gmail.com,tiffany.play28@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs transition-colors hover:text-white"
