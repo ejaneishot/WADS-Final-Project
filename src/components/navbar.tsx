@@ -65,7 +65,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center group">
           <span className="text-2xl font-bold tracking-tight">
-            SmartCareer<span className="text-gradient">.AI</span>
+            SmartCareer<span className="text-gradient">.Academy</span>
           </span>
         </Link>
 

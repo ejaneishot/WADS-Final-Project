@@ -1,1 +1,1 @@
-ejane is very cool
+ejane is so cool

@@ -118,7 +118,7 @@ export default function CareersPage() {
   </div>
 )}
 
-      {/* Track cards (Dynamically rendered from DB) */}
+      {/*track cards from db*/}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-16">
         {careers.map((track) => (
           <div
