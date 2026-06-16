@@ -25,6 +25,12 @@ L4CC
 | Evelyn Jane Sutjiadi | 2802501054 | Full-Stack Developer | ejaneishot |
 | Tiffany Widjaja | 2802503791 | Backend / AI Developer | frostdrago |
 
+Features Per Member : 
+| Anastasia Larasati | 2802547692 | Made the challenges for the careers and the pricing  | sashalrsti |
+| Evelyn Jane Sutjiadi | 2802501054 | Made the system architecture, dashboard, landing page, career console, all of the frontend, tutors, student testimonies, assesment| ejaneishot |
+| Tiffany Widjaja | 2802503791 | Made most of the backend, deployed the server, roadmaps, resume optimizer, synced firebase| frostdrago |
+
+
 ---
 
 ## 2. Instructor & Repository Access
