@@ -611,11 +611,11 @@ We declare that:
 - AI usage is disclosed honestly in [Section 11](#11-ai-usage-disclosure).
 - All group members understand the full system and can explain any part during evaluation.
 
-| Name | Student ID | 
-|------|-----------|
-| Anastasia Larasati | 2802547692 |
-| Evelyn Jane Sutjiadi | 2802501054 |
-| Tiffany Widjaja | 2802503791 |
+| Name | Student ID | Signature |
+|------|------------|-----------|
+| Anastasia Larasati | 2802547692 | sasha |
+| Evelyn Jane Sutjiadi | 2802501054 | ejane |
+| Tiffany Widjaja | 2802503791 | tiffany |
 
 ## 16. Setup Instructions
 
