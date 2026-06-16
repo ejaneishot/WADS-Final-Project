@@ -555,7 +555,7 @@ On every container start, `docker-entrypoint.sh` runs:
 
 - **Features:** Quiz system — `/quiz`, `/quiz/[slug]` per-track quiz pages, `src/lib/quiz-data.ts` (quiz content file covering all 6 career tracks); career track milestone component (`src/components/careers/CareerMilestones.tsx`) synced with quiz track data; subscription pricing page (`/pricing`); subscription plan management UI (free and pro switching); subscription plan synced with quiz availability access, final project report, and API documentation
 - **API endpoints:** `GET /api/subscription`, `POST /api/subscription/upgrade`, `POST /api/subscription/downgrade`
-- **Tests:** N/A
+- **Tests:** JWT authentication flow tests (`tests/login.test.tsx` — login form rendering, `tests/login.interaction.test.tsx` — user input interactions, `tests/register.test.tsx` — register form); Jest configuration (`jest.config.cjs`, `jest.setup.ts`)
 - **Security:** N/A
 - **AI:** N/A
 
@@ -565,7 +565,7 @@ On every container start, `docker-entrypoint.sh` runs:
 
 - **Features:** Initial project setup (first GitHub commit, `20d5485`, March 15 2026) — Prisma schema + 5 initial migrations, Dockerfile, docker-compose.yml, Jest config, Next.js/Tailwind/ESLint config; auth library (`src/lib/auth.ts`, `src/lib/rbac.ts`, `src/lib/env.ts`, `src/lib/db.ts`), Firebase client + admin integration, `src/lib/validators.ts`, `src/lib/swagger.ts`; initial API routes (auth, assessment, careers, me, profile); initial UI pages (login, register, dashboard, careers, admin, docs); base components (navbar, card, swagger-ui); full test suite. Later: multiple frontend design overhauls; assessment page (`/assessment`); tutor directory page (`/tutors`) with homepage carousel; interactive lesson system (`/careers/[slug]/learn/[topic]/[lesson]`); in-browser code execution challenge UI; 6 static career roadmap data files (`src/lib/roadmap-data/*`); resume optimizer page redesign; Activity Heatmap component (`src/components/dashboard/ActivityHeatmap.tsx`); login/register page redesigns (two-panel layouts); branding rename to SmartCareer Academy; dashboard and homepage updates
 - **API endpoints:** `POST /api/code/execute` (in-browser code execution via Wandbox); `POST /api/auth/register` security hardening (role field removed, always assigns `"student"`)
-- **Tests:** `tests/api.health.test.ts`, `tests/homepage.test.tsx`, `tests/login.test.tsx`, `tests/login.interaction.test.tsx`, `tests/register.test.tsx` (all present in first GitHub commit)
+- **Tests:** `tests/homepage.test.tsx` (homepage render test); `tests/api.health.test.ts` (API health check placeholder)
 - **Security:** Initial auth and RBAC library (`src/lib/auth.ts`, `src/lib/rbac.ts`); removed `role` from public registration schema (`src/lib/validators.ts`) and API handler — prevents privilege escalation
 - **AI:** N/A
 
