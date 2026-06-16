@@ -9,7 +9,7 @@ Institution: BINUS University International
 ## 1. Project Information
 
 **Project Title:**
-SmartCareer
+SmartCareer.Academy
 
 **Project Domain:**
 Career Counseling & Guidance Application
@@ -40,8 +40,8 @@ GitHub: `Juwono136`
 
 | Resource | URL |
 |----------|-----|
-| Live Application | `https://smartcareer.academy/` |
-| API Documentation (Swagger UI) | `will be uploaded` |
+| Live Application | `[https://smartcareer.academy/](https://e2526-wads-b4cc-06.csbihub.id/)` |
+| API Documentation (Swagger UI) | `https://e2526-wads-b4cc-06.csbihub.id/docs` |
 
 
 ---
