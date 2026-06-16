@@ -9,7 +9,7 @@ Institution: BINUS University International
 ## 1. Project Information
 
 **Project Title:**
-SmartCareer
+SmartCareer.Academy
 
 **Project Domain:**
 Career Counseling & Guidance Application
