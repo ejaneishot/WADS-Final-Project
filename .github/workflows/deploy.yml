@@ -1,0 +1,38 @@
+name: CI/CD - Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create .env file from secret
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: Set DOCKER_HOST for rootless Docker
+        run: echo "DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock" >> $GITHUB_ENV
+
+      - name: Stop existing containers
+        run: docker compose down --remove-orphans
+        continue-on-error: true
+
+      - name: Build and start containers
+        run: docker compose up -d --build
+
+      - name: Remove unused Docker images and build cache
+        run: docker system prune -f
+
+      - name: Verify deployment
+        run: |
+          echo "Waiting for app to start..."
+          sleep 15
+          docker compose ps
+          docker compose logs --tail=30 app
