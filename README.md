@@ -40,7 +40,7 @@ GitHub: `Juwono136`
 
 | Resource | URL |
 |----------|-----|
-| Live Application | `https://smartcareer.academy/` |
+| Live Application | `[https://smartcareer.academy/](https://e2526-wads-b4cc-06.csbihub.id/)` |
 | API Documentation (Swagger UI) | `https://e2526-wads-b4cc-06.csbihub.id/docs` |
 
 
