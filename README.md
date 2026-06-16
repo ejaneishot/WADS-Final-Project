@@ -41,7 +41,7 @@ GitHub: `Juwono136`
 | Resource | URL |
 |----------|-----|
 | Live Application | `https://smartcareer.academy/` |
-| API Documentation (Swagger UI) | `https://docs.google.com/document/d/1ZsrPmZsOv2hKNiysRcXJrynakla8IAhMUvFUuEfo1co/edit?usp=sharing` |
+| API Documentation (Swagger UI) | `https://e2526-wads-b4cc-06.csbihub.id/docs` |
 
 
 ---
