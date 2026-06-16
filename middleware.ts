@@ -1,9 +1,8 @@
 /**
- * Next.js edge middleware: gate authenticated UI routes before page render.
- * Checks for a session cookie only (no JWT verification here); API routes
- * enforce full auth via @/lib/rbac.
+ * Next.js edge middleware: CSRF checks on mutating API routes and auth gates on UI.
  */
 import { NextRequest, NextResponse } from "next/server";
+import { isAllowedOrigin, isMutatingMethod } from "@/lib/csrf";
 
 /** App sections that require a logged-in user (prefix match). */
 const PROTECTED_PATHS = ["/dashboard", "/resume-optimizer", "/admin"];
@@ -11,9 +10,15 @@ const PROTECTED_PATHS = ["/dashboard", "/resume-optimizer", "/admin"];
 /** Legacy and current cookie names so existing sessions keep working. */
 const COOKIE_CANDIDATES = ["smartcareer_token", "token"];
 
-/** Redirect unauthenticated visitors on protected paths to /login. */
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  if (pathname.startsWith("/api/") && isMutatingMethod(req.method)) {
+    if (!isAllowedOrigin(req)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+  }
+
   const isProtected = PROTECTED_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
@@ -35,5 +40,10 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/resume-optimizer/:path*", "/admin/:path*"],
+  matcher: [
+    "/api/:path*",
+    "/dashboard/:path*",
+    "/resume-optimizer/:path*",
+    "/admin/:path*",
+  ],
 };

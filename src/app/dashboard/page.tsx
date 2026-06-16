@@ -344,7 +344,7 @@ export default function DashboardPage() {
                   </p>
                   <Link
                     href="/assessment"
-                    className="btn-accent inline-block w-full !py-2.5 !text-sm"
+                    className="btn-accent inline-block w-full !py-2.5 !text-sm text-center"
                   >
                     Take Assessment Now
                   </Link>
