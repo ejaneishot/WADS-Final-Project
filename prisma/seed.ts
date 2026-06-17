@@ -29,7 +29,7 @@ type ScoringItem = { tag: string; weight: number };
 
 /** Maps seed scoring arrays to Prisma JSON input (omits empty weights). */
 function scoringJson(
-  scoring?: ScoringItem[],
+  scoring?: readonly ScoringItem[],
 ): Prisma.InputJsonValue | undefined {
   if (!scoring || scoring.length === 0) return undefined;
   return scoring as unknown as Prisma.InputJsonValue;
